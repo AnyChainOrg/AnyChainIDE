@@ -144,6 +144,7 @@ void LinkBackStage::onNodeExeStateChanged()
         CommonDialog commonDialog(CommonDialog::OkOnly);
         commonDialog.setText(tr("Fail to launch hx_node !"));
         commonDialog.pop();
+        emit exeNotRunning();
     }
 }
 
@@ -193,6 +194,7 @@ void LinkBackStage::onClientExeStateChanged()
         CommonDialog commonDialog(CommonDialog::OkOnly);
         commonDialog.setText(tr("Fail to launch %1 !").arg("hx_client"));
         commonDialog.pop();
+        emit exeNotRunning();
     }
 }
 

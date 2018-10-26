@@ -54,21 +54,25 @@ DebugManager::~DebugManager()
     _p = nullptr;
 }
 
-void DebugManager::setOutFile(const QString &outFile)
+void DebugManager::startDebug(const QString &sourceFilePath,const QString &byteFilePath,const QString &api,const QStringList &param)
 {
-    _p->outFilePath = outFile;
-}
-
-void DebugManager::startDebug(const QString &filePath,const QString &api,const QStringList &param)
-{
-    _p->filePath = filePath;
+    ResetDebugger();
+    _p->filePath = sourceFilePath;
+    _p->outFilePath = byteFilePath;
+    //源码判定
     if(!QFileInfo(_p->filePath).isFile() || !QFileInfo(_p->filePath).exists())
     {
         emit debugOutput(_p->filePath+" isn't a file or exists");
         emit debugError();
         return ;
     }
-    //获取.out字节码
+    //.out字节码判定
+    if(!QFileInfo(_p->outFilePath).isFile() || !QFileInfo(_p->outFilePath).exists())
+    {
+        emit debugOutput(_p->outFilePath +" isn't a file or exists");
+        emit debugError();
+        return ;
+    }
 
     //启动单步调试器
     QStringList params;
@@ -226,6 +230,9 @@ void DebugManager::ResetDebugger()
 {
     setDebuggerState(DebugDataStruct::Available);
     SetCurrentBreakLine(-1);
+    _p->commentLines.clear();
+    _p->filePath.clear();
+    _p->outFilePath.clear();
 }
 
 void DebugManager::ParseQueryInfo(const QString &info)

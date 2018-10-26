@@ -86,6 +86,7 @@ void BackStageManager::startBackStage()
         if(_p->testBackStage)
         {
             connect(_p->testBackStage,&BackStageBase::exeStarted,this,&BackStageManager::exeStartedSlots);
+            connect(_p->testBackStage,&BackStageBase::exeNotRunning,this,&BackStageManager::backStageRunError);
             emit OutputMessage(tr("start test chain ..."));
             _p->testBackStage->startExe(_p->dataPath);
         }
@@ -95,6 +96,7 @@ void BackStageManager::startBackStage()
         if(_p->formalBackStage)
         {
             connect(_p->formalBackStage,&BackStageBase::exeStarted,this,&BackStageManager::exeStartedSlots);
+            connect(_p->formalBackStage,&BackStageBase::exeNotRunning,this,&BackStageManager::backStageRunError);
             emit OutputMessage(tr("start formal chain ..."));
             _p->formalBackStage->startExe(_p->dataPath);
         }
@@ -133,6 +135,26 @@ void BackStageManager::closeBackStage()
 void BackStageManager::setDataPath(const QString &dataPath)
 {
     _p->dataPath = dataPath;
+}
+
+bool BackStageManager::isBackStageRunning() const
+{
+    if(_p->testBackStage && _p->formalBackStage)
+    {
+        return _p->testBackStage->exeRunning() && _p->formalBackStage->exeRunning();
+    }
+    else if(_p->testBackStage)
+    {
+        return _p->testBackStage->exeRunning();
+    }
+    else if(_p->formalBackStage)
+    {
+        return _p->formalBackStage->exeRunning();
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void BackStageManager::InitBackStage(DataDefine::BlockChainClass chainClass, DataDefine::ChainTypes startType)

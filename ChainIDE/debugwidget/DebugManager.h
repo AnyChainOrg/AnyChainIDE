@@ -11,8 +11,7 @@ public:
     explicit DebugManager(QObject *parent = nullptr);
     ~DebugManager();
 public:
-    void setOutFile(const QString &outFile);
-    void startDebug(const QString &filePath,const QString &api,const QStringList &param);
+    void startDebug(const QString &sourceFilePath,const QString &byteFilePath,const QString &api,const QStringList &param);
 
     void debugNextStep();//调试到下一行
     void debugContinue();//调试到下一个断点

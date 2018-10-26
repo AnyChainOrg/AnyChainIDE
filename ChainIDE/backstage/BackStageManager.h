@@ -15,6 +15,7 @@ signals:
     void rpcPosted(const QString & rpcId, const QString & rpcCmd);//测试链发出请求
     void rpcPostedFormal(const QString & rpcId, const QString & rpcCmd);//正式链发出请求
     void startBackStageFinish();//后台启动完成
+    void backStageRunError();//后台运行失败
     void closeBackStageFinish();//后台关闭完成
 
     void OutputMessage(const QString &);
@@ -27,6 +28,8 @@ public:
     void closeBackStage();
     //刷新数据路径
     void setDataPath(const QString &dataPath);
+    //是否正在运行
+    bool isBackStageRunning()const;
 private:
     void InitBackStage(DataDefine::BlockChainClass chainClass,DataDefine::ChainTypes startType);
 private slots:

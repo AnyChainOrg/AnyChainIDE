@@ -18,6 +18,7 @@ protected slots:
 private:
     void generateOutFile();
     void generateContractFile();
+    void dealFinishOperate();
 private:
     void initConfig(const QString &sourceFilePath);
 private:

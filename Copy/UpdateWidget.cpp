@@ -61,6 +61,12 @@ void UpdateWidget::startMove()
     //删除临时文件
     DataUtil::deleteDir(_p->tempDir);
 
+//#ifndef WIN32
+    //mac平台需要获取权限
+        QProcess::execute("chmod",QStringList()<<"777"<<_p->mainExePath);
+        QProcess::execute("chmod",QStringList()<<"777"<<QCoreApplication::applicationDirPath()+"/hx_node");
+        QProcess::execute("chmod",QStringList()<<"777"<<QCoreApplication::applicationDirPath()+"/HXIndicator");
+//#endif
     //更新结束
     copyFinish();
 }

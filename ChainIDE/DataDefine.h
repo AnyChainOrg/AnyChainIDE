@@ -35,7 +35,17 @@ namespace DataDefine
     static const QString CSHARP_SUFFIX = "cs";
     static const QString KOTLIN_SUFFIX = "kt";
 
-    //后台程序路径
+    //合约存放路径
+    static const QString CONTRACT_DIR = "contracts";
+    static const QString GLUA_DIR = "contracts/uvlua";
+    static const QString JAVA_DIR = "contracts/java";
+    static const QString CSHARP_DIR = "contracts/csharp";
+    static const QString KOTLIN_DIR = "contracts/kotlin";
+
+    static const QString LOCAL_CONTRACT_TEST_PATH = "contracts/contracts_test.contract";
+    static const QString LOCAL_CONTRACT_FORMAL_PATH = "contracts/contracts_formal.contract";
+
+    //链后台程序路径
 #ifdef  WIN32
     static const QString UBCD_NODE_EXE = "backstage/ubcd.exe";
     static const QString UBCD_CLIENT_EXE = "backstage/ubc-cli.exe";
@@ -58,16 +68,11 @@ namespace DataDefine
     static const QString CTC_NODE_FORMAL_EXE = "backstage/ctc_formal";
 #endif
 
-    //合约存放路径
-    static const QString CONTRACT_DIR = "contracts";
-    static const QString GLUA_DIR = "contracts/uvlua";
-    static const QString JAVA_DIR = "contracts/java";
-    static const QString CSHARP_DIR = "contracts/csharp";
-    static const QString KOTLIN_DIR = "contracts/kotlin";
-
-    static const QString LOCAL_CONTRACT_TEST_PATH = "contracts/contracts_test.contract";
-    static const QString LOCAL_CONTRACT_FORMAL_PATH = "contracts/contracts_formal.contract";
-
+    //编译临时路径(文件夹)
+    static const QString GLUA_COMPILE_TEMP_DIR = "gluaTemp";
+    static const QString JAVA_COMPILE_TEMP_DIR = "javaTemp";
+    static const QString CSHARP_COMPILE_TEMP_DIR = "csharpTemp";
+    static const QString KOTLIN_COMPILE_TEMP_DIR = "kotlinTemp";
 
     //编译工具路径
 #ifdef WIN32
@@ -97,26 +102,18 @@ namespace DataDefine
     static const QString CSHARP_UVMCORE_LIB_PATH = "compile/csharp/unix/uvmcorelib.dll";
     static const QString CSHARP_PROJECT_TEMPLATE_PATH = "compile/csharp/unix/build.csproj";
     static const QString CSHARP_GSHARPCORE_DLL_PATH = "compile/csharp/unix/gsharpccore.dll";
+    static const QString CSHARP_UVMASS_PATH = "compile/csharp/unix/uvm_ass";
+    static const QString CSHARP_PACKAGE_PATH = "compile/csharp/unix/package_gpc";
 
-    static const QString CSHARP_COMPILE_DIR = "compile/csharp/unix";
-    static const QString CSHARP_JSON_DLL_PATH = "compile/csharp/Newtonsoft.Json.dll";
-    static const QString CSHARP_CORE_DLL_PATH = "compile/csharp/GluaCoreLib.dll";
-    static const QString CSHARP_COMPILE_PATH = "compile/csharp/gsharpc.exe";
-
-    static const QString KOTLIN_COMPILE_PATH = "compile/kotlin/kotlinc/bin/kotlinc-jvm.bat";
+    static const QString KOTLIN_COMPILE_PATH = "compile/kotlin/kotlinc/bin/kotlinc-jvm";
 
 #endif
-    //编译临时路径(文件夹)
-    static const QString GLUA_COMPILE_TEMP_DIR = "gluaTemp";
-    static const QString JAVA_COMPILE_TEMP_DIR = "javaTemp";
-    static const QString CSHARP_COMPILE_TEMP_DIR = "csharpTemp";
-    static const QString KOTLIN_COMPILE_TEMP_DIR = "kotlinTemp";
 
     //调试器路径
 #ifdef WIN32
-    static const QString DEBUGGER_UVM_PATH = "debug/uvm_single.exe";
+    static const QString DEBUGGER_UVM_PATH = "debug/win/uvm_single.exe";
 #else
-    static const QString DEBUGGER_UVM_PATH = "debug/uvm_single";
+    static const QString DEBUGGER_UVM_PATH = "debug/unix/uvm_single";
 #endif
 //合约api类
     class ApiEvent

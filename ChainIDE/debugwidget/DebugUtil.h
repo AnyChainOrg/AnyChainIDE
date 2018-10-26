@@ -4,6 +4,7 @@
 #include <QString>
 #include <vector>
 #include <QJsonArray>
+#include <QJsonObject>
 
 #include "DebugDataStruct.h"
 class DebugUtil
@@ -18,6 +19,7 @@ private:
                               const QString &lineComment,const QString &phaseCommentStart,const QString &phaseCommentEnd);
 
     static void ParseArrayData(const QJsonArray &arr,BaseItemDataPtr parent);
+    static void ParseObjectData(const QJsonObject &obj,BaseItemDataPtr parent);
 private:
     DebugUtil();
     ~DebugUtil();

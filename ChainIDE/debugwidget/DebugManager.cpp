@@ -192,19 +192,7 @@ void DebugManager::OnProcessStateChanged()
 void DebugManager::readyReadStandardOutputSlot()
 {
     QString outPut = _p->uvmProcess->readAllStandardOutput();
-    if(getDebuggerState() == DebugDataStruct::StartDebug)
-    {
-
-    }
-    else if(getDebuggerState() == DebugDataStruct::StepDebug)
-    {
-        getVariantInfo();
-    }
-    else if(getDebuggerState() == DebugDataStruct::ContinueDebug)
-    {
-        getVariantInfo();
-    }
-    else if(getDebuggerState() == DebugDataStruct::QueryInfo)
+    if(getDebuggerState() == DebugDataStruct::QueryInfo)
     {
         ParseQueryInfo(outPut);
     }
@@ -230,9 +218,6 @@ void DebugManager::ResetDebugger()
 {
     setDebuggerState(DebugDataStruct::Available);
     SetCurrentBreakLine(-1);
-    _p->commentLines.clear();
-    _p->filePath.clear();
-    _p->outFilePath.clear();
 }
 
 void DebugManager::ParseQueryInfo(const QString &info)
@@ -252,6 +237,9 @@ void DebugManager::ParseBreakPoint(const QString &info)
     if(rx.indexIn(data) < 0 || rx.cap(1).isEmpty() || rx.cap(2).isEmpty()) return;
     SetCurrentBreakLine(rx.cap(2).toInt()-1);
     emit debugBreakAt(_p->filePath,rx.cap(2).toInt()-1);
+
+    getVariantInfo();
+
 }
 
 void DebugManager::SetBreakPoint(const QString &file, int lineNumber)

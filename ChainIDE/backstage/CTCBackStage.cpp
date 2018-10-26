@@ -152,6 +152,7 @@ void CTCBackStage::onNodeExeStateChanged()
         CommonDialog commonDialog(CommonDialog::OkOnly);
         commonDialog.setText(tr("Fail to launch ctc %1 !").arg(_p->chaintype));
         commonDialog.pop();
+        emit exeNotRunning();
     }
 }
 

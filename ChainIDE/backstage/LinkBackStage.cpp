@@ -121,7 +121,6 @@ void LinkBackStage::ReadyClose()
         rpcPostedSlot("id-lock-onCloseIDE",IDEUtil::toJsonFormat( "lock", QJsonArray()));
 
         loop->exec();
-        //IDEUtil::msecSleep(5000);
     }
     emit exeClosed();
 }

@@ -172,6 +172,7 @@ void UbtcBackStage::onNodeExeStateChanged()
         CommonDialog commonDialog(CommonDialog::OkOnly);
         commonDialog.setText(tr("Fail to launch ubcd %1 !").arg(_p->chaintype));
         commonDialog.pop();
+        emit exeNotRunning();
     }
 }
 

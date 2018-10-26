@@ -248,20 +248,20 @@ void MainWindow::refreshTranslator()
     ui->fileWidget->retranslator();
     ui->outputWidget->retranslator();
     ui->contractWidget->retranslator();
-    //ui->contractWidgetUB->retranslator();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     hide();
 
-    CommonDialog dia(CommonDialog::NONE);
-    dia.setText(tr("请耐心等待程序自动关闭，不要关闭本窗口!"));
-    connect(ChainIDE::getInstance()->getBackStageManager(),&BackStageManager::closeBackStageFinish,&dia,&CommonDialog::close);
-    ChainIDE::getInstance()->getBackStageManager()->closeBackStage();
-
-    if(ChainIDE::getInstance()->getStartChainTypes() | DataDefine::NONE)
+    if((ChainIDE::getInstance()->getStartChainTypes() | DataDefine::NONE) ||
+       (ChainIDE::getInstance()->getBackStageManager()->isBackStageRunning()))
     {
+        CommonDialog dia(CommonDialog::NONE);
+        dia.setText(tr("请耐心等待程序自动关闭，不要关闭本窗口!"));
+        connect(ChainIDE::getInstance()->getBackStageManager(),&BackStageManager::closeBackStageFinish,&dia,&CommonDialog::close);
+        ChainIDE::getInstance()->getBackStageManager()->closeBackStage();
+
         dia.exec();
     }
 

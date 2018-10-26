@@ -76,8 +76,6 @@ void UpdateWidget::copyFinish()
     ui->update->setText(tr("update finish!"));
     ui->toolButton_close->setVisible(true);
     ui->toolButton_restart->setVisible(true);
-
-    //restartWallet();
 }
 
 void UpdateWidget::restartWallet()

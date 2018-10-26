@@ -29,12 +29,12 @@
         <translation type="unfinished">Update</translation>
     </message>
     <message>
-        <location filename="UpdateWidget.cpp" line="70"/>
+        <location filename="UpdateWidget.cpp" line="76"/>
         <source>update finish!</source>
         <translation type="unfinished">update finish!</translation>
     </message>
     <message>
-        <location filename="UpdateWidget.cpp" line="91"/>
+        <location filename="UpdateWidget.cpp" line="97"/>
         <source>updating,please wait!</source>
         <translation type="unfinished">updating,please wait!</translation>
     </message>

@@ -241,15 +241,28 @@ HEADERS +=    compile/gluaCompile.h \
     compile/kotlinCompile.h
 
 }
-macx{
-ICON = idelogo.icns
+unix{
 SOURCES += compile/gluaCompile.cpp \
     compile/javaCompile.cpp \
     compile/kotlinCompile.cpp\
     compile/csharpCompile_unix.cpp
 
-HEADERS += compile/gluaCompile.cpp \
+HEADERS += compile/gluaCompile.h \
+    compile/javaCompile.h \
+    compile/kotlinCompile.h\
+    compile/csharpCompile_unix.h
+}
+
+macx{
+ICON = idelogo.icns
+
+SOURCES += compile/gluaCompile.cpp \
     compile/javaCompile.cpp \
     compile/kotlinCompile.cpp\
+    compile/csharpCompile_unix.cpp
+
+HEADERS += compile/gluaCompile.h \
+    compile/javaCompile.h \
+    compile/kotlinCompile.h\
     compile/csharpCompile_unix.h
 }

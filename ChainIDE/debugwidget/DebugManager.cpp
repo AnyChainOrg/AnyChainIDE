@@ -54,7 +54,8 @@ DebugManager::~DebugManager()
     _p = nullptr;
 }
 
-void DebugManager::startDebug(const QString &sourceFilePath,const QString &byteFilePath,const QString &api,const QStringList &param)
+void DebugManager::startDebug(const QString &sourceFilePath,const QString &byteFilePath,
+                              const QString &api,const QStringList &param)
 {
     ResetDebugger();
     _p->filePath = sourceFilePath;

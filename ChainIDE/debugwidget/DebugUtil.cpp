@@ -150,28 +150,33 @@ void DebugUtil::ParseObjectData(const QJsonObject &obj, BaseItemDataPtr parent)
     QJsonObject::Iterator it;
     for(auto it=obj.begin();it!=obj.end();it++)
     {
-        BaseItemDataPtr data = std::make_shared<BaseItemData>("","",it.key());
+        BaseItemDataPtr data = std::make_shared<BaseItemData>(it.key(),"","");
         parent->appendChild(data);
         QJsonValue val = it.value();
         if(val.isString())
         {
             data->setVal(val.toString());
+            data->setType("string");
         }
         else if(val.isDouble())
         {
             data->setVal(QString::number(val.toDouble()));
+            data->setType("double");
         }
         else if(val.isBool())
         {
             data->setVal(val.toBool()?"true":"false");
+            data->setType("bool");
         }
         else if(val.isArray())
         {
             ParseArrayData(val.toArray(),data);
+            data->setType("array");
         }
         else if(val.isObject())
         {
             ParseObjectData(val.toObject(),data);
+            data->setType("object");
         }
     }
 }

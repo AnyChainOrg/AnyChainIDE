@@ -14,7 +14,8 @@ public:
                    Compile = 1 << 4,
                    NewFile = 1 << 5,
                    Export = 1 << 6,
-                   Show = 1 << 7
+                   Show = 1 << 7,
+                   Open = 1 << 8
                  };
     typedef int MenuTypes;
 
@@ -30,6 +31,7 @@ signals:
     void exportTriggered();
     void compileTriggered();
     void showInExplorer();
+    void openWithNative();
 private:
     MenuTypes type;
 

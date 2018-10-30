@@ -34,7 +34,7 @@
         <translation type="unfinished">更新完毕！</translation>
     </message>
     <message>
-        <location filename="UpdateWidget.cpp" line="97"/>
+        <location filename="UpdateWidget.cpp" line="95"/>
         <source>updating,please wait!</source>
         <translation type="unfinished">正在更新，请稍等！</translation>
     </message>

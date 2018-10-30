@@ -817,6 +817,11 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">Show In Expolrer</translation>
     </message>
     <message>
+        <location filename="control/contextmenu.cpp" line="92"/>
+        <source>Open With Native App</source>
+        <translation type="unfinished">Open With Native App</translation>
+    </message>
+    <message>
         <location filename="control/contextmenu.cpp" line="62"/>
         <source>Import Contract</source>
         <translation type="unfinished">Import Contract</translation>
@@ -2346,6 +2351,34 @@ p, li { white-space: pre-wrap; }
         <location filename="selectpathwidget.cpp" line="44"/>
         <source>Folderpath doesn&apos;t exists!</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TabContextMenu</name>
+    <message>
+        <location filename="control/tabcontextmenu.cpp" line="19"/>
+        <source>Close Other</source>
+        <translation type="unfinished">Close Other</translation>
+    </message>
+    <message>
+        <location filename="control/tabcontextmenu.cpp" line="26"/>
+        <source>Close All</source>
+        <translation type="unfinished">Close All</translation>
+    </message>
+    <message>
+        <location filename="control/tabcontextmenu.cpp" line="34"/>
+        <source>Copy File Path</source>
+        <translation type="unfinished">Copy File Path</translation>
+    </message>
+    <message>
+        <location filename="control/tabcontextmenu.cpp" line="47"/>
+        <source>View In Explorer</source>
+        <translation type="unfinished">View In Explorer</translation>
+    </message>
+    <message>
+        <location filename="control/tabcontextmenu.cpp" line="54"/>
+        <source>Open With Native App</source>
+        <translation type="unfinished">Open With Native App</translation>
     </message>
 </context>
 <context>

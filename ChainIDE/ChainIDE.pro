@@ -92,7 +92,8 @@ SOURCES += main.cpp\
     debugwidget/BaseTreeItem.cpp \
     debugwidget/DataTreeItemModel.cpp \
     debugwidget/DebugUtil.cpp \
-    debugwidget/DebugFunctionWidget.cpp
+    debugwidget/DebugFunctionWidget.cpp \
+    control/tabcontextmenu.cpp
 
 HEADERS  += MainWindow.h \
     ChainIDE.h \
@@ -174,7 +175,8 @@ HEADERS  += MainWindow.h \
     debugwidget/BaseTreeItem.h \
     debugwidget/DataTreeItemModel.h \
     debugwidget/DebugUtil.h \
-    debugwidget/DebugFunctionWidget.h
+    debugwidget/DebugFunctionWidget.h \
+    control/tabcontextmenu.h
 
 FORMS    += MainWindow.ui \
     popwidget/commondialog.ui \

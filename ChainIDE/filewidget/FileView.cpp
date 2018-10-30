@@ -6,6 +6,8 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QFileSystemModel>
+#include <QUrl>
+#include <QDesktopServices>
 
 #include "FileProxyModel.h"
 #include "DataDefine.h"
@@ -108,6 +110,13 @@ void FileView::showInExplorerSlots()
     IDEUtil::showInExplorer(dirpath);
 }
 
+void FileView::openWithNativeSlots()
+{
+    QString filepath = getFilePathFromIndex(this->currentIndex());
+
+    QDesktopServices::openUrl(QUrl::fromLocalFile(filepath));
+}
+
 void FileView::IndexClicked(const QModelIndex &index)
 {
     if(index.isValid())
@@ -179,7 +188,7 @@ void FileView::contextMenuEvent(QContextMenuEvent *e)
             if(info.suffix() == DataDefine::GLUA_SUFFIX || info.suffix() == DataDefine::JAVA_SUFFIX ||
                info.suffix() == DataDefine::CSHARP_SUFFIX || info.suffix() == DataDefine::KOTLIN_SUFFIX)
             {
-                menu = new ContextMenu(ContextMenu::Delete | ContextMenu::Compile | ContextMenu::Show,this);
+                menu = new ContextMenu(ContextMenu::Delete | ContextMenu::Compile | ContextMenu::Show | ContextMenu::Open,this);
             }
             else if(info.suffix() == DataDefine::CONTRACT_SUFFIX)
             {
@@ -203,6 +212,7 @@ void FileView::contextMenuEvent(QContextMenuEvent *e)
         connect(menu,&ContextMenu::exportTriggered,this,&FileView::exportContractSlots);
         connect(menu,&ContextMenu::newFileTriggered,this,&FileView::newFileSlots);
         connect(menu,&ContextMenu::showInExplorer,this,&FileView::showInExplorerSlots);
+        connect(menu,&ContextMenu::openWithNative,this,&FileView::openWithNativeSlots);
         menu->exec(QCursor::pos());
     }
 

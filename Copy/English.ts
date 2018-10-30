@@ -34,7 +34,7 @@
         <translation type="unfinished">update finish!</translation>
     </message>
     <message>
-        <location filename="UpdateWidget.cpp" line="97"/>
+        <location filename="UpdateWidget.cpp" line="95"/>
         <source>updating,please wait!</source>
         <translation type="unfinished">updating,please wait!</translation>
     </message>

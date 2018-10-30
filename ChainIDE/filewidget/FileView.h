@@ -28,6 +28,7 @@ public slots:
     void exportContractSlots();
     void newFileSlots();
     void showInExplorerSlots();
+    void openWithNativeSlots();
     void retranslator();
 private slots:
     void IndexClicked(const QModelIndex &index);

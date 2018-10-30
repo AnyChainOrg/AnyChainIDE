@@ -6,14 +6,17 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QTabBar>
-#include <QMutex>
-#include <QMutexLocker>
+#include <QUrl>
+#include <QClipboard>
+#include <QDesktopServices>
 
 #include "aceeditor.h"
 #include "codeeditor.h"
 #include "bridge.h"
 
 #include "ChainIDE.h"
+#include "IDEUtil.h"
+#include "control/tabcontextmenu.h"
 
 static const QString EMPTYSTRING = "";
 class ContextWidget::DataPrivate
@@ -298,6 +301,34 @@ void ContextWidget::tabCloseRquest(int i)
     contextUpdate();
 }
 
+void ContextWidget::createTabMenu(const QPoint &pos)
+{
+    int tab = ui->tabWidget->tabBar()->tabAt(pos);
+    if(-1 == tab) return;
+    TabContextMenu *menu = new TabContextMenu(TabContextMenu::CloseAll|TabContextMenu::CloseOther
+                                              |TabContextMenu::ViewInExplorer|TabContextMenu::OpenWithNative|TabContextMenu::CopyPath,this);
+    connect(menu,&TabContextMenu::closeAll,this,&ContextWidget::closeAll);
+    connect(menu,&TabContextMenu::closeOther,[this,tab](){
+        for(int i = this->ui->tabWidget->count()-1; i >= 0; --i)
+        {
+            if(tab != i)
+            {
+                this->tabCloseRquest(i);
+            }
+        }
+    });
+    connect(menu,&TabContextMenu::viewInExplorer,[this,tab](){
+        IDEUtil::showInExplorer(this->getPathFromNumber(tab));
+    });
+    connect(menu,&TabContextMenu::openWithNative,[this,tab](){
+        QDesktopServices::openUrl(QUrl::fromLocalFile(this->getPathFromNumber(tab)));
+    });
+    connect(menu,&TabContextMenu::copyFilePath,[this,tab](){
+        QApplication::clipboard()->setText(this->getPathFromNumber(tab));
+    });
+    menu->exec(QCursor::pos());
+}
+
 bool ContextWidget::saveFile(int i)
 {
     if(Editor * w = getEditor(i))
@@ -413,7 +444,11 @@ void ContextWidget::contextUpdate()
 
 void ContextWidget::InitWidget()
 {
+    //添加关闭赶牛
     ui->tabWidget->setTabsClosable(true);
+    //右击tab，弹出关闭之类的框
+    ui->tabWidget->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->tabWidget->tabBar(),&QTabBar::customContextMenuRequested,this,&ContextWidget::createTabMenu);
     //隐藏左右控制按钮
     //ui->tabWidget->tabBar()->setUsesScrollButtons(false);
 

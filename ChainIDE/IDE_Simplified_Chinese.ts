@@ -793,6 +793,11 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">在Explorer中显示</translation>
     </message>
     <message>
+        <location filename="control/contextmenu.cpp" line="92"/>
+        <source>Open With Native App</source>
+        <translation type="unfinished">使用默认查看器打开</translation>
+    </message>
+    <message>
         <location filename="control/contextmenu.cpp" line="62"/>
         <source>Import Contract</source>
         <translation type="unfinished">导入合约</translation>
@@ -2322,6 +2327,34 @@ p, li { white-space: pre-wrap; }
         <location filename="selectpathwidget.cpp" line="44"/>
         <source>Folderpath doesn&apos;t exists!</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TabContextMenu</name>
+    <message>
+        <location filename="control/tabcontextmenu.cpp" line="19"/>
+        <source>Close Other</source>
+        <translation type="unfinished">关闭其他</translation>
+    </message>
+    <message>
+        <location filename="control/tabcontextmenu.cpp" line="26"/>
+        <source>Close All</source>
+        <translation type="unfinished">关闭全部</translation>
+    </message>
+    <message>
+        <location filename="control/tabcontextmenu.cpp" line="34"/>
+        <source>Copy File Path</source>
+        <translation type="unfinished">复制文件路径</translation>
+    </message>
+    <message>
+        <location filename="control/tabcontextmenu.cpp" line="47"/>
+        <source>View In Explorer</source>
+        <translation type="unfinished">在Explorer中显示</translation>
+    </message>
+    <message>
+        <location filename="control/tabcontextmenu.cpp" line="54"/>
+        <source>Open With Native App</source>
+        <translation type="unfinished">使用默认查看器打开</translation>
     </message>
 </context>
 <context>

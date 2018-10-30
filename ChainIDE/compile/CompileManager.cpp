@@ -12,6 +12,7 @@
 #else
 #include "gluaCompile.h"
 #include "javaCompile.h"
+#include "kotlinCompile.h"
 #include "csharpCompile.h"
 #include "csharpCompile_unix.h"
 #endif

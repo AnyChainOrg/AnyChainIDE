@@ -61,7 +61,7 @@ LinkBackStage::LinkBackStage(int type,QObject *parent)
 
 LinkBackStage::~LinkBackStage()
 {
-    qDebug()<<"delete "<<_p->chaintype<<" hxstage";
+//    qDebug()<<"delete "<<_p->chaintype<<" hxstage";
     delete _p;
 }
 

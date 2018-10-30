@@ -62,7 +62,7 @@ CTCBackStage::CTCBackStage(int type,QObject *parent)
 
 CTCBackStage::~CTCBackStage()
 {
-    qDebug()<<"delete ctcstage "<<_p->chaintype;
+//    qDebug()<<"delete ctcstage "<<_p->chaintype;
     delete _p;
     _p = nullptr;
 }

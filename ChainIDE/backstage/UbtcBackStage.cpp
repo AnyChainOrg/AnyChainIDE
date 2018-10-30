@@ -65,7 +65,7 @@ UbtcBackStage::UbtcBackStage(int type,QObject *parent)
 
 UbtcBackStage::~UbtcBackStage()
 {
-    qDebug()<<"delete ubtcstage "<<_p->chaintype;
+//    qDebug()<<"delete ubtcstage "<<_p->chaintype;
     delete _p;
     _p = nullptr;
 }

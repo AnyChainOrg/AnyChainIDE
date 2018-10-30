@@ -48,7 +48,7 @@ DataManagerHX::CGarbo DataManagerHX::Garbo;
 
 DataManagerHX::~DataManagerHX()
 {
-    qDebug()<<"delete DataManagerHX";
+//    qDebug()<<"delete DataManagerHX";
     delete _p;
     _p = nullptr;
 }

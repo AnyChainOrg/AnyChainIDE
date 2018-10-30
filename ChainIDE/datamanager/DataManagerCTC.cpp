@@ -48,7 +48,7 @@ DataManagerCTC::CGarbo DataManagerCTC::Garbo;
 
 DataManagerCTC::~DataManagerCTC()
 {
-    qDebug()<<"delete DataManagerCTC";
+//    qDebug()<<"delete DataManagerCTC";
     delete _p;
     _p = nullptr;
 }

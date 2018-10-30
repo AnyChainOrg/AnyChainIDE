@@ -57,32 +57,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">restart</translation>
     </message>
     <message>
-        <location filename="popwidget/AboutWidget.cpp" line="41"/>
+        <location filename="popwidget/AboutWidget.cpp" line="42"/>
         <source>Checking updates...</source>
         <translation type="unfinished">Checking updates...</translation>
     </message>
     <message>
-        <location filename="popwidget/AboutWidget.cpp" line="52"/>
+        <location filename="popwidget/AboutWidget.cpp" line="53"/>
         <source>No new version!</source>
         <translation type="unfinished">No new version!</translation>
     </message>
     <message>
-        <location filename="popwidget/AboutWidget.cpp" line="58"/>
+        <location filename="popwidget/AboutWidget.cpp" line="59"/>
         <source>New version found! </source>
         <translation type="unfinished">New version found! </translation>
     </message>
     <message>
-        <location filename="popwidget/AboutWidget.cpp" line="66"/>
+        <location filename="popwidget/AboutWidget.cpp" line="67"/>
         <source>Downloading... Please wait a moment! </source>
         <translation type="unfinished">Downloading... Please wait a moment! </translation>
     </message>
     <message>
-        <location filename="popwidget/AboutWidget.cpp" line="74"/>
+        <location filename="popwidget/AboutWidget.cpp" line="75"/>
         <source>Update finished. Restart and it will take effect! </source>
         <translation type="unfinished">Update finished. Restart and it will take effect! </translation>
     </message>
     <message>
-        <location filename="popwidget/AboutWidget.cpp" line="81"/>
+        <location filename="popwidget/AboutWidget.cpp" line="82"/>
         <source>Update error! </source>
         <translation type="unfinished">Update error! </translation>
     </message>
@@ -154,27 +154,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">NewAccount</translation>
     </message>
     <message>
-        <location filename="custom/AccountWidgetCTC.cpp" line="170"/>
+        <location filename="custom/AccountWidgetCTC.cpp" line="171"/>
         <source>转账</source>
         <translation type="unfinished">Transfer</translation>
     </message>
     <message>
-        <location filename="custom/AccountWidgetCTC.cpp" line="177"/>
+        <location filename="custom/AccountWidgetCTC.cpp" line="178"/>
         <source>账户/地址</source>
         <translation type="unfinished">Account/Address</translation>
     </message>
     <message>
-        <location filename="custom/AccountWidgetCTC.cpp" line="177"/>
+        <location filename="custom/AccountWidgetCTC.cpp" line="178"/>
         <source>余额</source>
         <translation type="unfinished">Balances</translation>
     </message>
     <message>
-        <location filename="custom/AccountWidgetCTC.cpp" line="177"/>
+        <location filename="custom/AccountWidgetCTC.cpp" line="178"/>
         <source>操作</source>
         <translation type="unfinished">Operate</translation>
     </message>
     <message>
-        <location filename="custom/AccountWidgetCTC.cpp" line="186"/>
+        <location filename="custom/AccountWidgetCTC.cpp" line="187"/>
         <source>复制地址</source>
         <translation type="unfinished">CopyAddress</translation>
     </message>
@@ -207,27 +207,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">NewAccount</translation>
     </message>
     <message>
-        <location filename="custom/AccountWidgetHX.cpp" line="128"/>
+        <location filename="custom/AccountWidgetHX.cpp" line="129"/>
         <source>转账</source>
         <translation type="unfinished">Transfer</translation>
     </message>
     <message>
-        <location filename="custom/AccountWidgetHX.cpp" line="135"/>
+        <location filename="custom/AccountWidgetHX.cpp" line="136"/>
         <source>账户/地址</source>
         <translation type="unfinished">Account/Address</translation>
     </message>
     <message>
-        <location filename="custom/AccountWidgetHX.cpp" line="135"/>
+        <location filename="custom/AccountWidgetHX.cpp" line="136"/>
         <source>余额</source>
         <translation type="unfinished">Balances</translation>
     </message>
     <message>
-        <location filename="custom/AccountWidgetHX.cpp" line="135"/>
+        <location filename="custom/AccountWidgetHX.cpp" line="136"/>
         <source>操作</source>
         <translation type="unfinished">Operate</translation>
     </message>
     <message>
-        <location filename="custom/AccountWidgetHX.cpp" line="144"/>
+        <location filename="custom/AccountWidgetHX.cpp" line="145"/>
         <source>复制地址</source>
         <translation type="unfinished">CopyAddress</translation>
     </message>
@@ -296,22 +296,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>BackStageManager</name>
     <message>
-        <location filename="backstage/BackStageManager.cpp" line="89"/>
+        <location filename="backstage/BackStageManager.cpp" line="90"/>
         <source>start test chain ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="backstage/BackStageManager.cpp" line="98"/>
+        <location filename="backstage/BackStageManager.cpp" line="100"/>
         <source>start formal chain ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="backstage/BackStageManager.cpp" line="199"/>
+        <location filename="backstage/BackStageManager.cpp" line="221"/>
         <source>test chain start finish...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="backstage/BackStageManager.cpp" line="215"/>
+        <location filename="backstage/BackStageManager.cpp" line="237"/>
         <source>formal chain start finish...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -426,12 +426,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">approximatefee:%1</translation>
     </message>
     <message>
-        <location filename="custom/CallContractWidgetCTC.cpp" line="42"/>
+        <location filename="custom/CallContractWidgetCTC.cpp" line="43"/>
         <source>approximatefee:%1</source>
         <translation type="unfinished">approximatefee:%1</translation>
     </message>
     <message>
-        <location filename="custom/CallContractWidgetCTC.cpp" line="114"/>
+        <location filename="custom/CallContractWidgetCTC.cpp" line="115"/>
         <source>离线函数无需费用</source>
         <translation type="unfinished">doesn&apos;t cost fee</translation>
     </message>
@@ -498,14 +498,14 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">approximatefee:%1</translation>
     </message>
     <message>
-        <location filename="custom/CallContractWidgetHX.cpp" line="42"/>
         <location filename="custom/CallContractWidgetHX.cpp" line="43"/>
+        <location filename="custom/CallContractWidgetHX.cpp" line="44"/>
         <source>approximatefee:%1</source>
         <translation type="unfinished">approximatefee:%1</translation>
     </message>
     <message>
-        <location filename="custom/CallContractWidgetHX.cpp" line="117"/>
         <location filename="custom/CallContractWidgetHX.cpp" line="118"/>
+        <location filename="custom/CallContractWidgetHX.cpp" line="119"/>
         <source>离线函数无需费用</source>
         <translation type="unfinished">doesn&apos;t cost fee</translation>
     </message>
@@ -604,6 +604,31 @@ p, li { white-space: pre-wrap; }
         <location filename="popwidget/commondialog.cpp" line="27"/>
         <source>No</source>
         <translation type="unfinished">No</translation>
+    </message>
+</context>
+<context>
+    <name>CompileManager</name>
+    <message>
+        <location filename="compile/CompileManager.cpp" line="61"/>
+        <location filename="compile/CompileManager.cpp" line="90"/>
+        <source>Please make sure you&apos;ve installed jdk8 and commond &apos;java -version&apos; is useful.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="compile/CompileManager.cpp" line="62"/>
+        <location filename="compile/CompileManager.cpp" line="91"/>
+        <source>Here is the download website: https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="compile/CompileManager.cpp" line="77"/>
+        <source>Please make sure you&apos;ve installed .net framework 4.6 or newer version.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="compile/CompileManager.cpp" line="78"/>
+        <source>Here is the download website: https://www.microsoft.com/en-us/download/details.aspx?id=48130</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -792,6 +817,11 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">Show In Expolrer</translation>
     </message>
     <message>
+        <location filename="control/contextmenu.cpp" line="92"/>
+        <source>Open With Native App</source>
+        <translation type="unfinished">Open With Native App</translation>
+    </message>
+    <message>
         <location filename="control/contextmenu.cpp" line="62"/>
         <source>Import Contract</source>
         <translation type="unfinished">Import Contract</translation>
@@ -853,6 +883,24 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ConvenientOp.cpp" line="271"/>
         <source>save gpc file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DataTreeItemModel</name>
+    <message>
+        <location filename="debugwidget/DataTreeItemModel.cpp" line="129"/>
+        <source>name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="debugwidget/DataTreeItemModel.cpp" line="131"/>
+        <source>value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="debugwidget/DataTreeItemModel.cpp" line="133"/>
+        <source>type</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1281,12 +1329,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LinkBackStage</name>
     <message>
-        <location filename="backstage/LinkBackStage.cpp" line="145"/>
+        <location filename="backstage/LinkBackStage.cpp" line="144"/>
         <source>Fail to launch hx_node !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="backstage/LinkBackStage.cpp" line="193"/>
+        <location filename="backstage/LinkBackStage.cpp" line="194"/>
         <source>Fail to launch %1 !</source>
         <translation type="unfinished">Fail to launch %1 !</translation>
     </message>
@@ -1506,7 +1554,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="MainWindow.ui" line="501"/>
-        <location filename="MainWindow.cpp" line="716"/>
+        <location filename="MainWindow.cpp" line="750"/>
         <source>切换到正式链</source>
         <translation type="unfinished">ChangeToFormalChain</translation>
     </message>
@@ -1622,7 +1670,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="191"/>
+        <location filename="MainWindow.cpp" line="201"/>
         <source>IDE</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1651,57 +1699,67 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">IDE-HX FORMAL CHAIN</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="197"/>
+        <location filename="MainWindow.cpp" line="207"/>
         <source>IDE-UB TEST CHAIN</source>
         <translation type="unfinished">IDE-UB TEST CHAIN</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="201"/>
+        <location filename="MainWindow.cpp" line="211"/>
         <source>IDE-HX TEST CHAIN</source>
         <translation type="unfinished">IDE-HX TEST CHAIN</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="205"/>
+        <location filename="MainWindow.cpp" line="215"/>
         <source>IDE-CTC TEST CHAIN</source>
         <translation type="unfinished">IDE-CTC TEST CHAIN</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="212"/>
+        <location filename="MainWindow.cpp" line="222"/>
         <source>IDE-UB FORMAL CHAIN</source>
         <translation type="unfinished">IDE-UB FORMAL CHAIN</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="216"/>
+        <location filename="MainWindow.cpp" line="226"/>
         <source>IDE-HX FORMAL CHAIN</source>
         <translation type="unfinished">IDE-HX FORMAL CHAIN</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="220"/>
+        <location filename="MainWindow.cpp" line="230"/>
         <source>IDE-CTC FORMAL CHAIN</source>
         <translation type="unfinished">IDE-CTC FORMAL CHAIN</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="249"/>
+        <location filename="MainWindow.cpp" line="261"/>
         <source>请耐心等待程序自动关闭，不要关闭本窗口!</source>
         <translation type="unfinished">Please wait for auto-close, don&apos;t close this window!</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="303"/>
+        <location filename="MainWindow.cpp" line="288"/>
+        <source>未找到Update更新程序包!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="324"/>
+        <source>Backstage error! Please check the chain!</source>
+        <translation type="unfinished">Backstage error! Please check the chain!</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="341"/>
         <source>Initialize done...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Initialize done...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="309"/>
+        <location filename="MainWindow.cpp" line="348"/>
         <source>Initialize IDE,please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Initialize IDE,please wait...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="535"/>
+        <location filename="MainWindow.cpp" line="574"/>
         <source>Sure to switch to formal chain?</source>
         <translation type="unfinished">Sure to switch to formal chain?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="561"/>
+        <location filename="MainWindow.cpp" line="601"/>
         <source>文件已修改，是否保存?</source>
         <translation type="unfinished">File modified,do you want to save?</translation>
     </message>
@@ -1710,7 +1768,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">The debug-function is under emergency development, please wait for new release!</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="716"/>
+        <location filename="MainWindow.cpp" line="750"/>
         <source>切换到测试链</source>
         <translation type="unfinished">ChangeToTestChain</translation>
     </message>
@@ -2142,7 +2200,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">approximatefee:%1</translation>
     </message>
     <message>
-        <location filename="custom/RegisterContractDialogCTC.cpp" line="50"/>
+        <location filename="custom/RegisterContractDialogCTC.cpp" line="51"/>
         <source>approximatefee:%1</source>
         <translation type="unfinished">approximatefee:%1</translation>
     </message>
@@ -2194,8 +2252,8 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">approximatefee: %1</translation>
     </message>
     <message>
-        <location filename="custom/RegisterContractDialogHX.cpp" line="50"/>
         <location filename="custom/RegisterContractDialogHX.cpp" line="51"/>
+        <location filename="custom/RegisterContractDialogHX.cpp" line="52"/>
         <source>approximatefee:%1</source>
         <translation type="unfinished">approximatefee:%1</translation>
     </message>
@@ -2280,7 +2338,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Next</translation>
     </message>
     <message>
-        <location filename="selectpathwidget.cpp" line="31"/>
+        <location filename="selectpathwidget.cpp" line="32"/>
         <source>Select the path to store the blockchain</source>
         <translation type="unfinished">Select the path to store the blockchain</translation>
     </message>
@@ -2293,6 +2351,34 @@ p, li { white-space: pre-wrap; }
         <location filename="selectpathwidget.cpp" line="44"/>
         <source>Folderpath doesn&apos;t exists!</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TabContextMenu</name>
+    <message>
+        <location filename="control/tabcontextmenu.cpp" line="19"/>
+        <source>Close Other</source>
+        <translation type="unfinished">Close Other</translation>
+    </message>
+    <message>
+        <location filename="control/tabcontextmenu.cpp" line="26"/>
+        <source>Close All</source>
+        <translation type="unfinished">Close All</translation>
+    </message>
+    <message>
+        <location filename="control/tabcontextmenu.cpp" line="34"/>
+        <source>Copy File Path</source>
+        <translation type="unfinished">Copy File Path</translation>
+    </message>
+    <message>
+        <location filename="control/tabcontextmenu.cpp" line="47"/>
+        <source>View In Explorer</source>
+        <translation type="unfinished">View In Explorer</translation>
+    </message>
+    <message>
+        <location filename="control/tabcontextmenu.cpp" line="54"/>
+        <source>Open With Native App</source>
+        <translation type="unfinished">Open With Native App</translation>
     </message>
 </context>
 <context>
@@ -2560,8 +2646,8 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">approximatefee:%1</translation>
     </message>
     <message>
-        <location filename="custom/UpgradeContractDialogCTC.cpp" line="37"/>
-        <location filename="custom/UpgradeContractDialogCTC.cpp" line="59"/>
+        <location filename="custom/UpgradeContractDialogCTC.cpp" line="38"/>
+        <location filename="custom/UpgradeContractDialogCTC.cpp" line="60"/>
         <source>approximatefee:%1</source>
         <translation type="unfinished">approximatefee:%1</translation>
     </message>
@@ -2633,8 +2719,8 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">approximatefee:%1</translation>
     </message>
     <message>
-        <location filename="custom/UpgradeContractDialogHX.cpp" line="37"/>
         <location filename="custom/UpgradeContractDialogHX.cpp" line="38"/>
+        <location filename="custom/UpgradeContractDialogHX.cpp" line="39"/>
         <source>approximatefee:%1</source>
         <translation type="unfinished">approximatefee:%1</translation>
     </message>

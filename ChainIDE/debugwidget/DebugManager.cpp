@@ -54,21 +54,26 @@ DebugManager::~DebugManager()
     _p = nullptr;
 }
 
-void DebugManager::setOutFile(const QString &outFile)
+void DebugManager::startDebug(const QString &sourceFilePath,const QString &byteFilePath,
+                              const QString &api,const QStringList &param)
 {
-    _p->outFilePath = outFile;
-}
-
-void DebugManager::startDebug(const QString &filePath,const QString &api,const QStringList &param)
-{
-    _p->filePath = filePath;
+    ResetDebugger();
+    _p->filePath = sourceFilePath;
+    _p->outFilePath = byteFilePath;
+    //源码判定
     if(!QFileInfo(_p->filePath).isFile() || !QFileInfo(_p->filePath).exists())
     {
         emit debugOutput(_p->filePath+" isn't a file or exists");
         emit debugError();
         return ;
     }
-    //获取.out字节码
+    //.out字节码判定
+    if(!QFileInfo(_p->outFilePath).isFile() || !QFileInfo(_p->outFilePath).exists())
+    {
+        emit debugOutput(_p->outFilePath +" isn't a file or exists");
+        emit debugError();
+        return ;
+    }
 
     //启动单步调试器
     QStringList params;
@@ -188,19 +193,7 @@ void DebugManager::OnProcessStateChanged()
 void DebugManager::readyReadStandardOutputSlot()
 {
     QString outPut = _p->uvmProcess->readAllStandardOutput();
-    if(getDebuggerState() == DebugDataStruct::StartDebug)
-    {
-
-    }
-    else if(getDebuggerState() == DebugDataStruct::StepDebug)
-    {
-        getVariantInfo();
-    }
-    else if(getDebuggerState() == DebugDataStruct::ContinueDebug)
-    {
-        getVariantInfo();
-    }
-    else if(getDebuggerState() == DebugDataStruct::QueryInfo)
+    if(getDebuggerState() == DebugDataStruct::QueryInfo)
     {
         ParseQueryInfo(outPut);
     }
@@ -245,6 +238,9 @@ void DebugManager::ParseBreakPoint(const QString &info)
     if(rx.indexIn(data) < 0 || rx.cap(1).isEmpty() || rx.cap(2).isEmpty()) return;
     SetCurrentBreakLine(rx.cap(2).toInt()-1);
     emit debugBreakAt(_p->filePath,rx.cap(2).toInt()-1);
+
+    getVariantInfo();
+
 }
 
 void DebugManager::SetBreakPoint(const QString &file, int lineNumber)

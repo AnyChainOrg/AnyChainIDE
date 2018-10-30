@@ -234,22 +234,22 @@ void IDEUtil::myMessageOutput(QtMsgType type, const QMessageLogContext &context,
     switch(type)
     {
     case QtDebugMsg:
-        strMsg = QString("Debug:");
+        strMsg = QString("[Debug]");
         break;
     case QtWarningMsg:
-        strMsg = QString("Warning:");
+        strMsg = QString("[Warning]");
         break;
     case QtCriticalMsg:
-        strMsg = QString("Critical:");
+        strMsg = QString("[Critical]");
         break;
     case QtFatalMsg:
-        strMsg = QString("Fatal:");
+        strMsg = QString("[Fatal]");
         break;
     }
 
     // 设置输出信息格式
     QString strDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
-    QString strMessage = QString("DateTime:%1 Message:%2").arg(strDateTime).arg(localMsg.constData());
+    QString strMessage = QString("%1 DateTime:%2 Message:%3").arg(strMsg).arg(strDateTime).arg(localMsg.constData());
 
     // 输出信息至文件中（读写、追加形式），超过50M删除日志
     QFileInfo info(*LOG_PATH);
@@ -264,7 +264,6 @@ void IDEUtil::myMessageOutput(QtMsgType type, const QMessageLogContext &context,
     stream << strMessage << "\r\n";
     file.flush();
     file.close();
-
     // 解锁
     mutex.unlock();
 }

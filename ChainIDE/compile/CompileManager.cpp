@@ -10,6 +10,9 @@
 #include "csharpCompile.h"
 #include "kotlinCompile.h"
 #else
+#include "gluaCompile.h"
+#include "javaCompile.h"
+#include "csharpCompile.h"
 #include "csharpCompile_unix.h"
 #endif
 #include "DataDefine.h"
@@ -44,19 +47,13 @@ void CompileManager::startCompile(const QString &filePath)
     BaseCompile *compiler = nullptr;
     if(filePath.endsWith("."+DataDefine::GLUA_SUFFIX))
     {//调用glua编译器
-#ifdef WIN32
         compiler = new gluaCompile(this);
-#else
-#endif
     }
     else if(filePath.endsWith("."+DataDefine::JAVA_SUFFIX))
     {//调用java编译器
         if(checkJavaEnvironment())
         {
-#ifdef WIN32
             compiler = new javaCompile(this);
-#else
-#endif
         }
         else
         {
@@ -85,10 +82,7 @@ void CompileManager::startCompile(const QString &filePath)
     {
         if(checkJavaEnvironment())
         {
-#ifdef WIN32
             compiler = new kotlinCompile(this);
-#else
-#endif
         }
         else
         {

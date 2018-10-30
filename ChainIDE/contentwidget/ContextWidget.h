@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <QWidget>
+#include <QPoint>
 
 namespace Ui {
 class ContextWidget;
@@ -72,6 +73,7 @@ public slots:
 private slots:
     void currentTabChanged(int i);
     void tabCloseRquest(int i);
+    void createTabMenu(const QPoint &pos);
 private:
     bool saveFile(int i);
     bool closeFile(int i);

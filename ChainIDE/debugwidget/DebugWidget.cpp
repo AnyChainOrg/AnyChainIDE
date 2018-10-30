@@ -34,6 +34,7 @@ DebugWidget::~DebugWidget()
 void DebugWidget::ResetData(BaseItemDataPtr data)
 {
     _p->treeModel->InitModelData(data);
+    ui->treeView->expandAll();
 }
 
 void DebugWidget::ClearData()

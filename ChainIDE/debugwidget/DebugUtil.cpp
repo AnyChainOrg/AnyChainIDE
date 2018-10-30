@@ -109,18 +109,6 @@ void DebugUtil::ParseDebugData(const QString &info, BaseItemDataPtr &root)
     QJsonArray arr = parse_doucment.object().value("locals").toArray();
 
     ParseArrayData(arr,root);
-
-//    QStringList data = info.split("\r\n");
-//    QRegExp rx("(.*)=(.*)");
-
-//    foreach (QString eachdata, data) {
-
-//        if(rx.indexIn(eachdata) < 0 || rx.cap(1).isEmpty() || rx.cap(2).isEmpty()) continue;
-//        //开始构造显示内容
-//        BaseItemDataPtr pa = std::make_shared<BaseItemData>(rx.cap(1),rx.cap(2),"unknow",root);
-//        root->appendChild(pa);
-//    }
-
 }
 
 void DebugUtil::ParseArrayData(const QJsonArray &arr, BaseItemDataPtr parent)
@@ -132,7 +120,7 @@ void DebugUtil::ParseArrayData(const QJsonArray &arr, BaseItemDataPtr parent)
         BaseItemDataPtr data = std::make_shared<BaseItemData>(obj.value("valName").toString(),"",obj.value("valType").toString(),parent);
         parent->appendChild(data);
 
-        QJsonValue typeVal = obj.value("valValue");
+        QJsonValue typeVal = obj.value("valDetails");
         if(typeVal.isString())
         {
             data->setVal(typeVal.toString());
@@ -145,6 +133,10 @@ void DebugUtil::ParseArrayData(const QJsonArray &arr, BaseItemDataPtr parent)
         {
             data->setVal(QString::number(typeVal.toDouble()));
         }
+        else if(typeVal.isObject())
+        {
+            ParseObjectData(typeVal.toObject(),data);
+        }
         else if(typeVal.isArray())
         {
             ParseArrayData(typeVal.toArray(),data);
@@ -152,9 +144,45 @@ void DebugUtil::ParseArrayData(const QJsonArray &arr, BaseItemDataPtr parent)
     }
 }
 
+void DebugUtil::ParseObjectData(const QJsonObject &obj, BaseItemDataPtr parent)
+{
+    if(!parent) return;
+    QJsonObject::Iterator it;
+    for(auto it=obj.begin();it!=obj.end();it++)
+    {
+        BaseItemDataPtr data = std::make_shared<BaseItemData>(it.key(),"","");
+        parent->appendChild(data);
+        QJsonValue val = it.value();
+        if(val.isString())
+        {
+            data->setVal(val.toString());
+            data->setType("string");
+        }
+        else if(val.isDouble())
+        {
+            data->setVal(QString::number(val.toDouble()));
+            data->setType("double");
+        }
+        else if(val.isBool())
+        {
+            data->setVal(val.toBool()?"true":"false");
+            data->setType("bool");
+        }
+        else if(val.isArray())
+        {
+            ParseArrayData(val.toArray(),data);
+            data->setType("array");
+        }
+        else if(val.isObject())
+        {
+            ParseObjectData(val.toObject(),data);
+            data->setType("object");
+        }
+    }
+}
+
 DebugUtil::DebugUtil()
 {
-
 }
 
 DebugUtil::~DebugUtil()

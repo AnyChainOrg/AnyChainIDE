@@ -20,7 +20,9 @@ private:
     void generateProject();
     void generateDllFile();
     void generateUVMFile();
+    void generateOutFile();
     void generateContractFile();
+    void dealFinishOperate();
     void initConfig(const QString &sourceFilePath);
 private:
     class DataPrivate;

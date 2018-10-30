@@ -132,6 +132,7 @@ void MainWindow::startChain()
 
     //启动后台
     connect(ChainIDE::getInstance()->getBackStageManager(),&BackStageManager::startBackStageFinish,this,&MainWindow::exeStartedSlots);
+    connect(ChainIDE::getInstance()->getBackStageManager(),&BackStageManager::backStageRunError,this,&MainWindow::exeErrorSlots);
     ChainIDE::getInstance()->getBackStageManager()->startBackStage();
 }
 
@@ -247,20 +248,20 @@ void MainWindow::refreshTranslator()
     ui->fileWidget->retranslator();
     ui->outputWidget->retranslator();
     ui->contractWidget->retranslator();
-    //ui->contractWidgetUB->retranslator();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     hide();
 
-    CommonDialog dia(CommonDialog::NONE);
-    dia.setText(tr("请耐心等待程序自动关闭，不要关闭本窗口!"));
-    connect(ChainIDE::getInstance()->getBackStageManager(),&BackStageManager::closeBackStageFinish,&dia,&CommonDialog::close);
-    ChainIDE::getInstance()->getBackStageManager()->closeBackStage();
-
-    if(ChainIDE::getInstance()->getStartChainTypes() | DataDefine::NONE)
+    if((ChainIDE::getInstance()->getStartChainTypes() | DataDefine::NONE) ||
+       (ChainIDE::getInstance()->getBackStageManager()->isBackStageRunning()))
     {
+        CommonDialog dia(CommonDialog::NONE);
+        dia.setText(tr("请耐心等待程序自动关闭，不要关闭本窗口!"));
+        connect(ChainIDE::getInstance()->getBackStageManager(),&BackStageManager::closeBackStageFinish,&dia,&CommonDialog::close);
+        ChainIDE::getInstance()->getBackStageManager()->closeBackStage();
+
         dia.exec();
     }
 
@@ -268,13 +269,25 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
     if(_p->updateNeeded)
     {//开启copy，
-        QProcess *copproc = new QProcess();
         QString updateExe = QCoreApplication::applicationDirPath()+"/Update";
         QString package = "update.zip";
         QString mainName = QCoreApplication::applicationName();
         QString unpackName = "update";//解压后的文件夹名称
         QString tempName = "updatetemp";//临时路径
-        copproc->startDetached(updateExe,QStringList()<<package<<mainName<<unpackName<<tempName);
+        if(QFileInfo(updateExe).exists())
+        {
+        #ifndef WIN32
+            QProcess::execute("chmod",QStringList()<<"777"<<updateExe);
+        #endif
+            QProcess *copproc = new QProcess();
+            copproc->startDetached(updateExe,QStringList()<<package<<mainName<<unpackName<<tempName);
+        }
+        else
+        {
+            CommonDialog dia(CommonDialog::OkOnly);
+            dia.setText(tr("未找到Update更新程序包!"));
+            dia.exec();
+        }
     }
     QWidget::closeEvent(event);
 }
@@ -295,7 +308,6 @@ void MainWindow::exeStartedSlots()
     {
         DataManagerCTC::getInstance()->InitManager();
         DataManagerCTC::getInstance()->dealNewState();
-
     }
 
     //关闭等待窗
@@ -305,12 +317,30 @@ void MainWindow::exeStartedSlots()
 
 }
 
+void MainWindow::exeErrorSlots()
+{
+    emit exeError();
+    //后台出错，请关闭本窗口
+    ConvenientOp::ShowNotifyMessage(tr("Backstage error! Please check the chain!"));
+    //
+    if(this->isHidden())
+    {
+        startWidget();
+    }
+    else
+    {
+        updateNeededSlot(false);
+        close();
+    }
+}
+
 void MainWindow::showWaitingForSyncWidget()
 {
     WaitingForSync *waitingForSync = new WaitingForSync();
     waitingForSync->setAttribute(Qt::WA_DeleteOnClose);
     connect(this,&MainWindow::initFinish,std::bind(&WaitingForSync::ReceiveMessage,waitingForSync,tr("Initialize done...")));
     connect(this,&MainWindow::initFinish,waitingForSync,&WaitingForSync::close);
+    connect(this,&MainWindow::exeError,waitingForSync,&WaitingForSync::close);
     connect(ChainIDE::getInstance()->getBackStageManager(),&BackStageManager::OutputMessage,waitingForSync,&WaitingForSync::ReceiveMessage);
 
     waitingForSync->setWindowTitle( QString::fromLocal8Bit("IDE"));
@@ -588,11 +618,6 @@ void MainWindow::on_compileAction_triggered()
 
 void MainWindow::on_debugAction_triggered()
 {
-    //ui->debugWidget->setVisible(!ui->debugWidget->isVisible());
-    //ConvenientOp::ShowNotifyMessage(tr("单步调试功能正在紧急开发中，敬请期待！"));
-    //ui->debugAction->setEnabled(false);
-    //return;
-
     if(ChainIDE::getInstance()->getDebugManager()->getDebuggerState() == DebugDataStruct::Available)
     {
         //先生成.out字节码
@@ -629,10 +654,9 @@ void MainWindow::startDebugSlot(const QString &gpcFile)
     ui->debugWidget->setVisible(true);
     ui->debugWidget->ClearData();
     //打开调试器，进行函数调试
-    QString file = gpcFile;
-    file.replace(QRegExp("gpc$"),"out");
-    ChainIDE::getInstance()->getDebugManager()->setOutFile(file);
-    ChainIDE::getInstance()->getDebugManager()->startDebug(ui->fileWidget->getCurrentFile(),fun.SelectedApi(),fun.ApiParams());
+    QString outfile = gpcFile;
+    outfile.replace(QRegExp("gpc$"),DataDefine::BYTE_OUT_SUFFIX);
+    ChainIDE::getInstance()->getDebugManager()->startDebug(ui->fileWidget->getCurrentFile(),outfile,fun.SelectedApi(),fun.ApiParams());
 }
 
 void MainWindow::errorCompileSlot()

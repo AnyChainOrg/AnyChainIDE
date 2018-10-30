@@ -121,7 +121,6 @@ void LinkBackStage::ReadyClose()
         rpcPostedSlot("id-lock-onCloseIDE",IDEUtil::toJsonFormat( "lock", QJsonArray()));
 
         loop->exec();
-        //IDEUtil::msecSleep(5000);
     }
     emit exeClosed();
 }
@@ -144,6 +143,7 @@ void LinkBackStage::onNodeExeStateChanged()
         CommonDialog commonDialog(CommonDialog::OkOnly);
         commonDialog.setText(tr("Fail to launch hx_node !"));
         commonDialog.pop();
+        emit exeNotRunning();
     }
 }
 
@@ -193,6 +193,7 @@ void LinkBackStage::onClientExeStateChanged()
         CommonDialog commonDialog(CommonDialog::OkOnly);
         commonDialog.setText(tr("Fail to launch %1 !").arg("hx_client"));
         commonDialog.pop();
+        emit exeNotRunning();
     }
 }
 

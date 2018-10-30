@@ -103,24 +103,7 @@ void kotlinCompile::finishCompile(int exitcode, QProcess::ExitStatus exitStatus)
         generateContractFile();
         break;
     case BaseCompile::StageFour:
-        //复制gpc meta.json文件到源目录
-        QFile::copy(getTempDir()+"/result.gpc",getDstByteFilePath());
-        QFile::copy(getTempDir()+"/result.meta.json",getDstMetaFilePath());
-        QFile::copy(getTempDir()+"/result.out",getDstOutFilePath());
-
-        //删除临时目录
-        IDEUtil::deleteDir(getTempDir());
-
-        if(QFile(getDstByteFilePath()).exists())
-        {
-            emit CompileOutput(QString("compile finish,see %1").arg(getDstByteFilePath()));
-            emit finishCompileFile(getDstByteFilePath());
-        }
-        else
-        {
-            emit CompileOutput(QString("compile error,cann't find :%1").arg(getDstByteFilePath()));
-            emit errorCompileFile(getSourceDir());
-        }
+        dealFinishOperate();
         break;
     default:
         break;
@@ -191,5 +174,27 @@ void kotlinCompile::generateContractFile()
     getCompileProcess()->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::JAVA_PACKAGE_GPC_PATH,
                                QStringList()<<getTempDir()+"/result.out"<<getTempDir()+"/result.meta.json");
 
+}
+
+void kotlinCompile::dealFinishOperate()
+{
+    //复制gpc meta.json文件到源目录
+    QFile::copy(getTempDir()+"/result.gpc",getDstByteFilePath());
+    QFile::copy(getTempDir()+"/result.meta.json",getDstMetaFilePath());
+    QFile::copy(getTempDir()+"/result.out",getDstOutFilePath());
+
+    //删除临时目录
+    IDEUtil::deleteDir(getTempDir());
+
+    if(QFile(getDstByteFilePath()).exists())
+    {
+        emit CompileOutput(QString("compile finish,see %1").arg(getDstByteFilePath()));
+        emit finishCompileFile(getDstByteFilePath());
+    }
+    else
+    {
+        emit CompileOutput(QString("compile error,cann't find :%1").arg(getDstByteFilePath()));
+        emit errorCompileFile(getSourceDir());
+    }
 }
 

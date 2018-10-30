@@ -87,5 +87,11 @@ void ContextMenu::createActions()
         connect(showAction,&QAction::triggered,this,&ContextMenu::showInExplorer);
         this->addAction(showAction);
     }
+    if(type & ContextMenu::Open)
+    {
+        QAction* showAction = new QAction(tr("Open With Native App"),this);
+        connect(showAction,&QAction::triggered,this,&ContextMenu::openWithNative);
+        this->addAction(showAction);
+    }
 }
 

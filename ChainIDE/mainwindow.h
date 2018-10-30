@@ -16,6 +16,7 @@ public:
     ~MainWindow();
 private slots:
     void exeStartedSlots();
+    void exeErrorSlots();
 
     //文件菜单
     void on_newContractAction_glua_triggered();
@@ -131,6 +132,7 @@ protected:
     void closeEvent(QCloseEvent *event);
 signals:
     void initFinish();
+    void exeError();
 };
 
 #endif // MAINWINDOW_H

@@ -76,4 +76,5 @@ void DebugFunctionWidget::InitWidget(const QString &file, DataDefine::ApiEventPt
     connect(ui->closeBtn,&QToolButton::clicked,this,&DebugFunctionWidget::close);
     connect(ui->cancelBtn,&QToolButton::clicked,this,&DebugFunctionWidget::close);
     connect(ui->okBtn,&QToolButton::clicked,this,&DebugFunctionWidget::OnOKClicked);
+    connect(ui->param,&QLineEdit::returnPressed,this,&DebugFunctionWidget::OnOKClicked);
 }

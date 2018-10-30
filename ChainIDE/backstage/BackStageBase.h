@@ -18,6 +18,7 @@ public:
 signals:
     void exeStarted();
     void exeClosed();
+    void exeNotRunning();
     void rpcReceived(const QString &,const QString &);
 
     void AdditionalOutputMessage(const QString &);

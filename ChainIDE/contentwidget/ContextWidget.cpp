@@ -206,9 +206,9 @@ void ContextWidget::showFile(QString path)
         }
     }
 
-    ui->tabWidget->addTab(w,QIcon(":/pic/saved.png"),QFileInfo(path).fileName());
-
+    int tabNumber = ui->tabWidget->addTab(w,QIcon(":/pic/saved.png"),QFileInfo(path).fileName());
     ui->tabWidget->setCurrentWidget(w);
+    ui->tabWidget->tabBar()->setTabToolTip(tabNumber,path);
     connect(w,&Editor::stateChanged,this,&ContextWidget::contextUpdate);
 }
 

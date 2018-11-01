@@ -263,7 +263,7 @@ void ChainIDE::InitConfig()
        "formal" != _p->configFile->value("/settings/starTypes").toString() &&
        "none" != _p->configFile->value("/settings/starTypes").toString() )
     {
-        _p->configFile->setValue("/settings/starTypes","test");
+        _p->configFile->setValue("/settings/starTypes","none");
     }
 
     if("black" != _p->configFile->value("/settings/theme").toString() &&

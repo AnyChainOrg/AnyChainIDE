@@ -217,8 +217,8 @@ void csharpCompile_unix::generateOutFile()
     //调用uvm_ass
     QStringList params;
     params<<buildUVM;
-    qDebug()<<"c#-compiler-generate build.out file:"<<DataDefine::CSHARP_UVMASS_PATH<<params;
-    getCompileProcess()->start(DataDefine::CSHARP_UVMASS_PATH,params);
+    qDebug()<<"c#-compiler-generate build.out file:"<<QCoreApplication::applicationDirPath()+"/"+DataDefine::CSHARP_UVMASS_PATH<<params;
+    getCompileProcess()->start(QCoreApplication::applicationDirPath()+"/"+ DataDefine::CSHARP_UVMASS_PATH,params);
 
 }
 
@@ -249,8 +249,8 @@ void csharpCompile_unix::generateContractFile()
     //编译build.out 和 build.meta.json,生成build.gpc
     QStringList params;
     params<<OutPath<<MetaPath;
-    qDebug()<<"c#-compiler-generate build.gpc file:"<<DataDefine::CSHARP_PACKAGE_PATH<<params;
-    getCompileProcess()->start(DataDefine::CSHARP_PACKAGE_PATH,params);
+    qDebug()<<"c#-compiler-generate build.gpc file:"<<QCoreApplication::applicationDirPath()+"/"+DataDefine::CSHARP_PACKAGE_PATH<<params;
+    getCompileProcess()->start(QCoreApplication::applicationDirPath()+"/"+DataDefine::CSHARP_PACKAGE_PATH,params);
 
 }
 

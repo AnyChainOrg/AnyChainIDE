@@ -111,7 +111,7 @@ void IDEUtil::GetAllFile(const QString & dirPath, QStringList &files,const QStri
         if(info.fileName() == "." || info.fileName() == "..") continue;
         if(info.isFile())
         {
-            if(limit.empty() || limit.contains(info.suffix()))
+            if(limit.empty() || limit.contains(info.suffix()) || limit.contains(info.completeSuffix()))
             {
                 files.append(info.absoluteFilePath());
             }

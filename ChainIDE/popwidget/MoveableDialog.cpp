@@ -1,10 +1,11 @@
 #include "popwidget/MoveableDialog.h"
 #include "control/CustomShadowEffect.h"
+
 MoveableDialog::MoveableDialog(QWidget *parent)
     : QDialog(parent)
     ,mouse_press(false)
 {
-    installBlurEffect(this);
+    //installBlurEffect(this);
 }
 
 void MoveableDialog::mousePressEvent(QMouseEvent *event)

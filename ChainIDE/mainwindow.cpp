@@ -824,11 +824,6 @@ void MainWindow::NewFile(const QString &suffix ,const QString &defaultPath)
     NewFileCreated(dia.getNewFilePath());
 }
 
-void MainWindow::ImportFile(const QString &dir)
-{
-
-}
-
 void MainWindow::updateNeededSlot(bool is)
 {
     _p->updateNeeded = is;

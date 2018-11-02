@@ -107,8 +107,6 @@ private slots:
 
     void NewFile(const QString &suffix,const QString &defaultPath = "");//新建合约类型
 
-    void ImportFile(const QString &dir);
-
 private slots:
     void updateNeededSlot(bool is);
 private:

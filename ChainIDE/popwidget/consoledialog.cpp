@@ -10,7 +10,6 @@
 #include "ChainIDE.h"
 #include "IDEUtil.h"
 
-
 ConsoleDialog::ConsoleDialog(QWidget *parent) :
     MoveableDialog(parent),
     ui(new Ui::ConsoleDialog),
@@ -134,12 +133,6 @@ void ConsoleDialog::ModifyIndex(ConsoleDialog::IndexType indexType)
         break;
     case Down:
         ++cmdIndex;
-        break;
-    case Last:
-        cmds.size()-1;
-        break;
-    case First:
-        0;
         break;
     default:
         break;

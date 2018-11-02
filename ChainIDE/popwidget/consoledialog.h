@@ -26,7 +26,7 @@ private slots:
 
     void on_clearBtn_clicked();
 private:
-    enum IndexType{Up,Down,Last,First};
+    enum IndexType{Up,Down};
     void ModifyIndex(IndexType indexType);//往更早之前的输入进行索引
 private:
     Ui::ConsoleDialog *ui;

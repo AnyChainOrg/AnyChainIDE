@@ -93,7 +93,8 @@ SOURCES += main.cpp\
     debugwidget/DataTreeItemModel.cpp \
     debugwidget/DebugUtil.cpp \
     debugwidget/DebugFunctionWidget.cpp \
-    control/tabcontextmenu.cpp
+    control/tabcontextmenu.cpp \
+    control/CustomShadowEffect.cpp
 
 HEADERS  += MainWindow.h \
     ChainIDE.h \
@@ -176,7 +177,8 @@ HEADERS  += MainWindow.h \
     debugwidget/DataTreeItemModel.h \
     debugwidget/DebugUtil.h \
     debugwidget/DebugFunctionWidget.h \
-    control/tabcontextmenu.h
+    control/tabcontextmenu.h \
+    control/CustomShadowEffect.h
 
 FORMS    += MainWindow.ui \
     popwidget/commondialog.ui \

@@ -747,7 +747,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="popwidget/consoledialog.ui" line="69"/>
         <source>在此输入命令并回车</source>
-        <translation type="unfinished">Input Commond End With Enter</translation>
+        <translation type="unfinished">Input Command End With Enter</translation>
     </message>
     <message>
         <location filename="popwidget/consoledialog.ui" line="154"/>

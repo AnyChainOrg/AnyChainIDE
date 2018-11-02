@@ -446,6 +446,8 @@ void ContextWidget::InitWidget()
 {
     //添加关闭赶牛
     ui->tabWidget->setTabsClosable(true);
+//    ui->tabWidget->setDocumentMode(true);
+    ui->tabWidget->tabBar()->setExpanding(true);
     //右击tab，弹出关闭之类的框
     ui->tabWidget->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->tabWidget->tabBar(),&QTabBar::customContextMenuRequested,this,&ContextWidget::createTabMenu);

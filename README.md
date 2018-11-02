@@ -8,9 +8,10 @@ Both test and formal chain provided.
 
 ## Operate System
 
-Winows 7 with Service Pack 1 or newer.
+Winows: Win 7 with Service Pack 1 or newer.
+Unix: MacOS or other Linux Distribution.
 
-RAM: >=2G; Memory: >=10G; CPU i5 or above;
+RAM: >=2G; Memory: >=10G;
 
 
 ## Build & Install

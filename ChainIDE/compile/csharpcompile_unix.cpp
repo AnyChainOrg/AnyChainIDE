@@ -200,7 +200,7 @@ void csharpCompile_unix::generateOutFile()
     //确定build.uvms位置
     QString buildUVM = "";
     QStringList fileList;
-    IDEUtil::GetAllFile(getTempDir()+"/build",fileList,QStringList()<<"dll");
+    IDEUtil::GetAllFile(getTempDir()+"/build",fileList,QStringList()<<"uvms");
     foreach (QString path, fileList) {
         if(QFileInfo(path).baseName()+"."+QFileInfo(path).completeSuffix() == "build.uvms")
         {

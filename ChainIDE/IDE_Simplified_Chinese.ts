@@ -831,7 +831,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="popwidget/ConfigWidget.cpp" line="133"/>
         <source>Change</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">修改路径</translation>
     </message>
 </context>
 <context>

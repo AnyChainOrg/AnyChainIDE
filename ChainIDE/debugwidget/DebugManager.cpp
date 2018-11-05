@@ -192,20 +192,22 @@ void DebugManager::OnProcessStateChanged()
 
 void DebugManager::readyReadStandardOutputSlot()
 {
-    QString outPut = _p->uvmProcess->readAllStandardOutput();
+    QString outPut = QString::fromLocal8Bit( _p->uvmProcess->readAllStandardOutput());
     if(getDebuggerState() == DebugDataStruct::QueryInfo)
     {
         ParseQueryInfo(outPut);
     }
-    ParseBreakPoint(outPut);
+    else
+    {
+        ParseBreakPoint(outPut);
 
-    emit debugOutput(outPut);
+        emit debugOutput(outPut);
+    }
 }
 
 void DebugManager::readyReadStandardErrorSlot()
 {
     emit debugOutput(_p->uvmProcess->readAllStandardError());
-    emit debugError();
 }
 
 void DebugManager::InitDebugger()
@@ -213,6 +215,10 @@ void DebugManager::InitDebugger()
     connect(_p->uvmProcess,&QProcess::stateChanged,this,&DebugManager::OnProcessStateChanged);
     connect(_p->uvmProcess,&QProcess::readyReadStandardOutput,this,&DebugManager::readyReadStandardOutputSlot);
     connect(_p->uvmProcess,&QProcess::readyReadStandardError,this,&DebugManager::readyReadStandardErrorSlot);
+    connect(_p->uvmProcess,static_cast<void (QProcess::*)(QProcess::ProcessError)>( &QProcess::error),[this](QProcess::ProcessError error){
+        emit debugOutput( this->_p->uvmProcess->errorString());
+        emit debugError();
+    });
 }
 
 void DebugManager::ResetDebugger()

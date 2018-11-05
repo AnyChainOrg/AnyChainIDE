@@ -35,7 +35,14 @@ void DebugFunctionWidget::OnOKClicked()
     {
         api = ui->function->currentText();
     }
-    params = ui->param->text().simplified().split(" ");
+    if(ui->param->text().trimmed().isEmpty())
+    {
+        params<<" ";
+    }
+    else
+    {
+        params = ui->param->text().trimmed().split(" ");
+    }
     close();
 }
 

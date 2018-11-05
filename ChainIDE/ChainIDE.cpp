@@ -23,6 +23,7 @@ public:
         ,startChainTypes(DataDefine::TEST | DataDefine::FORMAL)
         ,chainClass(DataDefine::HX)
         ,themeStyle(DataDefine::Black_Theme)
+        ,configAppDataPath("")
         ,backStageManager(nullptr)
         ,compileManager(new CompileManager())
         ,debugManager(new DebugManager())
@@ -57,6 +58,7 @@ public:
     QSettings *configFile;//配置文件
     QString appDataPath;//系统环境变量的appdatapath
 
+    QString configAppDataPath;//链数据路径
     DataDefine::ChainType chainType;//链类型1==测试 2==正式
     DataDefine::BlockChainClass chainClass;//链类ub hx等
     DataDefine::ThemeStyle themeStyle;//主题
@@ -120,12 +122,17 @@ void ChainIDE::setCurrentChainType(DataDefine::ChainType type)
     _p->chainType = type;
 }
 
-QString ChainIDE::getEnvAppDataPath() const
+const QString &ChainIDE::getEnvAppDataPath() const
 {
     return _p->appDataPath;
 }
 
-QString ChainIDE::getConfigAppDataPath() const
+const QString &ChainIDE::getConfigAppDataPath() const
+{
+    return _p->configAppDataPath;
+}
+
+QString ChainIDE::getConfigAppDataPathConfig() const
 {
     return _p->configFile->value("/settings/chainPath").toString();
 }
@@ -133,11 +140,29 @@ QString ChainIDE::getConfigAppDataPath() const
 void ChainIDE::setConfigAppDataPath(const QString &path)
 {
     _p->configFile->setValue("/settings/chainPath",path);
+    if(getConfigAppDataPath().isEmpty())
+    {
+        _p->configAppDataPath = _p->configFile->value("/settings/chainPath").toString();
+    }
 }
 
 DataDefine::ThemeStyle ChainIDE::getCurrentTheme() const
 {
     return _p->themeStyle;
+}
+
+DataDefine::ThemeStyle ChainIDE::getCurrentThemeConfig() const
+{
+    //主题类型
+    if(_p->configFile->value("/settings/theme").toString() == "black")
+    {
+        return  DataDefine::Black_Theme;
+    }
+    else if(_p->configFile->value("/settings/theme").toString() == "white")
+    {
+        return  DataDefine::White_Theme;
+    }
+    return DataDefine::Black_Theme;
 }
 
 void ChainIDE::setCurrentTheme(DataDefine::ThemeStyle style)
@@ -158,6 +183,24 @@ void ChainIDE::setCurrentLanguage(DataDefine::Language lan)
 DataDefine::BlockChainClass ChainIDE::getChainClass() const
 {
     return _p->chainClass;
+}
+
+DataDefine::BlockChainClass ChainIDE::getChainClassConfig() const
+{
+    //链类型设置
+    if(_p->configFile->value("/settings/chainClass").toString() == "hx")
+    {
+        return  DataDefine::HX;
+    }
+    else if(_p->configFile->value("/settings/chainClass").toString() == "ub")
+    {
+        return  DataDefine::UB;
+    }
+    else if(_p->configFile->value("/settings/chainClass").toString() == "ctc")
+    {
+        return  DataDefine::CTC;
+    }
+    return DataDefine::HX;
 }
 
 void ChainIDE::setChainClass(DataDefine::BlockChainClass name)
@@ -182,6 +225,28 @@ DataDefine::ChainTypes ChainIDE::getStartChainTypes() const
     return _p->startChainTypes;
 }
 
+DataDefine::ChainTypes ChainIDE::getStartChainTypesConfig() const
+{
+    //启动类型设置
+    if(_p->configFile->value("/settings/starTypes").toString() == "all")
+    {
+        return  DataDefine::TEST | DataDefine::FORMAL;
+    }
+    else if(_p->configFile->value("/settings/starTypes").toString() == "test")
+    {
+        return  DataDefine::TEST;
+    }
+    if(_p->configFile->value("/settings/starTypes").toString() == "formal")
+    {
+        return  DataDefine::FORMAL;
+    }
+    else if(_p->configFile->value("/settings/starTypes").toString() == "none")
+    {
+        return  DataDefine::NONE;
+    }
+    return  DataDefine::NONE;
+}
+
 void ChainIDE::setStartChainTypes(DataDefine::ChainTypes ty)
 {
     if(ty == (DataDefine::TEST | DataDefine::FORMAL))
@@ -200,6 +265,16 @@ void ChainIDE::setStartChainTypes(DataDefine::ChainTypes ty)
     {
         _p->configFile->setValue("/settings/starTypes","formal");
     }
+}
+
+QString ChainIDE::getUpdateServer() const
+{
+    return _p->configFile->value("/settings/updateServer").toString();
+}
+
+void ChainIDE::setUpdateServer(const QString &url)
+{
+    _p->configFile->setValue("/settings/updateServer",url);
 }
 
 BackStageManager * const ChainIDE::getBackStageManager() const
@@ -246,11 +321,11 @@ void ChainIDE::refreshTranslator()
     widgetTranslator->load(getCurrentLanguage() == DataDefine::English ? ":/widgets_English.qm" : ":/widgets_Chinese.qm");
     QApplication::installTranslator(widgetTranslator);
 
-
 }
 
 void ChainIDE::InitConfig()
 {
+    //纠正人为错误项
     if("ub" != _p->configFile->value("/settings/chainClass").toString() &&
        "hx" != _p->configFile->value("/settings/chainClass").toString() &&
        "ctc" != _p->configFile->value("/settings/chainClass").toString())
@@ -278,6 +353,8 @@ void ChainIDE::InitConfig()
         _p->configFile->setValue("/settings/language","English");
     }
 
+    //链数据路径
+    _p->configAppDataPath = _p->configFile->value("/settings/chainPath").toString();
 
     //链类型设置
     if(_p->configFile->value("/settings/chainClass").toString() == "hx")

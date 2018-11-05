@@ -94,7 +94,8 @@ SOURCES += main.cpp\
     debugwidget/DebugUtil.cpp \
     debugwidget/DebugFunctionWidget.cpp \
     control/tabcontextmenu.cpp \
-    control/CustomShadowEffect.cpp
+    control/CustomShadowEffect.cpp \
+    popwidget/AboutWidgetGit.cpp
 
 HEADERS  += MainWindow.h \
     ChainIDE.h \
@@ -178,7 +179,8 @@ HEADERS  += MainWindow.h \
     debugwidget/DebugUtil.h \
     debugwidget/DebugFunctionWidget.h \
     control/tabcontextmenu.h \
-    control/CustomShadowEffect.h
+    control/CustomShadowEffect.h \
+    popwidget/AboutWidgetGit.h
 
 FORMS    += MainWindow.ui \
     popwidget/commondialog.ui \
@@ -221,7 +223,8 @@ FORMS    += MainWindow.ui \
     custom/UpgradeContractDialogCTC.ui \
     custom/NameDialogCTC.ui \
     custom/ImportDialogCTC.ui \
-    debugwidget/DebugFunctionWidget.ui
+    debugwidget/DebugFunctionWidget.ui \
+    popwidget/AboutWidgetGit.ui
 
 RESOURCES += \
     chain.qrc

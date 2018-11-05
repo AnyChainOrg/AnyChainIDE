@@ -19,17 +19,16 @@ static const QString UPDATE_DOC_NAME = "ide_upgrade_win.xml";
 #else
 static const QString UPDATE_DOC_NAME = "ide_upgrade_mac.xml";
 #endif
-static const QString UPDATE_DIR_NAME = "updatetemp";
-static const QString COPY_DIR_NAME = "copy";
-static const QString UPDATE_SERVER_URL = "http://192.168.1.161/IDEupdate/";
+static const QString UPDATE_DIR_NAME = "updatetemp";//更新主目录
+static const QString COPY_DIR_NAME = "copy";//更新器目录
 
 class UpdateProcess::DataPrivate
 {
 public:
-    DataPrivate()
+    DataPrivate(const QString &server)
         :updateNetwork(new UpdateNetWork())
         ,networkManager(new QNetworkAccessManager())
-        ,serverUrl(UPDATE_SERVER_URL)
+        ,serverUrl(server)
         ,downloadPath(QCoreApplication::applicationDirPath() + QDir::separator() + UPDATE_DIR_NAME)
         ,localVersionData(std::make_shared<VersionInfo>())
         ,serverVersionData(std::make_shared<VersionInfo>())
@@ -65,9 +64,9 @@ public:
     bool isWrongHappened;
 };
 
-UpdateProcess::UpdateProcess(QObject *parent)
+UpdateProcess::UpdateProcess(const QString &serverUrl,QObject *parent)
     : QObject(parent)
-    ,_p(new DataPrivate())
+    ,_p(new DataPrivate(serverUrl))
 {
     InitData();
 }

@@ -27,6 +27,7 @@
 #include "popwidget/ConfigWidget.h"
 #include "popwidget/commondialog.h"
 #include "popwidget/AboutWidget.h"
+#include "popwidget/AboutWidgetGit.h"
 
 #include "datamanager/DataManagerHX.h"
 #include "datamanager/DataManagerUB.h"
@@ -738,9 +739,11 @@ void MainWindow::on_helpAction_triggered()
 
 void MainWindow::on_aboutAction_triggered()
 {//关于界面
-    AboutWidget about;
-    connect(&about,&AboutWidget::RestartSignal,this,&MainWindow::close);
-    connect(&about,&AboutWidget::UpdateNeeded,this,&MainWindow::updateNeededSlot);
+//    AboutWidget about;
+//    connect(&about,&AboutWidget::RestartSignal,this,&MainWindow::close);
+//    connect(&about,&AboutWidget::UpdateNeeded,this,&MainWindow::updateNeededSlot);
+//    about.exec();
+    AboutWidgetGit about;
     about.exec();
 }
 

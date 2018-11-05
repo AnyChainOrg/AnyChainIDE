@@ -18,6 +18,7 @@ public:
     bool pop();
 private slots:
     void ConfirmSlots();
+    void ChangeDataPath();
 private:
     void InitWidget();
 private:

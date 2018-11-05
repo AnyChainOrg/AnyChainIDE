@@ -2,16 +2,18 @@
 #include "ui_AboutWidget.h"
 
 #include <QPainter>
+#include "ChainIDE.h"
 #include "update/UpdateProcess.h"
 #include "update/UpdateProgressUtil.h"
 
-static const QString IDE_VERSION = "1.0.8";
+static const QString IDE_VERSION = "1.0.10";
+//static const QString UPDATE_SERVER_URL = "http://192.168.1.161:7484/download/";
 
 class AboutWidget::DataPrivate
 {
 public:
     DataPrivate()
-        :updateProcess(new UpdateProcess())
+        :updateProcess(new UpdateProcess(ChainIDE::getInstance()->getUpdateServer()))
     {
 
     }

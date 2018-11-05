@@ -20,22 +20,29 @@ public:
     DataDefine::ChainType getCurrentChainType()const;
     void setCurrentChainType(DataDefine::ChainType type);
 //配置
-    QString getEnvAppDataPath()const;
+    const QString & getEnvAppDataPath()const;
 
-    QString getConfigAppDataPath()const;
+    const QString & getConfigAppDataPath()const;
+    QString getConfigAppDataPathConfig()const;
     void setConfigAppDataPath(const QString &path);
 
     DataDefine::ThemeStyle getCurrentTheme()const;
+    DataDefine::ThemeStyle getCurrentThemeConfig()const;
     void setCurrentTheme(DataDefine::ThemeStyle);
 
     DataDefine::Language getCurrentLanguage()const;
     void setCurrentLanguage(DataDefine::Language);
 
     DataDefine::BlockChainClass getChainClass()const;
+    DataDefine::BlockChainClass getChainClassConfig()const;
     void setChainClass(DataDefine::BlockChainClass);
 
     DataDefine::ChainTypes getStartChainTypes()const;
+    DataDefine::ChainTypes getStartChainTypesConfig()const;
     void setStartChainTypes(DataDefine::ChainTypes ty);
+
+    QString getUpdateServer()const;
+    void setUpdateServer(const QString &url);
 
 //后台
     BackStageManager *const getBackStageManager()const;

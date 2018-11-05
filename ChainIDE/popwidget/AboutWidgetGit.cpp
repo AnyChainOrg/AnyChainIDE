@@ -8,8 +8,8 @@
 #include "update/UpdateProgressUtil.h"
 
 static const QString IDE_VERSION = "1.0.10";
-static const QString UPDATE_SERVER_URL = "https://github.com/AnyChainIDE/AnyChainIDE/releases";
-static const QString VERSION_DOWNLOAD_PATTERN = "/AnyChainIDE/AnyChainIDE/releases/download/v(\\d+\\.\\d+\\.\\d+)/";
+static const QString UPDATE_SERVER_URL = "https://github.com/AnyChainOrg/AnyChainIDE/releases";
+static const QString VERSION_DOWNLOAD_PATTERN = "/AnyChainOrg/AnyChainIDE/releases/download/v(\\d+\\.\\d+\\.\\d+)/";
 
 class AboutWidgetGit::DataPrivate
 {

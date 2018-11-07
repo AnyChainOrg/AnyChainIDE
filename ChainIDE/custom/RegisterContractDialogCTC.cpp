@@ -2,6 +2,7 @@
 #include "ui_RegisterContractDialogCTC.h"
 
 #include <math.h>
+#include <limits>
 #include <QDebug>
 #include <QFileInfo>
 #include <QMessageBox>
@@ -92,7 +93,7 @@ void RegisterContractDialogCTC::testRegister()
 void RegisterContractDialogCTC::InitWidget()
 {
     ui->feelimit->setDecimals(8);
-    ui->feelimit->setRange(0,999999999);
+    ui->feelimit->setRange(0,std::numeric_limits<double>::max());
 
     QStyledItemDelegate* itemDelegate = new QStyledItemDelegate();
     ui->contractFile->setItemDelegate(itemDelegate);

@@ -2,6 +2,7 @@
 #include "ui_CallContractWidgetCTC.h"
 
 #include <math.h>
+#include <limits>
 #include <QHeaderView>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
@@ -124,7 +125,7 @@ void CallContractWidgetCTC::testCallContract()
 
 void CallContractWidgetCTC::InitWidget()
 {
-    ui->fee->setRange(0,999999999);
+    ui->fee->setRange(0,std::numeric_limits<double>::max());
     ui->fee->setDecimals(8);
 
     setWindowFlags(Qt::FramelessWindowHint);

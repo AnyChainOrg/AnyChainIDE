@@ -2,6 +2,7 @@
 #include "ui_RegisterContractDialogHX.h"
 
 #include <math.h>
+#include <limits>
 #include <QDebug>
 #include <QFileInfo>
 #include <QMessageBox>
@@ -92,9 +93,9 @@ void RegisterContractDialogHX::testRegister()
 
 void RegisterContractDialogHX::InitWidget()
 {
-    ui->gaslimit->setRange(0,999999);
+    ui->gaslimit->setRange(0,std::numeric_limits<int>::max());
     ui->gaslimit->setSingleStep(1);
-    ui->gasprice->setRange(10,999999);
+    ui->gasprice->setRange(10,std::numeric_limits<int>::max());
 
     QStyledItemDelegate* itemDelegate = new QStyledItemDelegate();
     ui->contractFile->setItemDelegate(itemDelegate);

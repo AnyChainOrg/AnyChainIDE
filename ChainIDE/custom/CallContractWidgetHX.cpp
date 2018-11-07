@@ -2,6 +2,7 @@
 #include "ui_CallContractWidgetHX.h"
 
 #include <math.h>
+#include <limits>
 #include <QHeaderView>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
@@ -127,9 +128,9 @@ void CallContractWidgetHX::testCallContract()
 
 void CallContractWidgetHX::InitWidget()
 {
-    ui->gaslimit->setRange(0,999999);
+    ui->gaslimit->setRange(0,std::numeric_limits<int>::max());
     ui->gaslimit->setSingleStep(1);
-    ui->gasprice->setRange(10,999999);
+    ui->gasprice->setRange(10,std::numeric_limits<int>::max());
 
     setWindowFlags(Qt::FramelessWindowHint);
 

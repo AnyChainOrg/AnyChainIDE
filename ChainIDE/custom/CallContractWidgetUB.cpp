@@ -1,6 +1,7 @@
 #include "CallContractWidgetUB.h"
 #include "ui_CallContractWidgetUB.h"
 
+#include <limits>
 #include <QHeaderView>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
@@ -32,7 +33,35 @@ CallContractWidgetUB::~CallContractWidgetUB()
 void CallContractWidgetUB::jsonDataUpdated(const QString &id, const QString &data)
 {
     if("call_callcontract" == id)
+    {//保存合约
+        QJsonParseError json_error;
+        QJsonDocument parse_doucment = QJsonDocument::fromJson(data.toUtf8(),&json_error);
+        if(json_error.error != QJsonParseError::NoError || !parse_doucment.isObject())
+        {
+            ConvenientOp::ShowSyncCommonDialog(data);
+            close();
+            return;
+        }
+        QString res = parse_doucment.object().value("result").toString();
+        if(!res.isEmpty())
+        {
+            //发送交易
+            ChainIDE::getInstance()->postRPC("callcontract-sendrawtransaction",IDEUtil::toJsonFormat("sendrawtransaction",
+                                             QJsonArray()<<res));
+        }
+        else
+        {
+            ConvenientOp::ShowSyncCommonDialog(data);
+            close();
+        }
+    }
+    else if("callcontract-sendrawtransaction" == id)
     {
+        if(ChainIDE::getInstance()->getCurrentChainType() == DataDefine::TEST)
+        {
+            //产一个块来确认
+            ChainIDE::getInstance()->postRPC("generate",IDEUtil::toJsonFormat("generate",QJsonArray()<<1));
+        }
         ConvenientOp::ShowSyncCommonDialog(data);
         close();
     }
@@ -80,10 +109,10 @@ void CallContractWidgetUB::functionChanged()
 
 void CallContractWidgetUB::InitWidget()
 {
-    ui->gaslimit->setRange(0,999999);
+    ui->gaslimit->setRange(0,std::numeric_limits<int>::max());
     ui->gaslimit->setSingleStep(1);
-    ui->gasprice->setRange(10,999999);
-    ui->fee->setRange(0,999999999999);
+    ui->gasprice->setRange(10,std::numeric_limits<int>::max());
+    ui->fee->setRange(0,std::numeric_limits<double>::max());
     ui->fee->setDecimals(8);
     ui->fee->setSingleStep(0.001);
 

@@ -2,6 +2,7 @@
 #include "ui_UpgradeContractDialogHX.h"
 
 #include <math.h>
+#include <limits>
 #include <QDebug>
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -70,9 +71,9 @@ void UpgradeContractDialogHX::testUpgradeContract()
 
 void UpgradeContractDialogHX::InitWidget()
 {
-    ui->gaslimit->setRange(0,999999);
+    ui->gaslimit->setRange(0,std::numeric_limits<int>::max());
     ui->gaslimit->setSingleStep(1);
-    ui->gasprice->setRange(10,999999);
+    ui->gasprice->setRange(10,std::numeric_limits<int>::max());
 
     setWindowFlags(Qt::FramelessWindowHint);
 
@@ -140,6 +141,7 @@ double UpgradeContractDialogHX::parseTestUpgrade(const QString &data) const
         qDebug()<<json_error.errorString();
         return 0;
     }
+//    qDebug()<<"uuuuuu"<<parse_doucment;
     QJsonArray resultArray = parse_doucment.object().value("result").toArray();
     foreach (QJsonValue addr, resultArray) {
         if(addr.isObject())

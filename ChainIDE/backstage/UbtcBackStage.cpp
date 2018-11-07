@@ -5,6 +5,8 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QProcess>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 #include "DataDefine.h"
 #include "IDEUtil.h"
@@ -150,7 +152,7 @@ void UbtcBackStage::rpcReceivedSlot(const QString &id, const QString &message)
 {
     int index = message.indexOf(",\"error\":");
     QString result = message.mid(0,index) + "}";
-    emit rpcReceived(id,result);
+    emit rpcReceived(id,message);
 }
 
 void UbtcBackStage::onNodeExeStateChanged()

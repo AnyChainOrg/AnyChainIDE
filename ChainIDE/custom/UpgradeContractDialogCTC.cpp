@@ -2,6 +2,7 @@
 #include "ui_UpgradeContractDialogCTC.h"
 
 #include <math.h>
+#include <limits>
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -67,7 +68,7 @@ void UpgradeContractDialogCTC::testUpgradeContract()
 
 void UpgradeContractDialogCTC::InitWidget()
 {
-    ui->fee->setRange(0,9999999999);
+    ui->fee->setRange(0,std::numeric_limits<double>::max());
     ui->fee->setDecimals(8);
 
     setWindowFlags(Qt::FramelessWindowHint);

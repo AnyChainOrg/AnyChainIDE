@@ -1,6 +1,7 @@
 ﻿#include "RegisterContractDialogUB.h"
 #include "ui_RegisterContractDialogUB.h"
 
+#include <limits>
 #include <QDebug>
 #include <QHeaderView>
 #include <QFileInfo>
@@ -80,6 +81,7 @@ void RegisterContractDialogUB::jsonDataUpdated(const QString &id,const QString &
             close();
             return;
         }
+        qDebug()<<parse_doucment;
         contractAddress = parse_doucment.object().value("result").toObject().value("address").toString();
 
     }
@@ -99,8 +101,11 @@ void RegisterContractDialogUB::jsonDataUpdated(const QString &id,const QString &
             //写入合约文件
             ConvenientOp::AddContract(ui->address->currentText(), contractAddress);
 
-            //产一个块来确认
-            ChainIDE::getInstance()->postRPC("generate",IDEUtil::toJsonFormat("generate",QJsonArray()<<1));
+            if(ChainIDE::getInstance()->getCurrentChainType() == DataDefine::TEST)
+            {
+                //产一个块来确认
+                ChainIDE::getInstance()->postRPC("generate",IDEUtil::toJsonFormat("generate",QJsonArray()<<1));
+            }
         }
         ConvenientOp::ShowSyncCommonDialog(data);
         close();
@@ -141,10 +146,10 @@ void RegisterContractDialogUB::on_closeBtn_clicked()
 void RegisterContractDialogUB::InitWidget()
 {
     contractAddress = "";
-    ui->gaslimit->setRange(0,999999);
+    ui->gaslimit->setRange(0,std::numeric_limits<int>::max());
     ui->gaslimit->setSingleStep(1);
-    ui->gasprice->setRange(10,999999);
-    ui->fee->setRange(0,999999999999);
+    ui->gasprice->setRange(10,std::numeric_limits<int>::max());
+    ui->fee->setRange(0,std::numeric_limits<double>::max());
     ui->fee->setDecimals(8);
     ui->fee->setSingleStep(0.001);
 

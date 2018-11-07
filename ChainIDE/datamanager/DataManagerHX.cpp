@@ -248,6 +248,7 @@ bool DataManagerHX::parseContract(const QString &accountName,const QString &data
          qDebug()<<json_error.errorString();
          return false;
     }
+
     QJsonArray jsonArr = parse_doucment.object().value("result").toArray();
     foreach(QJsonValue addr, jsonArr){
         if(!addr.isString()) continue;
@@ -267,6 +268,7 @@ bool DataManagerHX::parseContractInfo(const QString &contaddr,const QString &dat
          _p->contractData->DeleteContract(contaddr);
          return false;
     }
+//    qDebug()<<"cccccccccccc"<<contaddr<<data;
     QJsonObject jsonObj = parse_doucment.object().value("result").toObject();
     QString contractAddr = jsonObj.value("id").toString();
     DataManagerStruct::ContractInfoPtr contractInfo = _p->contractData->getContractInfo(contractAddr);

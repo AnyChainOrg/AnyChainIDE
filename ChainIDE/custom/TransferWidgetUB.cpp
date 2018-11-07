@@ -1,6 +1,7 @@
 #include "TransferWidgetUB.h"
 #include "ui_TransferWidgetUB.h"
 
+#include <limits>
 #include "ChainIDE.h"
 #include "datamanager/DataManagerUB.h"
 #include "IDEUtil.h"
@@ -32,12 +33,22 @@ void TransferWidgetUB::transferSlot()
         ChainIDE::getInstance()->postRPC("transfer-to",IDEUtil::toJsonFormat("sendfrom",QJsonArray()<<
                                          ui->comboBox->currentText()<<ui->lineEdit->text()<<ui->doubleSpinBox->value()));
     }
+
+    if(ChainIDE::getInstance()->getCurrentChainType() == DataDefine::TEST)
+    {
+        //产一个块来确认
+        ChainIDE::getInstance()->postRPC("generate",IDEUtil::toJsonFormat("generate",QJsonArray()<<1));
+    }
 }
 
 void TransferWidgetUB::checkBoxChangeSlot()
 {
     ui->comboBox->setEnabled(ui->checkBox->isChecked());
     ui->label_balance->setEnabled(ui->checkBox->isChecked());
+    if(!ui->checkBox->isChecked())
+    {
+        ui->doubleSpinBox->setRange(0,std::numeric_limits<double>::max());
+    }
 }
 
 void TransferWidgetUB::comboBoxChangeSlot()
@@ -74,6 +85,7 @@ void TransferWidgetUB::InitWidget()
     ui->checkBox->setChecked(true);
     ui->doubleSpinBox->setDecimals(8);
     ui->doubleSpinBox->setSingleStep(0.001);
+    ui->doubleSpinBox->setRange(0,std::numeric_limits<double>::max());
 
     connect(DataManagerUB::getInstance(),&DataManagerUB::addressCheckFinish,this,&TransferWidgetUB::addressCheckSlot);
     connect(DataManagerUB::getInstance(),&DataManagerUB::queryAccountFinish,this,&TransferWidgetUB::InitComboBox);
@@ -100,5 +112,6 @@ void TransferWidgetUB::InitComboBox()
     if(ui->comboBox->count() >= 1)
     {
         ui->comboBox->setCurrentIndex(0);
+        comboBoxChangeSlot();
     }
 }

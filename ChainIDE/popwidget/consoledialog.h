@@ -2,6 +2,7 @@
 #define CONSOLEDIALOG_H
 
 #include <QDialog>
+#include <QString>
 #include <QStringList>
 #include "popwidget/MoveableDialog.h"
 
@@ -28,6 +29,8 @@ private slots:
 private:
     enum IndexType{Up,Down};
     void ModifyIndex(IndexType indexType);//往更早之前的输入进行索引
+
+    void parseHelpCommand(const QString &helpStr,QStringList &helpList);
 private:
     Ui::ConsoleDialog *ui;
     QStringList cmds;

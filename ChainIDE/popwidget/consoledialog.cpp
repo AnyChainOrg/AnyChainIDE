@@ -6,6 +6,8 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QPainter>
+#include <QCompleter>
+#include <QAbstractItemView>
 
 #include "ChainIDE.h"
 #include "IDEUtil.h"
@@ -23,6 +25,10 @@ ConsoleDialog::ConsoleDialog(QWidget *parent) :
     ui->consoleLineEdit->setFocus();
 
     connect( ChainIDE::getInstance(),&ChainIDE::jsonDataUpdated, this, &ConsoleDialog::jsonDataUpdated);
+
+    //查询帮助，自动提示功能解析
+    ChainIDE::getInstance()->postRPC("completer_help",IDEUtil::toJsonFormat("help",QJsonArray()));
+
 }
 
 ConsoleDialog::~ConsoleDialog()
@@ -116,7 +122,19 @@ void ConsoleDialog::jsonDataUpdated(const QString &id,const QString &data)
         }
         ui->consoleBrowser->append(parse_doucment.toJson());
         ui->consoleBrowser->append("\n");
-        return;
+    }
+    else if("completer_help" == id)
+    {
+        QJsonParseError json_error;
+        QJsonDocument parse_doucment = QJsonDocument::fromJson(data.toUtf8(),&json_error);
+        if(json_error.error != QJsonParseError::NoError || !parse_doucment.isObject())return;
+
+        QStringList wordList;
+        parseHelpCommand(parse_doucment.object().value("result").toString(),wordList);
+        QCompleter *completer = new QCompleter(wordList, this);
+        completer->popup()->setObjectName("completer");
+        completer->setCaseSensitivity(Qt::CaseInsensitive);
+        ui->consoleLineEdit->setCompleter(completer);
     }
 }
 
@@ -146,5 +164,34 @@ void ConsoleDialog::ModifyIndex(ConsoleDialog::IndexType indexType)
     else
     {
         ui->consoleLineEdit->setText(cmds.at(cmdIndex));
+    }
+}
+
+void ConsoleDialog::parseHelpCommand(const QString &helpStr, QStringList &helpList)
+{
+    helpList.clear();
+    QStringList enter = helpStr.split("\n");
+    foreach (QString str, enter) {
+        if(-1 == str.indexOf(QRegExp("^[a-zA-Z]"))) continue;
+        if(DataDefine::HX != ChainIDE::getInstance()->getChainClass())
+        {
+            QStringList temp = str.split(QRegExp("\\s+"));
+            if(!temp.isEmpty())
+            {
+                helpList.append(temp.front());
+            }
+        }
+        else if(DataDefine::HX == ChainIDE::getInstance()->getChainClass())
+        {
+            QStringList temp = str.split("(");
+            if(!temp.isEmpty())
+            {
+                QStringList space = temp.front().split(QRegExp("\\s+"));
+                if(space.size() >= 2)
+                {
+                    helpList.append(space.last());
+                }
+            }
+        }
     }
 }

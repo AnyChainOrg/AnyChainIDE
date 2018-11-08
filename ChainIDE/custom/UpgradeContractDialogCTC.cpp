@@ -50,7 +50,7 @@ void UpgradeContractDialogCTC::UpgradeContract()
     ChainIDE::getInstance()->postRPC("upgrade_upgrade_contract",IDEUtil::toJsonFormat("contract_upgrade",QJsonArray()<<
                                      ui->contractAddress->currentText()<<ui->callAddress->currentText()
                                      <<ui->contractName->text()<<(ui->contractDes->text().isEmpty()?" ":ui->contractDes->text())
-                                     <<"CTC"<<ui->fee->text(),true));
+                                     <<"CTC"<<ui->fee->text()));
 }
 
 void UpgradeContractDialogCTC::testUpgradeContract()
@@ -63,7 +63,7 @@ void UpgradeContractDialogCTC::testUpgradeContract()
     ChainIDE::getInstance()->postRPC("upgrade_upgrade_contract_test",IDEUtil::toJsonFormat("contract_upgrade_testing",QJsonArray()<<
                                      ui->contractAddress->currentText()<<ui->callAddress->currentText()
                                      <<ui->contractName->text()<<(ui->contractDes->text().isEmpty()?" ":ui->contractDes->text())
-                                     ,true));
+                                     ));
 }
 
 void UpgradeContractDialogCTC::InitWidget()

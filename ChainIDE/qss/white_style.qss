@@ -415,3 +415,11 @@ QTextEdit#waitSync{
     border:none;
     padding: 0px 10px 0px 6px;
 }
+
+QListView#completer{
+    background-color:rgb(245,245,245);
+    border:1px solid rgb(100,100,100);
+    color:black;
+    font:65 15px \"Microsoft YaHei UI\";
+    outline:0px;
+}

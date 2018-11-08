@@ -168,7 +168,7 @@ void CTCBackStage::testStartedFinish()
 {
     connect(_p->dataRequire,&DataRequireManager::requireResponse,this,&CTCBackStage::testStartReceiveSlot);
     connect(&_p->timerForStartExe,&QTimer::timeout,[this](){
-        this->rpcPostedSlot("teststart",IDEUtil::toJsonFormat("blockchain_get_info",QJsonArray(),true));
+        this->rpcPostedSlot("teststart",IDEUtil::toJsonFormat("blockchain_get_info",QJsonArray()));
     });
     _p->timerForStartExe.start(100);
 }

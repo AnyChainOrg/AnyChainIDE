@@ -112,7 +112,7 @@ void ImportDialogCTC::on_okBtn_clicked()
         priKey = ui->privatekey->text().simplified();
     }
 
-    ChainIDE::getInstance()->postRPC( "id_wallet_import_private_key",IDEUtil::toJsonFormat( "wallet_import_private_key", QJsonArray() << priKey<<ui->name->text().simplified()<<true,true));
+    ChainIDE::getInstance()->postRPC( "id_wallet_import_private_key",IDEUtil::toJsonFormat( "wallet_import_private_key", QJsonArray() << priKey<<ui->name->text().simplified()<<true));
 
 }
 

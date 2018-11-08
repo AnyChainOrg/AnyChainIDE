@@ -63,7 +63,7 @@ void RegisterContractDialogCTC::on_okBtn_clicked()
 
     ChainIDE::getInstance()->postRPC("register-register_contract",IDEUtil::toJsonFormat("contract_register",
                                      QJsonArray()<<registerName<<contract<<"CTC"<<ui->feelimit->text()
-                                     ,true));
+                                     ));
 }
 
 void RegisterContractDialogCTC::on_cancelBtn_clicked()
@@ -86,7 +86,7 @@ void RegisterContractDialogCTC::testRegister()
 
     ChainIDE::getInstance()->postRPC("register-register_contract_test",IDEUtil::toJsonFormat("contract_register_testing",
                                      QJsonArray()<<registerName<<contract
-                                     ,true));
+                                     ));
 
 }
 

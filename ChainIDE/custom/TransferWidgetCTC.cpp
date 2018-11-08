@@ -30,7 +30,7 @@ void TransferWidgetCTC::transferSlot()
                                      IDEUtil::toJsonFormat( "wallet_transfer_to_address",
                                                    QJsonArray() << ui->doubleSpinBox->text()<< ui->comboBox_asset->currentText()
                                                                 << ui->comboBox_account->currentText()<< ui->lineEdit->text()
-                                                                <<""<<" ",true));
+                                                                <<""<<" "));
 }
 
 void TransferWidgetCTC::comboBoxAccountChangeSlot()

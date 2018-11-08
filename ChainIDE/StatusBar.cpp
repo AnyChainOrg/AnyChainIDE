@@ -85,7 +85,7 @@ void StatusBar::queryBlock()
     }
     else if(ChainIDE::getInstance()->getChainClass() == DataDefine::CTC)
     {
-        ChainIDE::getInstance()->postRPC( "status-ctcinfo", IDEUtil::toJsonFormat( "info", QJsonArray(),true));
+        ChainIDE::getInstance()->postRPC( "status-ctcinfo", IDEUtil::toJsonFormat( "info", QJsonArray()));
     }
 }
 

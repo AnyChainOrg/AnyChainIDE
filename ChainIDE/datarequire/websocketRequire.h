@@ -16,7 +16,7 @@ public:
     bool isConnected()const override final;
 
 private slots:
-    void onTextFrameReceived(QString,bool);
+    void onTextFrameReceived(const QString &,bool);
     void onStateChanged(QAbstractSocket::SocketState);
 private:
     void Init();

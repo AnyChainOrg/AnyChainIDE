@@ -38,14 +38,29 @@ public:
     }
     ~DataPrivate()
     {
-        clientProc->close();
-        nodeProc->close();
-        delete clientProc;
-        clientProc = nullptr;
-        delete nodeProc;
-        nodeProc = nullptr;
-        delete dataRequire;
-        dataRequire = nullptr;
+        if(dataRequire)
+        {
+            delete dataRequire;
+            dataRequire = nullptr;
+        }
+        if(clientProc)
+        {
+            if(clientProc->state() == QProcess::Running)
+            {
+                clientProc->close();
+            }
+            delete clientProc;
+            clientProc = nullptr;
+        }
+        if(nodeProc)
+        {
+            if(nodeProc->state() == QProcess::Running)
+            {
+                nodeProc->close();
+            }
+            delete nodeProc;
+            nodeProc = nullptr;
+        }
     }
 public:
     int chaintype;

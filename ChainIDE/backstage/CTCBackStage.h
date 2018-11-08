@@ -8,7 +8,7 @@ class CTCBackStage : public BackStageBase
     Q_OBJECT
 public:
     explicit CTCBackStage(int type = 1,QObject *parent = 0);
-    ~CTCBackStage();
+    virtual ~CTCBackStage();
 public:
     void startExe(const QString &appDataPath = "")override final;
     bool exeRunning()override final;

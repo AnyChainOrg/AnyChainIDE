@@ -11,6 +11,7 @@ public:
     ~StatusBar();
 public:
     void startStatus();
+    void stopStatus();
 public:
     void setPermanentMessage(const QString &mes);
     void setNormalMessage(const QString &mes);

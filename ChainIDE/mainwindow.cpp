@@ -261,6 +261,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     {
         CommonDialog dia(CommonDialog::NONE);
         dia.setText(tr("请耐心等待程序自动关闭，不要关闭本窗口!"));
+        ui->statusBar->stopStatus();
         connect(ChainIDE::getInstance()->getBackStageManager(),&BackStageManager::closeBackStageFinish,&dia,&CommonDialog::close);
         ChainIDE::getInstance()->getBackStageManager()->closeBackStage();
 
@@ -291,7 +292,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
             dia.exec();
         }
     }
-    QWidget::closeEvent(event);
+    QMainWindow::closeEvent(event);
 }
 
 void MainWindow::exeStartedSlots()

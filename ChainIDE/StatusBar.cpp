@@ -45,6 +45,12 @@ void StatusBar::startStatus()
     _p->timer->start(1000);
 }
 
+void StatusBar::stopStatus()
+{
+    disconnect(_p->timer,&QTimer::timeout,this,&StatusBar::queryBlock);
+    _p->timer->stop();
+}
+
 void StatusBar::setPermanentMessage(const QString &mes)
 {
     _p->perLabel->setText(mes);

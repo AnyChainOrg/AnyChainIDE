@@ -56,7 +56,7 @@ bool websocketRequire::isConnected()const
     return _p->m_webSocket->state() == QAbstractSocket::ConnectedState;
 }
 
-void websocketRequire::onTextFrameReceived(QString _message, bool _isLastFrame)
+void websocketRequire::onTextFrameReceived(const QString &_message, bool _isLastFrame)
 {
     {
         std::lock_guard<std::mutex> loc(_p->buffMutex);

@@ -19,8 +19,8 @@ class LinkBackStage::DataPrivate
 {
 public:
     DataPrivate(int type)
-        :nodeProc(new QProcess)
-        ,clientProc(new QProcess)
+        :nodeProc(new QProcess())
+        ,clientProc(new QProcess())
         ,chaintype(type)
     {
         nodePort = NODE_RPC_PORT + 10*(type-1);
@@ -32,14 +32,30 @@ public:
     }
     ~DataPrivate()
     {
-        clientProc->close();
-        nodeProc->close();
-        delete dataRequire;
-        dataRequire = nullptr;
-        delete nodeProc;
-        nodeProc = nullptr;
-        delete clientProc;
-        clientProc = nullptr;
+        if(dataRequire)
+        {
+            delete dataRequire;
+            dataRequire = nullptr;
+        }
+        if(clientProc )
+        {
+            if(clientProc->state() == QProcess::Running)
+            {
+                clientProc->close();
+            }
+            delete clientProc;
+            clientProc = nullptr;
+
+        }
+        if(nodeProc)
+        {
+            if(nodeProc->state() == QProcess::Running)
+            {
+                nodeProc->close();
+            }
+            delete nodeProc;
+            nodeProc = nullptr;
+        }
     }
 public:
     int chaintype;
@@ -63,6 +79,7 @@ LinkBackStage::~LinkBackStage()
 {
 //    qDebug()<<"delete "<<_p->chaintype<<" hxstage";
     delete _p;
+    _p = nullptr;
 }
 
 void LinkBackStage::startExe(const QString &appDataPath)

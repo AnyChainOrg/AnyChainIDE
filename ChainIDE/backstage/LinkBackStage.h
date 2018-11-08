@@ -7,7 +7,7 @@ class LinkBackStage : public BackStageBase
     Q_OBJECT
 public:
     explicit LinkBackStage(int type = 1,QObject *parent = 0);//链类型1==测试 2==正式
-    ~LinkBackStage();
+    virtual ~LinkBackStage();
 
 public:
     void startExe(const QString &appDataPath = "")override final;

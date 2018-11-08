@@ -35,12 +35,20 @@ public:
     }
     ~DataPrivate()
     {
-        nodeProc->close();
-        delete nodeProc;
-        nodeProc = nullptr;
-
-        delete dataRequire;
-        dataRequire = nullptr;
+        if(nodeProc)
+        {
+            if(nodeProc->state() == QProcess::Running)
+            {
+                nodeProc->close();
+            }
+            delete nodeProc;
+            nodeProc = nullptr;
+        }
+        if(dataRequire)
+        {
+            delete dataRequire;
+            dataRequire = nullptr;
+        }
     }
 public:
     int chaintype;

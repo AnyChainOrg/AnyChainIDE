@@ -26,7 +26,7 @@ bridge::bridge(QObject *parent)
 
 bridge::~bridge()
 {
-//    qDebug()<<"delete javascript bridge";
+    qDebug()<<"delete javascript bridge";
 }
 
 void bridge::onTextChanged()

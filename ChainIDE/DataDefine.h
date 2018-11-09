@@ -109,11 +109,17 @@ namespace DataDefine
 
 #endif
 
+//调试器
+    static const QString DEBUG_TEST_ADDRESS = "testaddress";
+    static const QString DEBUG_TEST_PUBKEY = "testpubkey";
     //调试器路径
+    static const QString STORAGE_DATA_FILE_NAME = "uvm_storage_demo.json";
 #ifdef WIN32
-    static const QString DEBUGGER_UVM_PATH = "debug/win/uvm_single.exe";
+    static const QString DEBUGGER_UVM_DIR = "debug/win";
+    static const QString DEBUGGER_UVM_NAME = "uvm_single.exe";
 #else
-    static const QString DEBUGGER_UVM_PATH = "debug/unix/uvm_single";
+    static const QString DEBUGGER_UVM_DIR = "debug/unix";
+    static const QString DEBUGGER_UVM_NAME = "uvm_single";
 #endif
 //合约api类
     class ApiEvent

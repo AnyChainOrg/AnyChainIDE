@@ -146,6 +146,22 @@
     </item>
    </layout>
   </widget>
+  <widget class="QToolButton" name="resetDataBtn">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>190</y>
+     <width>121</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="text">
+    <string>重置测试数据</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

@@ -642,23 +642,16 @@ void MainWindow::startDebugSlot(const QString &gpcFile)
 {
     disconnect(ChainIDE::getInstance()->getCompileManager(),&CompileManager::finishCompile,this,&MainWindow::startDebugSlot);
 
-    //选择需要调试的函数
-    QString metaFile = gpcFile;
-    metaFile.replace(QRegExp("gpc$"),DataDefine::META_SUFFIX);
-    if(!QFileInfo(metaFile).exists()) return;
-
-    DataDefine::ApiEventPtr apis = nullptr;
-    if(!ConvenientOp::readApiFromPath(metaFile,apis)) return;
-
-    DebugFunctionWidget fun(ui->fileWidget->getCurrentFile(),apis);
+    DebugFunctionWidget fun(ui->fileWidget->getCurrentFile(),gpcFile);
     fun.exec();
     if(fun.SelectedApi().isEmpty()) return;
 
-    ui->debugWidget->setVisible(true);
+    //显示调试窗
     ui->debugWidget->ClearData();
+    ui->debugWidget->setVisible(true);
     //打开调试器，进行函数调试
     QString outfile = gpcFile;
-    outfile.replace(QRegExp("gpc$"),DataDefine::BYTE_OUT_SUFFIX);
+    outfile.replace(QRegExp(DataDefine::CONTRACT_SUFFIX+"$"),DataDefine::BYTE_OUT_SUFFIX);
     ChainIDE::getInstance()->getDebugManager()->startDebug(ui->fileWidget->getCurrentFile(),outfile,fun.SelectedApi(),fun.ApiParams());
 }
 

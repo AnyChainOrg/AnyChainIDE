@@ -375,7 +375,7 @@ QToolButton#closeBtn{
 QToolButton#okBtn,QToolButton#cancelBtn,QToolButton#clearBtn,
 QToolButton#newAccount,QToolButton#importKey,
 QToolButton#toolButton_checkUpdate,QToolButton#toolButton_restart,QToolButton#toolButton_update,
-QToolButton#pathBtn
+QToolButton#pathBtn,QToolButton#resetDataBtn
 {
     border:1px solid gray;
     border-radius:10px;
@@ -387,14 +387,14 @@ QToolButton#pathBtn
 QToolButton#okBtn:disabled,QToolButton#cancelBtn:disabled,QToolButton#clearBtn:disabled,
 QToolButton#newAccount:disabled,QToolButton#importKey:disabled,
 QToolButton#toolButton_checkUpdate:disabled,QToolButton#toolButton_restart:disabled,QToolButton#toolButton_update:disabled,
-QToolButton#pathBtn:disabled
+QToolButton#pathBtn:disabled,QToolButton#resetDataBtn:disabled
 {
     color:gray;
 }
 QToolButton#okBtn:pressed,QToolButton#cancelBtn:pressed,QToolButton#clearBtn:pressed,
 QToolButton#newAccount:pressed,QToolButton#importKey:pressed,
 QToolButton#toolButton_checkUpdate:pressed,QToolButton#toolButton_restart:pressed,QToolButton#toolButton_update:pressed,
-QToolButton#pathBtn:pressed
+QToolButton#pathBtn:pressed,QToolButton#resetDataBtn:pressed
 {
     background-color:rgb(150,150,150);
 }

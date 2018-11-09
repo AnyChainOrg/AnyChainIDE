@@ -79,8 +79,8 @@ void DebugManager::startDebug(const QString &sourceFilePath,const QString &byteF
     QStringList params;
     params<<"-x"<<"-luvmdebug"<<"-k"<<_p->outFilePath<<api<<param;
 
-    qDebug()<<"start debug"<<QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_PATH<<params;
-    _p->uvmProcess->start(QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_PATH,params);
+    qDebug()<<"start debug"<<QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR+"/"+DataDefine::DEBUGGER_UVM_NAME<<params;
+    _p->uvmProcess->start(QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR+"/"+DataDefine::DEBUGGER_UVM_NAME,params);
 
 }
 

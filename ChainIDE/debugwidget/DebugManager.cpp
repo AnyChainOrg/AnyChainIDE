@@ -49,7 +49,7 @@ DebugManager::DebugManager(QObject *parent)
 
 DebugManager::~DebugManager()
 {
-//    qDebug()<<"delete debugMmanager";
+    qDebug()<<"delete debugMmanager";
     delete _p;
     _p = nullptr;
 }

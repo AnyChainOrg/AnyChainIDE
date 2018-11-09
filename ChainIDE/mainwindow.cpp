@@ -83,7 +83,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-//    qDebug()<<"delete mainwindow";
+    qDebug()<<"delete mainwindow";
     qInstallMessageHandler(0);
     delete _p;
     _p = nullptr;

@@ -84,6 +84,7 @@ void DebugFunctionWidget::OnOKClicked()
 
     //选择函数、参数，参数需要给默认调用者地址、pubkey
     _p->params.clear();
+    _p->api.clear();
     if(!ui->function->currentData().value<QString>().isEmpty())
     {
         _p->api = ui->function->currentText();

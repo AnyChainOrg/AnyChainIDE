@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QCoreApplication>
 #include <QDir>
+#include <QTime>
 
 #include "DataDefine.h"
 #include "IDEUtil.h"
@@ -128,8 +129,9 @@ void LinkBackStage::ReadyClose()
             {
                 if(loop && loop->isRunning())
                 {
-                    _p->clientProc->waitForFinished();
+                    //先关node，然后关client
                     _p->nodeProc->waitForFinished();
+                    _p->clientProc->waitForFinished();
                     qDebug()<<"close hxstage "<<_p->chaintype<<" finish";
                     loop->quit();
                 }

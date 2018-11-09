@@ -64,11 +64,24 @@ const QStringList &DebugFunctionWidget::ApiParams() const
 
 void DebugFunctionWidget::OnOKClicked()
 {
-    //判断是否有storage数据，如果没有，则执行init函数
+    //判断是否有storage数据，如果没有或者没有对应本文件的内容，则执行init函数
     if(!QFileInfo(_p->storageFile).exists())
     {
         ResetStorageData();
     }
+    else
+    {
+        //读取文件内容
+        QFile file(_p->storageFile);
+        file.open(QIODevice::ReadOnly);
+        QString context = file.readAll();
+        file.close();
+        if(!context.contains(_p->outFile))
+        {
+            ResetStorageData();
+        }
+    }
+
     //选择函数、参数，参数需要给默认调用者地址、pubkey
     _p->params.clear();
     if(!ui->function->currentData().value<QString>().isEmpty())

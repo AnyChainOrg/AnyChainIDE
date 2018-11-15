@@ -14,6 +14,7 @@
 #include "IDEUtil.h"
 using namespace DataManagerStruct;
 
+static std::mutex dataMutex;
 class DataManagerHX::DataPrivate
 {
 public:
@@ -32,7 +33,11 @@ DataManagerHX *DataManagerHX::getInstance()
 {
     if(_instance == nullptr)
     {
-        _instance = new DataManagerHX();
+        std::lock_guard<std::mutex> loc(dataMutex);
+        if(nullptr == _instance)
+        {
+            _instance = new DataManagerHX();
+        }
     }
     return _instance;
 }

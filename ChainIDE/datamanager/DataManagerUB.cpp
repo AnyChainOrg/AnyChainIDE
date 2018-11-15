@@ -15,6 +15,7 @@
 #include "ConvenientOp.h"
 using namespace DataManagerStruct;
 
+static std::mutex dataMutex;
 class DataManagerUB::DataPrivate
 {
 public:
@@ -33,7 +34,11 @@ DataManagerUB *DataManagerUB::getInstance()
 {
     if(_instance == nullptr)
     {
-        _instance = new DataManagerUB();
+        std::lock_guard<std::mutex> loc(dataMutex);
+        if(nullptr == _instance)
+        {
+            _instance = new DataManagerUB();
+        }
     }
     return _instance;
 }

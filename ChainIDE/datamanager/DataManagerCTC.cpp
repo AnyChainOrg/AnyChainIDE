@@ -14,6 +14,7 @@
 #include "IDEUtil.h"
 using namespace DataManagerStruct;
 
+static std::mutex dataMutex;
 class DataManagerCTC::DataPrivate
 {
 public:
@@ -32,7 +33,11 @@ DataManagerCTC *DataManagerCTC::getInstance()
 {
     if(_instance == nullptr)
     {
-        _instance = new DataManagerCTC();
+        std::lock_guard<std::mutex> loc(dataMutex);
+        if(nullptr == _instance)
+        {
+            _instance = new DataManagerCTC();
+        }
     }
     return _instance;
 }

@@ -396,7 +396,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CTCBackStage</name>
     <message>
-        <location filename="backstage/CTCBackStage.cpp" line="153"/>
+        <location filename="backstage/CTCBackStage.cpp" line="161"/>
         <source>Fail to launch ctc %1 !</source>
         <translation type="unfinished"></translation>
     </message>
@@ -503,12 +503,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">approximatefee:%1</translation>
     </message>
     <message>
-        <location filename="custom/CallContractWidgetCTC.cpp" line="43"/>
+        <location filename="custom/CallContractWidgetCTC.cpp" line="44"/>
         <source>approximatefee:%1</source>
         <translation type="unfinished">approximatefee:%1</translation>
     </message>
     <message>
-        <location filename="custom/CallContractWidgetCTC.cpp" line="115"/>
+        <location filename="custom/CallContractWidgetCTC.cpp" line="116"/>
         <source>离线函数无需费用</source>
         <translation type="unfinished">doesn&apos;t cost fee</translation>
     </message>
@@ -575,14 +575,14 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">approximatefee:%1</translation>
     </message>
     <message>
-        <location filename="custom/CallContractWidgetHX.cpp" line="43"/>
         <location filename="custom/CallContractWidgetHX.cpp" line="44"/>
+        <location filename="custom/CallContractWidgetHX.cpp" line="45"/>
         <source>approximatefee:%1</source>
         <translation type="unfinished">approximatefee:%1</translation>
     </message>
     <message>
-        <location filename="custom/CallContractWidgetHX.cpp" line="118"/>
         <location filename="custom/CallContractWidgetHX.cpp" line="119"/>
+        <location filename="custom/CallContractWidgetHX.cpp" line="120"/>
         <source>离线函数无需费用</source>
         <translation type="unfinished">doesn&apos;t cost fee</translation>
     </message>
@@ -1043,6 +1043,11 @@ p, li { white-space: pre-wrap; }
         <source>请输入参数(可选)</source>
         <translation type="unfinished">Please input params(optional)</translation>
     </message>
+    <message>
+        <location filename="debugwidget/DebugFunctionWidget.ui" line="162"/>
+        <source>重置测试数据</source>
+        <translation type="unfinished">ResetTestData</translation>
+    </message>
 </context>
 <context>
     <name>DebugWidget</name>
@@ -1426,12 +1431,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LinkBackStage</name>
     <message>
-        <location filename="backstage/LinkBackStage.cpp" line="144"/>
+        <location filename="backstage/LinkBackStage.cpp" line="163"/>
         <source>Fail to launch hx_node !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="backstage/LinkBackStage.cpp" line="194"/>
+        <location filename="backstage/LinkBackStage.cpp" line="213"/>
         <source>Fail to launch %1 !</source>
         <translation type="unfinished">Fail to launch %1 !</translation>
     </message>
@@ -1656,7 +1661,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="MainWindow.ui" line="504"/>
-        <location filename="MainWindow.cpp" line="754"/>
+        <location filename="MainWindow.cpp" line="748"/>
         <source>切换到正式链</source>
         <translation type="unfinished">ChangeToFormalChain</translation>
     </message>
@@ -1836,32 +1841,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">Please wait for auto-close, don&apos;t close this window!</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="290"/>
+        <location filename="MainWindow.cpp" line="291"/>
         <source>未找到Update更新程序包!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="326"/>
+        <location filename="MainWindow.cpp" line="327"/>
         <source>Backstage error! Please check the chain!</source>
         <translation type="unfinished">Backstage error! Please check the chain!</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="343"/>
+        <location filename="MainWindow.cpp" line="344"/>
         <source>Initialize done...</source>
         <translation type="unfinished">Initialize done...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="350"/>
+        <location filename="MainWindow.cpp" line="351"/>
         <source>Initialize IDE,please wait...</source>
         <translation type="unfinished">Initialize IDE,please wait...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="576"/>
+        <location filename="MainWindow.cpp" line="577"/>
         <source>Sure to switch to formal chain?</source>
         <translation type="unfinished">Sure to switch to formal chain?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="603"/>
+        <location filename="MainWindow.cpp" line="604"/>
         <source>文件已修改，是否保存?</source>
         <translation type="unfinished">File modified,do you want to save?</translation>
     </message>
@@ -1870,7 +1875,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">The debug-function is under emergency development, please wait for new release!</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="754"/>
+        <location filename="MainWindow.cpp" line="748"/>
         <source>切换到测试链</source>
         <translation type="unfinished">ChangeToTestChain</translation>
     </message>
@@ -2302,7 +2307,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">approximatefee:%1</translation>
     </message>
     <message>
-        <location filename="custom/RegisterContractDialogCTC.cpp" line="51"/>
+        <location filename="custom/RegisterContractDialogCTC.cpp" line="52"/>
         <source>approximatefee:%1</source>
         <translation type="unfinished">approximatefee:%1</translation>
     </message>
@@ -2354,8 +2359,8 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">approximatefee: %1</translation>
     </message>
     <message>
-        <location filename="custom/RegisterContractDialogHX.cpp" line="51"/>
         <location filename="custom/RegisterContractDialogHX.cpp" line="52"/>
+        <location filename="custom/RegisterContractDialogHX.cpp" line="53"/>
         <source>approximatefee:%1</source>
         <translation type="unfinished">approximatefee:%1</translation>
     </message>
@@ -2680,7 +2685,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Fail to launch %1 !</translation>
     </message>
     <message>
-        <location filename="backstage/UbtcBackStage.cpp" line="173"/>
+        <location filename="backstage/UbtcBackStage.cpp" line="190"/>
         <source>Fail to launch ubcd %1 !</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2748,8 +2753,8 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">approximatefee:%1</translation>
     </message>
     <message>
-        <location filename="custom/UpgradeContractDialogCTC.cpp" line="38"/>
-        <location filename="custom/UpgradeContractDialogCTC.cpp" line="60"/>
+        <location filename="custom/UpgradeContractDialogCTC.cpp" line="39"/>
+        <location filename="custom/UpgradeContractDialogCTC.cpp" line="61"/>
         <source>approximatefee:%1</source>
         <translation type="unfinished">approximatefee:%1</translation>
     </message>
@@ -2821,8 +2826,8 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">approximatefee:%1</translation>
     </message>
     <message>
-        <location filename="custom/UpgradeContractDialogHX.cpp" line="38"/>
         <location filename="custom/UpgradeContractDialogHX.cpp" line="39"/>
+        <location filename="custom/UpgradeContractDialogHX.cpp" line="40"/>
         <source>approximatefee:%1</source>
         <translation type="unfinished">approximatefee:%1</translation>
     </message>

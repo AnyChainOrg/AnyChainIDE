@@ -171,7 +171,8 @@ void ConsoleDialog::parseHelpCommand(const QString &helpStr, QStringList &helpLi
 {
     helpList.clear();
     QStringList enter = helpStr.split("\n");
-    foreach (QString str, enter) {
+    foreach (QString sing, enter) {
+        QString str = sing.trimmed();
         if(-1 == str.indexOf(QRegExp("^[a-zA-Z]"))) continue;
         if(DataDefine::HX != ChainIDE::getInstance()->getChainClass())
         {

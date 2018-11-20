@@ -25,9 +25,9 @@ class UbtcBackStage::DataPrivate
 {
 public:
     DataPrivate(int type)
-        :nodeProc(new QProcess)
+        :chaintype(type)
+        ,nodeProc(new QProcess)
         ,clientProc(new QProcess)
-        ,chaintype(type)
     {
         nodePort = NODE_RPC_PORT + 10*(type-1);
         clientPort = CLIENT_RPC_PORT + 10*(type-1);
@@ -145,7 +145,7 @@ void UbtcBackStage::ReadyClose()
             {
                 if(loop && loop->isRunning())
                 {
-                    _p->nodeProc->waitForFinished();
+                    _p->nodeProc->waitForFinished(-1);
                     qDebug()<<"close ubcd "<<_p->chaintype<<" finish";
                     loop->quit();
                 }

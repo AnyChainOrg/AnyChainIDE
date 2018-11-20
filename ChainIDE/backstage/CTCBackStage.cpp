@@ -23,8 +23,8 @@ class CTCBackStage::DataPrivate
 {
 public:
     DataPrivate(int type)
-        :nodeProc(new QProcess)
-        ,chaintype(type)
+        :chaintype(type)
+        ,nodeProc(new QProcess)
     {
         nodePort = NODE_RPC_PORT + 10*(type-1);
         clientPort = CLIENT_RPC_PORT + 10*(type-1);

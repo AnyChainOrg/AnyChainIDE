@@ -1,6 +1,7 @@
 #ifndef MOVEABLEDIALOG_H
 #define MOVEABLEDIALOG_H
 
+#include <QPoint>
 #include <QDialog>
 #include <QMouseEvent>
 
@@ -13,9 +14,7 @@ public:
 protected:
     void mousePressEvent(QMouseEvent*event);
     void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *);
 private:
-    bool mouse_press;
     QPoint move_point;
 };
 

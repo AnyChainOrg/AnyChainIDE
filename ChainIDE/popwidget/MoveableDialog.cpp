@@ -3,7 +3,6 @@
 
 MoveableDialog::MoveableDialog(QWidget *parent)
     : QDialog(parent)
-    ,mouse_press(false)
 {
     //installBlurEffect(this);
 }
@@ -11,12 +10,12 @@ MoveableDialog::MoveableDialog(QWidget *parent)
 void MoveableDialog::mousePressEvent(QMouseEvent *event)
 {
 
-    if(event->button() == Qt::LeftButton)
-     {
-          mouse_press = true;
-          //鼠标相对于窗体的位置（或者使用event->globalPos() - this->pos()）
-          move_point = event->pos();
-     }
+    if(event->buttons() & Qt::LeftButton)
+    {
+         //鼠标相对于窗体的位置（或者使用event->globalPos() - this->pos()）
+         move_point = event->pos();
+    }
+    QDialog::mousePressEvent(event);
 
 }
 
@@ -24,18 +23,12 @@ void MoveableDialog::mouseMoveEvent(QMouseEvent *event)
 {
 
     //若鼠标左键被按下
-    if(mouse_press)
+    if(event->buttons()& Qt::LeftButton)
     {
-        //鼠标相对于屏幕的位置
-        QPoint move_pos = event->globalPos();
-
         //移动主窗体位置
-        this->move(move_pos - move_point);
+        this->move(event->globalPos() - move_point);
     }
+    QDialog::mouseMoveEvent(event);
 
 }
 
-void MoveableDialog::mouseReleaseEvent(QMouseEvent *)
-{
-    mouse_press = false;
-}

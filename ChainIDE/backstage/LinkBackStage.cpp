@@ -20,9 +20,9 @@ class LinkBackStage::DataPrivate
 {
 public:
     DataPrivate(int type)
-        :nodeProc(new QProcess())
+        :chaintype(type)
+        ,nodeProc(new QProcess())
         ,clientProc(new QProcess())
-        ,chaintype(type)
     {
         nodePort = NODE_RPC_PORT + 10*(type-1);
         clientPort = CLIENT_RPC_PORT + 10*(type-1);
@@ -93,7 +93,8 @@ void LinkBackStage::startExe(const QString &appDataPath)
     connect(_p->nodeProc,&QProcess::stateChanged,this,&LinkBackStage::onNodeExeStateChanged);
     QStringList strList;
     strList << "--data-dir=" +_p->dataPath
-            << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->nodePort);
+            << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->nodePort)
+            <<"--rewind-on-close";
 
     qDebug() << "start hx_node " << strList;
     _p->nodeProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_NODE_EXE,strList);
@@ -130,8 +131,8 @@ void LinkBackStage::ReadyClose()
                 if(loop && loop->isRunning())
                 {
                     //先关node，然后关client
-                    _p->nodeProc->waitForFinished();
-                    _p->clientProc->waitForFinished();
+                    _p->nodeProc->waitForFinished(-1);
+                    _p->clientProc->waitForFinished(-1);
                     qDebug()<<"close hxstage "<<_p->chaintype<<" finish";
                     loop->quit();
                 }

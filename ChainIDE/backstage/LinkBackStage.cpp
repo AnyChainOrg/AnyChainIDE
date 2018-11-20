@@ -175,10 +175,25 @@ void LinkBackStage::checkNodeExeIsReady()
         qDebug() << "node exe standardError: " << str ;
         emit AdditionalOutputMessage(str);
     }
-    if(str.contains("Chain ID is"))
+    if(str.contains("handle_block"))
     {
         _p->timerForStartExe.stop();
         QTimer::singleShot(100,this,&LinkBackStage::delayedLaunchClient);
+    }
+}
+
+void LinkBackStage::checkClientExeIsReady()
+{
+    QString str = _p->clientProc->readAllStandardError();
+    if(!str.isEmpty())
+    {
+        qDebug() << "client exe standardError: " << str ;
+        emit AdditionalOutputMessage(str);
+    }
+    if(str.contains("Listening for incoming RPC"))
+    {
+        _p->timerForStartExe.stop();
+        QTimer::singleShot(10,this,&LinkBackStage::initSocketManager);
     }
 }
 
@@ -205,7 +220,9 @@ void LinkBackStage::onClientExeStateChanged()
     {
         qDebug() << QString("hx_client %1 is running").arg(_p->chaintype);
 
-        initSocketManager();
+        connect(&_p->timerForStartExe,&QTimer::timeout,this,&LinkBackStage::checkClientExeIsReady);
+        _p->timerForStartExe.start(100);
+
     }
     else if(_p->clientProc->state() == QProcess::NotRunning)
     {

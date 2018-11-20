@@ -17,6 +17,7 @@ public:
 private slots:
     void onNodeExeStateChanged();
     void checkNodeExeIsReady();
+    void checkClientExeIsReady();
     void delayedLaunchClient();
     void onClientExeStateChanged();
 public slots:

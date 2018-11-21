@@ -92,9 +92,18 @@ void LinkBackStage::startExe(const QString &appDataPath)
 
     connect(_p->nodeProc,&QProcess::stateChanged,this,&LinkBackStage::onNodeExeStateChanged);
     QStringList strList;
-    strList << "--data-dir=" +_p->dataPath
-            << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->nodePort)
-            <<"--rewind-on-close";
+    if(1 == _p->chaintype)
+    {//测试链
+        strList << "--data-dir=" +_p->dataPath
+                << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->nodePort)
+                <<"--rewind-on-close"<<"--testnet";
+    }
+    else if(2 == _p->chaintype)
+    {//正式链
+        strList << "--data-dir=" +_p->dataPath
+                << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->nodePort)
+                <<"--rewind-on-close";
+    }
 
     qDebug() << "start hx_node " << strList;
     _p->nodeProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_NODE_EXE,strList);
@@ -175,7 +184,7 @@ void LinkBackStage::checkNodeExeIsReady()
         qDebug() << "node exe standardError: " << str ;
         emit AdditionalOutputMessage(str);
     }
-    if(str.contains("handle_block"))
+    if(str.contains("handle_block") || str.contains("Chain ID is"))
     {
         _p->timerForStartExe.stop();
         QTimer::singleShot(100,this,&LinkBackStage::delayedLaunchClient);
@@ -202,9 +211,19 @@ void LinkBackStage::delayedLaunchClient()
     connect(_p->clientProc,&QProcess::stateChanged,this,&LinkBackStage::onClientExeStateChanged);
 
     QStringList strList;
-    strList << "--wallet-file=" + _p->dataPath + "/wallet.json"
-            << QString("--server-rpc-endpoint=ws://127.0.0.1:%1").arg(_p->nodePort)
-            << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->clientPort);
+    if(1 == _p->chaintype)
+    {
+        strList << "--wallet-file=" + _p->dataPath + "/wallet.json"
+                << QString("--server-rpc-endpoint=ws://127.0.0.1:%1").arg(_p->nodePort)
+                << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->clientPort)
+                <<"--testnet";;
+    }
+    else if(2 == _p->chaintype)
+    {
+        strList << "--wallet-file=" + _p->dataPath + "/wallet.json"
+                << QString("--server-rpc-endpoint=ws://127.0.0.1:%1").arg(_p->nodePort)
+                << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->clientPort);
+    }
     qDebug()<<"start hx_client"<<strList;
 
     _p->clientProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_CLIENT_EXE,strList);

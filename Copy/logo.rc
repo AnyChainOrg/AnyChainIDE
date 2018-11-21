@@ -25,7 +25,7 @@ BEGIN
         BLOCK "080404b0"
         BEGIN
             VALUE "CompanyName", "BlockLinker"
-            VALUE "FileDescription", "Updater based on Qt 5.11.1(MSVC 2017)\0"
+            VALUE "FileDescription", "Updater based on Qt 5.11.2(MSVC 2017)\0"
             VALUE "FileVersion", "1.0.10.100\0"
             VALUE "ProductVersion", "1.0.10.100\0"
             VALUE "LegalCopyright", "Copyright 2017-2018 The BlockLinker Ltd. All rights reserved.\0"

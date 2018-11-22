@@ -1,12 +1,9 @@
 TEMPLATE = app
 QT -= gui
-QT += network
-CONFIG += qtestlib
+QT += network testlib
 CONFIG += console
 CONFIG -= app_bundle
 DEPENDPATH += .
-INCLUDEPATH += .\
-                "D:\SoftWare\Qt\Qt5.7.0\5.7\msvc2013_64\include\QtZlib"
 !win32: LIBS += -lz
 win32 {
     # workaround for qdatetime.h macro bug

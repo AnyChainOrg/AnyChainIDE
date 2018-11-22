@@ -12,7 +12,7 @@ class CallContractWidgetUB : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit CallContractWidgetUB(QWidget *parent = 0);
+    explicit CallContractWidgetUB(QWidget *parent = nullptr);
     ~CallContractWidgetUB();
 private slots:
     void jsonDataUpdated(const QString &id,const QString &data);

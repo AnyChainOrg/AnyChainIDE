@@ -12,7 +12,7 @@ class UpgradeContractDialogHX : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit UpgradeContractDialogHX(QWidget *parent = 0);
+    explicit UpgradeContractDialogHX(QWidget *parent = nullptr);
     ~UpgradeContractDialogHX();
 private slots:
     void jsonDataUpdated(const QString &id,const QString &data);

@@ -277,17 +277,17 @@ void ChainIDE::setUpdateServer(const QString &url)
     _p->configFile->setValue("/settings/updateServer",url);
 }
 
-BackStageManager * const ChainIDE::getBackStageManager() const
+BackStageManager *ChainIDE::getBackStageManager() const
 {
     return _p->backStageManager;
 }
 
-CompileManager *const ChainIDE::getCompileManager() const
+CompileManager *ChainIDE::getCompileManager() const
 {
     return _p->compileManager;
 }
 
-DebugManager * const ChainIDE::getDebugManager() const
+DebugManager *ChainIDE::getDebugManager() const
 {
     return _p->debugManager;
 }

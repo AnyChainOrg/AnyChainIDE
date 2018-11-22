@@ -12,7 +12,7 @@ class NameDialogHX : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit NameDialogHX(QWidget *parent = 0);
+    explicit NameDialogHX(QWidget *parent = nullptr);
     ~NameDialogHX();
 
     QString pop();

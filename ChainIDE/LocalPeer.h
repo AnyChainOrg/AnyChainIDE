@@ -1,5 +1,5 @@
-#ifndef LocalPeer_h__
-#define LocalPeer_h__
+#ifndef LOCALPEER_H
+#define LOCALPEER_H
 
 #include <QObject>
 //利用qlocalserver实现单程序功能
@@ -20,4 +20,4 @@ private:
 	class DataPrivate;
 	DataPrivate *_p;
 };
-#endif // LocalPeer_h__
+#endif // LOCALPEER_H

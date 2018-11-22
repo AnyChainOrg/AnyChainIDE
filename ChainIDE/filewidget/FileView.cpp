@@ -215,7 +215,7 @@ void FileView::contextMenuEvent(QContextMenuEvent *e)
         connect(menu,&ContextMenu::openWithNative,this,&FileView::openWithNativeSlots);
         menu->exec(QCursor::pos());
     }
-
+    QTreeView::contextMenuEvent(e);
 }
 
 void FileView::retranslator()

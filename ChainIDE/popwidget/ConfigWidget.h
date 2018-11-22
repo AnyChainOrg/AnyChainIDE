@@ -12,7 +12,7 @@ class ConfigWidget : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit ConfigWidget(QWidget *parent = 0);
+    explicit ConfigWidget(QWidget *parent = nullptr);
     ~ConfigWidget();
 public:
     bool pop();

@@ -12,7 +12,7 @@ class PasswordVerifyWidgetHX : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit PasswordVerifyWidgetHX(QWidget *parent = 0);
+    explicit PasswordVerifyWidgetHX(QWidget *parent = nullptr);
     ~PasswordVerifyWidgetHX();
 public:
     bool pop();

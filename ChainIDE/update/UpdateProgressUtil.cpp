@@ -145,6 +145,7 @@ bool UpdateProgressUtil::MakeUpVersionData(VersionInfoPtr &data,const QString &h
     {
         (*it)->url = headPath + "/"+(*it)->url;
     }
+    return true;
 }
 
 bool UpdateProgressUtil::ExtractUpdateData(const VersionInfoPtr &oldVersion, const VersionInfoPtr &newVersion,

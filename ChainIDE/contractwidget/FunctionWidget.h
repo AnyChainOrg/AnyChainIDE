@@ -12,7 +12,7 @@ class FunctionWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit FunctionWidget(QWidget *parent = 0);
+    explicit FunctionWidget(QWidget *parent = nullptr);
     ~FunctionWidget();
 signals:
 

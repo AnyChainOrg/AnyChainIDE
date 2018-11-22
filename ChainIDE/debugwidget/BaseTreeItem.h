@@ -1,5 +1,5 @@
-#ifndef BaseTreeItem_h__
-#define BaseTreeItem_h__
+#ifndef BASETREEIITEM_H
+#define BASETREEIITEM_H
 
 #include <QtCore/QVariant>
 //////////////////////////////////////////////////////////////////////////
@@ -10,7 +10,7 @@
 class BaseTreeItem
 {
 public:
-	BaseTreeItem(QVariant data = QVariant(), BaseTreeItem *parent = 0);
+    BaseTreeItem(QVariant data = QVariant(), BaseTreeItem *parent = nullptr);
 	virtual ~BaseTreeItem(void);
 public:
 	//////////////////////////////////////////////////////////////////////////
@@ -88,4 +88,4 @@ private:
 
 };
 
-#endif // BaseTreeItem_h__
+#endif // BASETREEIITEM_H

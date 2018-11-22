@@ -12,7 +12,7 @@ class AccountWidgetCTC : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit AccountWidgetCTC(QWidget *parent = 0);
+    explicit AccountWidgetCTC(QWidget *parent = nullptr);
     ~AccountWidgetCTC();
 private slots:
     void jsonDataUpdated(const QString &id,const QString &data);

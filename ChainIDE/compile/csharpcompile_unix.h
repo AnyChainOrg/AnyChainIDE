@@ -8,8 +8,8 @@ class csharpCompile_unix : public BaseCompile
 {
     Q_OBJECT
 public:
-    explicit csharpCompile_unix(QObject *parent = 0);
-    ~csharpCompile_unix();
+    explicit csharpCompile_unix(QObject *parent = nullptr);
+    ~csharpCompile_unix()override final;
 public:
     void startCompileFile(const QString &sourceFilePath)override final;
 protected slots:

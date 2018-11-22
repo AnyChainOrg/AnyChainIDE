@@ -8,7 +8,7 @@ class EditorContextMenu : public QMenu
     Q_OBJECT
 public:
     EditorContextMenu(bool isUndoEnabled, bool isRedoEnabled, bool isCutEnabled, bool isCopyEnable,
-                       bool isPasteEnabled, bool isDeleteEnabled, QWidget * parent = 0);
+                       bool isPasteEnabled, bool isDeleteEnabled, QWidget * parent = nullptr);
     ~EditorContextMenu();
 
 signals:

@@ -12,7 +12,7 @@ class Editor : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Editor(const QString &path,const QString &htmlPath = "",QWidget *parent = 0);
+    explicit Editor(const QString &path,const QString &htmlPath = "",QWidget *parent = nullptr);
     virtual ~Editor();
 signals:
     void stateChanged();

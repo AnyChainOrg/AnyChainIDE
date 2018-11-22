@@ -8,7 +8,7 @@ class MoveableDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit MoveableDialog(QWidget *parent = 0);
+    explicit MoveableDialog(QWidget *parent = nullptr);
 
 protected:
     void mousePressEvent(QMouseEvent*event);

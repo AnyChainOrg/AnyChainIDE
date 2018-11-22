@@ -12,7 +12,7 @@ class TransferWidgetHX : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit TransferWidgetHX(QWidget *parent = 0);
+    explicit TransferWidgetHX(QWidget *parent = nullptr);
     ~TransferWidgetHX();
 private slots:
     void transferSlot();

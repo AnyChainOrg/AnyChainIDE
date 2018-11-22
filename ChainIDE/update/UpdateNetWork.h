@@ -10,7 +10,7 @@ class UpdateNetWork : public QObject
 public:
 
 public:
-    explicit UpdateNetWork(QObject *parent = 0);
+    explicit UpdateNetWork(QObject *parent = nullptr);
     ~UpdateNetWork();
 public:
     void DownLoadFile(const DownLoadData &data);

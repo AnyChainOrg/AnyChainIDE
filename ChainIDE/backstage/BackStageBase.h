@@ -8,7 +8,7 @@ class BackStageBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit BackStageBase(QObject *parent = 0);
+    explicit BackStageBase(QObject *parent = nullptr);
     virtual ~BackStageBase();
 public:
     virtual void startExe(const QString &appDataPath = "") = 0;

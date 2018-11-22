@@ -12,7 +12,7 @@ class RegisterContractDialogCTC : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit RegisterContractDialogCTC(QWidget *parent = 0);
+    explicit RegisterContractDialogCTC(QWidget *parent = nullptr);
     ~RegisterContractDialogCTC();
 private slots:
     void jsonDataUpdated(const QString &id,const QString &data);

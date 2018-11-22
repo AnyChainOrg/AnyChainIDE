@@ -13,7 +13,7 @@ class NameDialogUB : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit NameDialogUB(QWidget *parent = 0);
+    explicit NameDialogUB(QWidget *parent = nullptr);
     ~NameDialogUB();
 
     QString pop();

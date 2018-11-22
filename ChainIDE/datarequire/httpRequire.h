@@ -8,8 +8,8 @@ class httpRequire : public RequireBase
 {
     Q_OBJECT
 public:
-    explicit httpRequire(const QString &ip,const QString & port,QObject *parent = 0);
-    virtual ~httpRequire();
+    explicit httpRequire(const QString &ip,const QString & port,QObject *parent = nullptr);
+    ~httpRequire()override final;
 public:
     void postData(const QString &data) override final;
     void startConnect() override final;

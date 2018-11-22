@@ -13,7 +13,7 @@ class AccountWidgetUB : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit AccountWidgetUB(QWidget *parent = 0);
+    explicit AccountWidgetUB(QWidget *parent = nullptr);
     ~AccountWidgetUB();
 private slots:
     void jsonDataUpdated(const QString &id,const QString &data);

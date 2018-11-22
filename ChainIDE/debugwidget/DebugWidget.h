@@ -17,7 +17,7 @@ class DebugWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit DebugWidget(QWidget *parent = 0);
+    explicit DebugWidget(QWidget *parent = nullptr);
     ~DebugWidget();
 public:
     void ResetData(BaseItemDataPtr data);

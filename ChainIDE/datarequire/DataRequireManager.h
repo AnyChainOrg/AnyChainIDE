@@ -7,7 +7,7 @@ class DataRequireManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit DataRequireManager(const QString &ip="127.0.0.1",const QString & connectPort = "50320",QObject *parent = 0);
+    explicit DataRequireManager(const QString &ip="127.0.0.1",const QString & connectPort = "50320",QObject *parent = nullptr);
     ~DataRequireManager();
     enum ConnectType{WEBSOCKET,TCP,HTTP,HTTPWITHUSER};
 public:

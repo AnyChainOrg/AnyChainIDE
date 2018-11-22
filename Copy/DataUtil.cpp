@@ -150,7 +150,7 @@ void DataUtil::myMessageOutput(QtMsgType type, const QMessageLogContext &context
     // 加锁
     static QMutex mutex;
 
-    static const QString *const LOG_PATH = new QString(QApplication::applicationDirPath()+"/log.txt");
+    static const QString *const LOG_PATH = new QString(QApplication::applicationDirPath()+"/update_log.txt");
     if(!LOG_PATH) return;
 
     mutex.lock();

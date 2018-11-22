@@ -194,7 +194,7 @@ void Editor::InitEditor()
     QWebEnginePage *page = new QWebEnginePage(this);  // 定义一个page作为页面管理
     page->setBackgroundColor(Qt::transparent);
     QWebChannel *channel = new QWebChannel(this);     // 定义一个channel作为和JS或HTML交互
-    channel->registerObject("qtWidget",(QObject*)bridge::instance());
+    channel->registerObject("qtWidget",bridge::instance());
     page->setWebChannel(channel);                   // 把channel配置到page上，让channel作为其信使
     page->load(QUrl( "file:///" + dir.absolutePath()));                         // page上加载html路径
     webView->setPage(page);                   // 建立page和UI上的webEngine的联系
@@ -259,7 +259,7 @@ bool Editor::eventFilter(QObject *watched, QEvent *e)
 
             QString selectedText = getSelectedText();
 
-            EditorContextMenu* menu = NULL;
+            EditorContextMenu* menu = nullptr;
             if( !this->isEditable())
             {
                 // 如果不可编辑

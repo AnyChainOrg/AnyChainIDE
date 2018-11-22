@@ -15,7 +15,7 @@ class ConsoleDialog : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit ConsoleDialog(QWidget *parent = 0);
+    explicit ConsoleDialog(QWidget *parent = nullptr);
     ~ConsoleDialog();
 
 private slots:

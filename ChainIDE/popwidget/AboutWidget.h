@@ -12,7 +12,7 @@ class AboutWidget : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit AboutWidget(QWidget *parent = 0);
+    explicit AboutWidget(QWidget *parent = nullptr);
     ~AboutWidget();
 signals:
     void RestartSignal();//更新并重启

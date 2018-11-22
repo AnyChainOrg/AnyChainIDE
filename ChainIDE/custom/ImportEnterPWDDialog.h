@@ -12,7 +12,7 @@ class ImportEnterPwdDialog : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit ImportEnterPwdDialog(QWidget *parent = 0);
+    explicit ImportEnterPwdDialog(QWidget *parent = nullptr);
     ~ImportEnterPwdDialog();
 
     bool  pop();

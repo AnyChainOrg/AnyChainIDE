@@ -12,7 +12,7 @@ class TransferWidgetUB : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit TransferWidgetUB(QWidget *parent = 0);
+    explicit TransferWidgetUB(QWidget *parent = nullptr);
     ~TransferWidgetUB();
 private slots:
     void transferSlot();

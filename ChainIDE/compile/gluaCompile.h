@@ -7,8 +7,8 @@ class gluaCompile : public BaseCompile
 {
     Q_OBJECT
 public:
-    explicit gluaCompile(QObject *parent = 0);
-    virtual ~gluaCompile();
+    explicit gluaCompile(QObject *parent = nullptr);
+    ~gluaCompile()override final;
 public:
     void startCompileFile(const QString &sourceFilePath)override final;
 protected slots:

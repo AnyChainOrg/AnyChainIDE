@@ -220,11 +220,12 @@ bool ContextWidget::closeFile(QString path)
 
 bool ContextWidget::closeAll()
 {
+    bool allClose = true;
     for(int i = ui->tabWidget->count()-1;i >= 0;--i)
     {
-        closeFile(i);
+        allClose &= closeFile(i);
     }
-    return true;
+    return allClose;
 }
 
 void ContextWidget::saveFile()
@@ -335,7 +336,7 @@ bool ContextWidget::saveFile(int i)
     {
         if(!w->saveFile())
         {
-            QMessageBox::critical(NULL, "Error", "Save file" + getPathFromNumber(i) , QMessageBox::Ok);
+            QMessageBox::critical(nullptr, "Error", "Save file" + getPathFromNumber(i) , QMessageBox::Ok);
             return false;
         }
         return true;
@@ -351,7 +352,7 @@ bool ContextWidget::closeFile(int i)
 
     if( !w->isSaved())
     {
-        QMessageBox::StandardButton choice = QMessageBox::information(NULL, "保存提示", getPathFromNumber(i) + " " + "文件已修改，是否保存?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+        QMessageBox::StandardButton choice = QMessageBox::information(nullptr, "保存提示", getPathFromNumber(i) + " " + "文件已修改，是否保存?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
         if( QMessageBox::Yes == choice)
         {
             saveFile(i);

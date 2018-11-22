@@ -127,7 +127,7 @@ bool CompileManager::checkCsharpEnvironment()
     //windows下查找注册表有没有.netframework 4.5以上
     QSettings set("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\NET Framework Setup\\NDP",QSettings::NativeFormat);
 
-    QRegExp versionReg("^[0-4]\.[0-5]\.");
+    QRegExp versionReg("^[0-4]\\.[0-5]\\.");
     QStringList li = set.allKeys();
     foreach (QString key, li) {
         if(key.endsWith("/Version"))
@@ -146,7 +146,7 @@ bool CompileManager::checkCsharpEnvironment()
     dot.start("/usr/local/share/dotnet/dotnet",QStringList()<<"--version");
     dot.waitForReadyRead();
     QString out = dot.readAllStandardOutput();
-    QRegExp versionReg("^[0-9]\.[0-9]\.");
+    QRegExp versionReg("^[0-9]\\.[0-9]\\.");
     if(-1 != out.indexOf(versionReg))
     {
         return true;

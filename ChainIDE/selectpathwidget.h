@@ -12,7 +12,7 @@ class SelectPathWidget : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit SelectPathWidget(QWidget *parent = 0);
+    explicit SelectPathWidget(QWidget *parent = nullptr);
     ~SelectPathWidget();
 
 private slots:

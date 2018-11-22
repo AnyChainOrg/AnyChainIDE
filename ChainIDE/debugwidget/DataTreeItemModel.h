@@ -1,5 +1,5 @@
-#ifndef DataTreeItemModel_h__
-#define DataTreeItemModel_h__
+#ifndef DATATREEITEMMODEL_H
+#define DATATREEITEMMODEL_H
 
 #include <memory>
 #include <QAbstractItemModel>
@@ -19,7 +19,7 @@ class DataTreeItemModel : public QAbstractItemModel
 
 public:
     DataTreeItemModel(QObject *parent = nullptr);
-	~DataTreeItemModel();
+    ~DataTreeItemModel()override;
 public:
     QVariant data(const QModelIndex &index, int role) const override;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
@@ -51,4 +51,4 @@ private:
 	class DataTreeItemModelPrivate;
     DataTreeItemModelPrivate *_p;
 };
-#endif // DataTreeItemModel_h__
+#endif // DATATREEITEMMODEL_H

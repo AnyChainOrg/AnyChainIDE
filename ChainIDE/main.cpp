@@ -3,7 +3,7 @@
 #include "IDEUtil.h"
 #include "LocalPeer.h"
 #include "ChainIDE.h"
-#include "MainWindow.h"
+#include "mainwindow.h"
 
 #include <QDebug>
 

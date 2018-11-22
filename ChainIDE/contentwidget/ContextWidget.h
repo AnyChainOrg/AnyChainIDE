@@ -15,7 +15,7 @@ class ContextWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ContextWidget(QWidget *parent = 0);
+    explicit ContextWidget(QWidget *parent = nullptr);
     ~ContextWidget();
 public:
     void undo();

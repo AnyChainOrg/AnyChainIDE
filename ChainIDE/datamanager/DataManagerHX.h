@@ -39,7 +39,7 @@ public:
     DataManagerHX& operator =(DataManagerHX &&) = delete;
     DataManagerHX& operator =(const DataManagerHX &) = delete;
 private:
-    explicit DataManagerHX(QObject *parent = 0);
+    explicit DataManagerHX(QObject *parent = nullptr);
     ~DataManagerHX();
     static DataManagerHX *_instance;
     class CGarbo // 它的唯一工作就是在析构函数中删除 的实例

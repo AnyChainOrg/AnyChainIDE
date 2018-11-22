@@ -21,6 +21,7 @@ bridge* bridge::instance()
 }
 
 bridge::bridge(QObject *parent)
+    :QObject (parent)
 {
 }
 

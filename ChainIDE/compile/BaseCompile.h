@@ -23,7 +23,7 @@ public:
         StageTen = 1 << 9,
     };
 public:
-    explicit BaseCompile(QObject *parent = 0);
+    explicit BaseCompile(QObject *parent = nullptr);
     virtual ~BaseCompile();
 signals:
     void finishCompileFile(const QString &dstFilePath);
@@ -37,7 +37,7 @@ protected slots:
     virtual void onReadStandardOutput() = 0;
     virtual void onReadStandardError() = 0;
 protected:
-    QProcess *const getCompileProcess()const;
+    QProcess *getCompileProcess()const;
 
     void setTempDir(const QString &dir);
     const QString &getTempDir()const;

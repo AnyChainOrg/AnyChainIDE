@@ -37,7 +37,7 @@ public:
     DataManagerUB& operator =(const DataManagerUB &) = delete;
     DataManagerUB& operator =( DataManagerUB &&) = delete;
 private:
-    explicit DataManagerUB(QObject *parent = 0);
+    explicit DataManagerUB(QObject *parent = nullptr);
     ~DataManagerUB();
     static DataManagerUB *_instance;
     class CGarbo // 它的唯一工作就是在析构函数中删除 的实例

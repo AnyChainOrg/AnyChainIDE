@@ -1,4 +1,4 @@
-#include "MainWindow.h"
+#include "mainwindow.h"
 #include "ui_MainWindow.h"
 
 #include <functional>
@@ -84,7 +84,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     qDebug()<<"delete mainwindow";
-    qInstallMessageHandler(0);
+    qInstallMessageHandler(nullptr);
     delete _p;
     _p = nullptr;
     delete ui;
@@ -147,8 +147,11 @@ void MainWindow::startWidget()
     HideAction();
 
     //设置界面比例
-    ui->splitter_hori->setSizes(QList<int>()<<0.1*ui->centralWidget->width()<<0.9*ui->centralWidget->width()<<0.2*ui->centralWidget->width());
-    ui->splitter_ver->setSizes(QList<int>()<<0.67*ui->centralWidget->height()<<0.33*ui->centralWidget->height());
+    ui->splitter_hori->setSizes(QList<int>()<<static_cast<int>(0.1*ui->centralWidget->width())//文件管理栏
+                                            <<static_cast<int>(0.9*ui->centralWidget->width())//中央代码栏
+                                            <<static_cast<int>(0.2*ui->centralWidget->width()));//调试窗
+    ui->splitter_ver->setSizes(QList<int>()<<static_cast<int>(0.67*ui->centralWidget->height())//代码编辑栏
+                                           <<static_cast<int>(0.33*ui->centralWidget->height()));//程序输出栏
     ui->debugWidget->setVisible(false);
 
     //链接编译槽
@@ -254,6 +257,11 @@ void MainWindow::refreshTranslator()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    if(!ui->contentWidget->closeAll())
+    {
+        event->ignore();
+        return;
+    }
     hide();
 
     if((ChainIDE::getInstance()->getStartChainTypes() | DataDefine::NONE) ||
@@ -601,7 +609,7 @@ void MainWindow::on_compileAction_triggered()
     //先触发保存判断
     if( ui->contentWidget->currentFileUnsaved() && ui->contentWidget->getCurrentFilePath() == ui->fileWidget->getCurrentFile())
     {
-        QMessageBox::StandardButton choice = QMessageBox::information(NULL, "", ui->contentWidget->getCurrentFilePath() + " " + tr("文件已修改，是否保存?"), QMessageBox::Yes | QMessageBox::No);
+        QMessageBox::StandardButton choice = QMessageBox::information(nullptr, "", ui->contentWidget->getCurrentFilePath() + " " + tr("文件已修改，是否保存?"), QMessageBox::Yes | QMessageBox::No);
         if( QMessageBox::Yes == choice)
         {
             ui->contentWidget->saveFile();

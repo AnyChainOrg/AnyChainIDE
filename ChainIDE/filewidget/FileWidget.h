@@ -12,7 +12,7 @@ class FileWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit FileWidget(QWidget *parent = 0);
+    explicit FileWidget(QWidget *parent = nullptr);
     ~FileWidget();
 public:
     QString getCurrentFile()const;

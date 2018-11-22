@@ -8,7 +8,6 @@ MoveableDialog::MoveableDialog(QWidget *parent)
 
 void MoveableDialog::mousePressEvent(QMouseEvent *event)
 {
-
     if(event->buttons() & Qt::LeftButton)
     {
          //鼠标相对于窗体的位置（或者使用event->globalPos() - this->pos()）

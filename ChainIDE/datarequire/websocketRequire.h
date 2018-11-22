@@ -8,8 +8,8 @@ class websocketRequire : public RequireBase
 {
     Q_OBJECT
 public:
-    explicit websocketRequire(const QString &ip,const QString & connectPort,QObject *parent = 0);
-    virtual ~websocketRequire();
+    explicit websocketRequire(const QString &ip,const QString & connectPort,QObject *parent = nullptr);
+    ~websocketRequire()override final;
 public:
     void postData(const QString &data) override final;
     void startConnect() override final;

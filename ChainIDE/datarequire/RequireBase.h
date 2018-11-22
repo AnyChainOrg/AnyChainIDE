@@ -7,7 +7,7 @@ class RequireBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit RequireBase(const QString &ip,const QString & connectPort,QObject *parent = 0);
+    explicit RequireBase(const QString &ip,const QString & connectPort,QObject *parent = nullptr);
     virtual ~RequireBase();
 public:
     virtual void postData(const QString &data) = 0;

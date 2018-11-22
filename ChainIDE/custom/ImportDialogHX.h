@@ -14,7 +14,7 @@ class ImportDialogHX : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit ImportDialogHX(QWidget *parent = 0);
+    explicit ImportDialogHX(QWidget *parent = nullptr);
     ~ImportDialogHX();
 
 private slots:

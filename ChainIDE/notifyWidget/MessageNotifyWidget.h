@@ -16,7 +16,7 @@ class MessageNotifyWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit MessageNotifyWidget(const QString &info = " ",QWidget *parent = 0);
+    explicit MessageNotifyWidget(const QString &info = " ",QWidget *parent = nullptr);
     ~MessageNotifyWidget();
 public:
     void SetMessageContext(const QString &info);//修改提示内容

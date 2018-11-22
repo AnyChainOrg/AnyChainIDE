@@ -14,7 +14,7 @@ class DebugFunctionWidget : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit DebugFunctionWidget(const QString &sourceFile,const QString &gpcFile,QWidget *parent = 0);
+    explicit DebugFunctionWidget(const QString &sourceFile,const QString &gpcFile,QWidget *parent = nullptr);
     ~DebugFunctionWidget();
 public:
     const QString &SelectedApi()const;

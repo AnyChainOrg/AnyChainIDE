@@ -11,7 +11,7 @@ class ConvenientOp : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConvenientOp(QObject *parent = 0);
+    explicit ConvenientOp(QObject *parent = nullptr);
 
     //显示提示框
     static void ShowSyncCommonDialog(const QString &data);

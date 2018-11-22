@@ -13,7 +13,7 @@ class CommonDialog : public MoveableDialog
 
 public:
     enum commonDialogType{OkAndCancel, OkOnly, YesOrNo,NONE};
-    explicit CommonDialog( commonDialogType _type,QWidget *parent = 0);
+    explicit CommonDialog( commonDialogType _type,QWidget *parent = nullptr);
     ~CommonDialog();
 
     bool pop();

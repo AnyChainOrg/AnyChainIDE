@@ -7,8 +7,8 @@ class kotlinCompile : public BaseCompile
 {
     Q_OBJECT
 public:
-    explicit kotlinCompile(QObject *parent = 0);
-    virtual ~kotlinCompile();
+    explicit kotlinCompile(QObject *parent = nullptr);
+    ~kotlinCompile()override final;
 public:
     void startCompileFile(const QString &sourceFilePath)override final;
 protected slots:

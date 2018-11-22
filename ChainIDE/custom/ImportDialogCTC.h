@@ -12,7 +12,7 @@ class ImportDialogCTC : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit ImportDialogCTC(QWidget *parent = 0);
+    explicit ImportDialogCTC(QWidget *parent = nullptr);
     ~ImportDialogCTC();
 
 private slots:

@@ -7,8 +7,8 @@ class csharpCompile : public BaseCompile
 {
     Q_OBJECT
 public:
-    explicit csharpCompile(QObject *parent = 0);
-    ~csharpCompile();
+    explicit csharpCompile(QObject *parent = nullptr);
+    ~csharpCompile()override final;
 public:
     void startCompileFile(const QString &sourceFilePath)override final;
 protected slots:

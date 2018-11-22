@@ -7,8 +7,8 @@ class javaCompile : public BaseCompile
 {
     Q_OBJECT
 public:
-    explicit javaCompile(QObject *parent = 0);
-    virtual ~javaCompile();
+    explicit javaCompile(QObject *parent = nullptr);
+    ~javaCompile()override final;
 public:
     void startCompileFile(const QString &sourceFilePath)override final;
 protected slots:

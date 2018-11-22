@@ -14,8 +14,8 @@ class AceEditor : public Editor
     Q_OBJECT
 
 public:
-    explicit AceEditor( const QString &path, DataDefine::ThemeStyle theme = DataDefine::Black_Theme,QWidget *parent = 0);
-    ~AceEditor();
+    explicit AceEditor( const QString &path, DataDefine::ThemeStyle theme = DataDefine::Black_Theme,QWidget *parent = nullptr);
+    ~AceEditor()override final;
 public:
     void checkState()override final;
 

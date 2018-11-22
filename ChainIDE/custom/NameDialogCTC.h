@@ -12,7 +12,7 @@ class NameDialogCTC : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit NameDialogCTC(QWidget *parent = 0);
+    explicit NameDialogCTC(QWidget *parent = nullptr);
     ~NameDialogCTC();
 
     QString pop();

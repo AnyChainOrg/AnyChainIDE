@@ -45,11 +45,11 @@ public:
     void setUpdateServer(const QString &url);
 
 //后台
-    BackStageManager *const getBackStageManager()const;
+    BackStageManager *getBackStageManager()const;
 //编译
-    CompileManager *const getCompileManager()const;
+    CompileManager *getCompileManager()const;
 //调试
-    DebugManager *const getDebugManager()const;
+    DebugManager *getDebugManager()const;
 public:
     void refreshStyleSheet();//刷新样式表
     void refreshTranslator();//刷新翻译

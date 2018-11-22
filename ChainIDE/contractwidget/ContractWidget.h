@@ -12,7 +12,7 @@ class ContractWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ContractWidget(QWidget *parent = 0);
+    explicit ContractWidget(QWidget *parent = nullptr);
     ~ContractWidget();
 public slots:
     void RefreshTree();

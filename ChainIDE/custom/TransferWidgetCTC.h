@@ -12,7 +12,7 @@ class TransferWidgetCTC : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit TransferWidgetCTC(QWidget *parent = 0);
+    explicit TransferWidgetCTC(QWidget *parent = nullptr);
     ~TransferWidgetCTC();
 private slots:
     void transferSlot();

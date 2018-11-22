@@ -8,7 +8,7 @@ class CompileManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit CompileManager(QObject *parent = 0);
+    explicit CompileManager(QObject *parent = nullptr);
     ~CompileManager();
 public:
     void startCompile(const QString &filePath);

@@ -47,8 +47,6 @@ void codeeditor::checkState()
             emit stateChanged();
         });
     }
-
-
 }
 
 void codeeditor::setText(QString text)

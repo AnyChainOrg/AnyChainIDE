@@ -19,7 +19,7 @@ public:
                  };
     typedef int MenuTypes;
 
-    ContextMenu( MenuTypes type, QWidget * parent = 0);
+    ContextMenu( MenuTypes type, QWidget * parent = nullptr);
     ~ContextMenu();
 
 signals:

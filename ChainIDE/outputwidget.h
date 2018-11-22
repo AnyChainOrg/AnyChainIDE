@@ -12,7 +12,7 @@ class OutputWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit OutputWidget(QWidget *parent = 0);
+    explicit OutputWidget(QWidget *parent = nullptr);
     ~OutputWidget();
 
 public:

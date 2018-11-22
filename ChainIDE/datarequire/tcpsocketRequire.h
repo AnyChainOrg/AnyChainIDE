@@ -9,8 +9,8 @@ class tcpsocketRequire : public RequireBase
 {
     Q_OBJECT
 public:
-    explicit tcpsocketRequire(const QString &ip,const QString & port,QObject *parent = 0);
-    virtual ~tcpsocketRequire();
+    explicit tcpsocketRequire(const QString &ip,const QString & port,QObject *parent = nullptr);
+    ~tcpsocketRequire()override final;
 public:
     void postData(const QString &data) override final;
     void startConnect() override final;

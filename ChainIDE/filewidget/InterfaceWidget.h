@@ -13,7 +13,7 @@ class InterfaceWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit InterfaceWidget(QWidget *parent = 0);
+    explicit InterfaceWidget(QWidget *parent = nullptr);
     ~InterfaceWidget();
 public slots:
     void ShowInterface(const QString &filePath);

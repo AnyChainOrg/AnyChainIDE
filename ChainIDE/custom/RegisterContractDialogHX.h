@@ -13,7 +13,7 @@ class RegisterContractDialogHX : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit RegisterContractDialogHX(QWidget *parent = 0);
+    explicit RegisterContractDialogHX(QWidget *parent = nullptr);
     ~RegisterContractDialogHX();
 
 private slots:

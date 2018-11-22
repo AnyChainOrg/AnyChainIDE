@@ -13,8 +13,8 @@ class codeeditor : public Editor
     Q_OBJECT
 
 public:
-    explicit codeeditor(const QString &path, DataDefine::ThemeStyle theme = DataDefine::Black_Theme, QWidget *parent = 0);
-    ~codeeditor();
+    explicit codeeditor(const QString &path, DataDefine::ThemeStyle theme = DataDefine::Black_Theme, QWidget *parent = nullptr);
+    ~codeeditor()override;
 
 public:
     void checkState()override final;

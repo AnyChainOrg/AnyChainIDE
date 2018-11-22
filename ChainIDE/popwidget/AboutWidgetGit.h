@@ -12,7 +12,7 @@ class AboutWidgetGit : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit AboutWidgetGit(QWidget *parent = 0);
+    explicit AboutWidgetGit(QWidget *parent = nullptr);
     ~AboutWidgetGit();
 private slots:
     void checkNewVersion();

@@ -14,7 +14,7 @@ class ImportDialogUB : public MoveableDialog
     Q_OBJECT
 
 public:
-    explicit ImportDialogUB(QWidget *parent = 0);
+    explicit ImportDialogUB(QWidget *parent = nullptr);
     ~ImportDialogUB();
 
 private slots:

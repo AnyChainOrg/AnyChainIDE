@@ -40,7 +40,7 @@ public:
     DataManagerCTC& operator =(DataManagerCTC &&) = delete;
     DataManagerCTC& operator =(const DataManagerCTC &) = delete;
 private:
-    explicit DataManagerCTC(QObject *parent = 0);
+    explicit DataManagerCTC(QObject *parent = nullptr);
     ~DataManagerCTC();
     static DataManagerCTC *_instance;
     class CGarbo // 它的唯一工作就是在析构函数中删除 的实例

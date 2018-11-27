@@ -629,6 +629,9 @@ void MainWindow::on_compileAction_triggered()
 
 void MainWindow::on_debugAction_triggered()
 {
+
+    ConvenientOp::ShowNotifyMessage(tr("Debug function is in progress!"));
+    return;
     if(ChainIDE::getInstance()->getDebugManager()->getDebuggerState() == DebugDataStruct::Available)
     {
         //先生成.out字节码

@@ -134,9 +134,9 @@ QProcess *UbtcBackStage::getProcess() const
 
 void UbtcBackStage::ReadyClose()
 {
-    disconnect(_p->nodeProc,&QProcess::stateChanged,this,&UbtcBackStage::onNodeExeStateChanged);
-    if(_p->nodeProc->state() == QProcess::Running)
+    if(exeRunning())
     {
+        disconnect(_p->nodeProc,&QProcess::stateChanged,this,&UbtcBackStage::onNodeExeStateChanged);
         QSharedPointer<QEventLoop> loop = QSharedPointer<QEventLoop>(new QEventLoop());
 
         disconnect(_p->dataRequire,&DataRequireManager::requireResponse,this,&BackStageBase::rpcReceived);

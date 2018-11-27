@@ -122,7 +122,7 @@ QProcess *LinkBackStage::getProcess() const
 
 void LinkBackStage::ReadyClose()
 {
-    if(_p->clientProc->state() == QProcess::Running)
+    if(exeRunning())
     {
         disconnect(_p->clientProc,&QProcess::stateChanged,this,&LinkBackStage::onClientExeStateChanged);
         disconnect(_p->nodeProc,&QProcess::stateChanged,this,&LinkBackStage::onNodeExeStateChanged);

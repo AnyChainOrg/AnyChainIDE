@@ -56,6 +56,8 @@
 #include "ConvenientOp.h"
 #include "IDEUtil.h"
 
+#define DEBUG_FUNC 1
+
 class MainWindow::DataPrivate
 {
 public:
@@ -605,7 +607,6 @@ void MainWindow::on_changeChainAction_triggered()
 
 void MainWindow::on_compileAction_triggered()
 {//编译
-    //ui->contentWidget->SetDebuggerLine(ui->fileWidget->getCurrentFile(),10);
     //先触发保存判断
     if( ui->contentWidget->currentFileUnsaved() && ui->contentWidget->getCurrentFilePath() == ui->fileWidget->getCurrentFile())
     {
@@ -629,9 +630,10 @@ void MainWindow::on_compileAction_triggered()
 
 void MainWindow::on_debugAction_triggered()
 {
-
+#ifdef DEBUG_FUNC
     ConvenientOp::ShowNotifyMessage(tr("Debug function is in progress!"));
     return;
+#endif
     if(ChainIDE::getInstance()->getDebugManager()->getDebuggerState() == DebugDataStruct::Available)
     {
         //先生成.out字节码

@@ -14,11 +14,19 @@ public:
     bool exeRunning()override final;
     QProcess *getProcess()const override final;
     void ReadyClose()override final;
+private:
+    void startNodeProc();
+    void startClientProc();
 private slots:
+    void readNodeStandError();
+    void readNodeStandOutput();
+    void readClientStandError();
+    void readClientStandOutput();
+private:
+    void checkNodeMessage(const QString &message);
+    void checkClientMessage(const QString &message);
+
     void onNodeExeStateChanged();
-    void checkNodeExeIsReady();
-    void checkClientExeIsReady();
-    void delayedLaunchClient();
     void onClientExeStateChanged();
 public slots:
     void rpcPostedSlot(const QString &,const QString &)override final;

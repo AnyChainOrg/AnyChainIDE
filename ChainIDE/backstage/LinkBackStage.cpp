@@ -22,7 +22,9 @@ public:
     DataPrivate(int type)
         :chaintype(type)
         ,nodeProc(new QProcess())
+        ,startNode(false)
         ,clientProc(new QProcess())
+        ,startClient(false)
     {
         nodePort = NODE_RPC_PORT + 10*(type-1);
         clientPort = CLIENT_RPC_PORT + 10*(type-1);
@@ -64,8 +66,9 @@ public:
     int clientPort;
     QString dataPath;
     QProcess* nodeProc;
+    bool startNode;
     QProcess* clientProc;
-    QTimer    timerForStartExe;
+    bool startClient;
     DataRequireManager *dataRequire;
 };
 
@@ -89,25 +92,8 @@ void LinkBackStage::startExe(const QString &appDataPath)
     QString str = appDataPath;
     str.replace("\\","/");
     _p->dataPath =str + _p->dataPath;
-
-    connect(_p->nodeProc,&QProcess::stateChanged,this,&LinkBackStage::onNodeExeStateChanged);
-    QStringList strList;
-    if(1 == _p->chaintype)
-    {//测试链
-        strList << "--data-dir=" +_p->dataPath
-                << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->nodePort)
-                <<"--rewind-on-close"<<"--testnet";
-    }
-    else if(2 == _p->chaintype)
-    {//正式链
-        strList << "--data-dir=" +_p->dataPath
-                << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->nodePort)
-                <<"--rewind-on-close";
-    }
-
-    qDebug() << "start hx_node " << strList;
-    _p->nodeProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_NODE_EXE,strList);
-
+    //先启动node，然后启动client
+    startNodeProc();
 }
 
 bool LinkBackStage::exeRunning()
@@ -154,61 +140,34 @@ void LinkBackStage::ReadyClose()
     emit exeClosed();
 }
 
-void LinkBackStage::onNodeExeStateChanged()
+void LinkBackStage::startNodeProc()
 {
-    if(_p->nodeProc->state() == QProcess::Starting)
-    {
-        //qDebug() << QString("%1 is starting").arg("hx_node");
+    connect(_p->nodeProc,&QProcess::stateChanged,this,&LinkBackStage::onNodeExeStateChanged);
+    connect(_p->nodeProc,&QProcess::readyReadStandardError,this,&LinkBackStage::readNodeStandError);
+    connect(_p->nodeProc,&QProcess::readyReadStandardOutput,this,&LinkBackStage::readNodeStandOutput);
+    QStringList strList;
+    if(1 == _p->chaintype)
+    {//测试链
+        strList << "--data-dir=" +_p->dataPath
+                << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->nodePort)
+                <<"--rewind-on-close"<<"--testnet";
     }
-    else if(_p->nodeProc->state() == QProcess::Running)
-    {
-        qDebug() << QString("hx_node %1 is running").arg(_p->chaintype);
-        connect(&_p->timerForStartExe,&QTimer::timeout,this,&LinkBackStage::checkNodeExeIsReady);
-        _p->timerForStartExe.start(100);
+    else if(2 == _p->chaintype)
+    {//正式链
+        strList << "--data-dir=" +_p->dataPath
+                << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->nodePort)
+                <<"--rewind-on-close";
     }
-    else if(_p->nodeProc->state() == QProcess::NotRunning)
-    {
-        qDebug()<<QString("hx_node %1 is notrunning :%2").arg(_p->chaintype).arg(_p->nodeProc->errorString());
-        CommonDialog commonDialog(CommonDialog::OkOnly);
-        commonDialog.setText(tr("Fail to launch hx_node !"));
-        commonDialog.pop();
-        emit exeNotRunning();
-    }
+
+    qDebug() << "start hx_node " << strList;
+    _p->nodeProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_NODE_EXE,strList);
 }
 
-void LinkBackStage::checkNodeExeIsReady()
-{
-    QString str = _p->nodeProc->readAllStandardError();
-    if(!str.isEmpty())
-    {
-        qDebug() << "node exe standardError: " << str ;
-        emit AdditionalOutputMessage(str);
-    }
-    if(str.contains("handle_block") || str.contains("Chain ID is"))
-    {
-        _p->timerForStartExe.stop();
-        QTimer::singleShot(100,this,&LinkBackStage::delayedLaunchClient);
-    }
-}
-
-void LinkBackStage::checkClientExeIsReady()
-{
-    QString str = _p->clientProc->readAllStandardError();
-    if(!str.isEmpty())
-    {
-        qDebug() << "client exe standardError: " << str ;
-        emit AdditionalOutputMessage(str);
-    }
-    if(str.contains("Listening for incoming RPC"))
-    {
-        _p->timerForStartExe.stop();
-        QTimer::singleShot(10,this,&LinkBackStage::initSocketManager);
-    }
-}
-
-void LinkBackStage::delayedLaunchClient()
+void LinkBackStage::startClientProc()
 {
     connect(_p->clientProc,&QProcess::stateChanged,this,&LinkBackStage::onClientExeStateChanged);
+    connect(_p->clientProc,&QProcess::readyReadStandardError,this,&LinkBackStage::readClientStandError);
+    connect(_p->clientProc,&QProcess::readyReadStandardOutput,this,&LinkBackStage::readClientStandOutput);
 
     QStringList strList;
     if(1 == _p->chaintype)
@@ -229,18 +188,90 @@ void LinkBackStage::delayedLaunchClient()
     _p->clientProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_CLIENT_EXE,strList);
 }
 
+void LinkBackStage::readNodeStandError()
+{
+    QString str = _p->nodeProc->readAllStandardError();
+    if(str.isEmpty()) return;
+    qDebug() << "node exe standardError: " << str ;
+    emit AdditionalOutputMessage(str);
+    checkNodeMessage(str);
+}
+
+void LinkBackStage::readNodeStandOutput()
+{
+    QString str = _p->nodeProc->readAllStandardOutput();
+    if(str.isEmpty()) return;
+    qDebug() << "node exe standardOut: " << str ;
+    emit AdditionalOutputMessage(str);
+    checkNodeMessage(str);
+}
+
+void LinkBackStage::readClientStandError()
+{
+    QString str = _p->clientProc->readAllStandardError();
+    if(str.isEmpty()) return;
+    qDebug() << "client exe standardError: " << str ;
+    emit AdditionalOutputMessage(str);
+    checkClientMessage(str);
+
+}
+
+void LinkBackStage::readClientStandOutput()
+{
+    QString str = _p->clientProc->readAllStandardOutput();
+    if(str.isEmpty()) return;
+    qDebug() << "client exe standardOut: " << str ;
+    emit AdditionalOutputMessage(str);
+    checkClientMessage(str);
+}
+
+void LinkBackStage::checkNodeMessage(const QString &message)
+{
+    if(_p->startNode) return;
+    if(message.contains("Chain ID is"))
+    {
+        _p->startNode = true;
+        startClientProc();
+    }
+}
+
+void LinkBackStage::checkClientMessage(const QString &message)
+{
+    if(_p->startClient) return;
+    if(message.contains("Listening for incoming RPC"))
+    {
+        _p->startClient = true;
+        QTimer::singleShot(10,this,&LinkBackStage::initSocketManager);
+    }
+}
+
+void LinkBackStage::onNodeExeStateChanged()
+{
+    if(_p->nodeProc->state() == QProcess::Starting)
+    {
+    }
+    else if(_p->nodeProc->state() == QProcess::Running)
+    {
+        qDebug() << QString("hx_node %1 is running").arg(_p->chaintype);
+    }
+    else if(_p->nodeProc->state() == QProcess::NotRunning)
+    {
+        qDebug()<<QString("hx_node %1 is notrunning :%2").arg(_p->chaintype).arg(_p->nodeProc->errorString());
+        CommonDialog commonDialog(CommonDialog::OkOnly);
+        commonDialog.setText(tr("Fail to launch hx_node !"));
+        commonDialog.pop();
+        emit exeNotRunning();
+    }
+}
+
 void LinkBackStage::onClientExeStateChanged()
 {
     if(_p->clientProc->state() == QProcess::Starting)
     {
-        //qDebug() << QString("%1 is starting").arg("hx_client.exe");
     }
     else if(_p->clientProc->state() == QProcess::Running)
     {
         qDebug() << QString("hx_client %1 is running").arg(_p->chaintype);
-
-        connect(&_p->timerForStartExe,&QTimer::timeout,this,&LinkBackStage::checkClientExeIsReady);
-        _p->timerForStartExe.start(100);
 
     }
     else if(_p->clientProc->state() == QProcess::NotRunning)

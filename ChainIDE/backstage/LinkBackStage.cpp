@@ -201,7 +201,7 @@ void LinkBackStage::readNodeStandOutput()
 {
     QString str = _p->nodeProc->readAllStandardOutput();
     if(str.isEmpty()) return;
-    qDebug() << "node exe standardOut: " << str ;
+//    qDebug() << "node exe standardOut: " << str ;
     emit AdditionalOutputMessage(str);
     checkNodeMessage(str);
 }

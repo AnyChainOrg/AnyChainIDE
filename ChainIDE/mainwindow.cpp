@@ -56,7 +56,7 @@
 #include "ConvenientOp.h"
 #include "IDEUtil.h"
 
-#define DEBUG_FUNC 1
+#define DEBUG_FUNC_OFF
 
 class MainWindow::DataPrivate
 {
@@ -630,7 +630,7 @@ void MainWindow::on_compileAction_triggered()
 
 void MainWindow::on_debugAction_triggered()
 {
-#ifdef DEBUG_FUNC
+#ifdef DEBUG_FUNC_OFF
     ConvenientOp::ShowNotifyMessage(tr("Debug function is in progress!"));
     return;
 #endif

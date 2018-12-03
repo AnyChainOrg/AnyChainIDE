@@ -203,7 +203,7 @@ void LinkBackStage::readNodeStandOutput()
     if(str.isEmpty()) return;
 //    qDebug() << "node exe standardOut: " << str ;
     emit AdditionalOutputMessage(str);
-    checkNodeMessage(str);
+//    checkNodeMessage(str);
 }
 
 void LinkBackStage::readClientStandError()
@@ -222,7 +222,7 @@ void LinkBackStage::readClientStandOutput()
     if(str.isEmpty()) return;
     qDebug() << "client exe standardOut: " << str ;
     emit AdditionalOutputMessage(str);
-    checkClientMessage(str);
+//    checkClientMessage(str);
 }
 
 void LinkBackStage::checkNodeMessage(const QString &message)
@@ -240,8 +240,9 @@ void LinkBackStage::checkClientMessage(const QString &message)
     if(_p->startClient) return;
     if(message.contains("Listening for incoming RPC"))
     {
+        qDebug()<<"start datarequire hx";
         _p->startClient = true;
-        QTimer::singleShot(10,this,&LinkBackStage::initSocketManager);
+        initSocketManager();
     }
 }
 

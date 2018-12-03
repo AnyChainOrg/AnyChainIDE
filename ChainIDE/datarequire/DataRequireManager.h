@@ -23,6 +23,7 @@ public:
     bool isConnected()const;
 signals:
     void requireResponse(const QString &_rpcId,const QString &message);//回到远程回复
+    void requireOvertime(const QString &_rpcId,const QString &_rpcCmd);//请求超时
     void connectFinish();
 public slots:
     void requirePosted(const QString &_rpcId, const QString &_rpcCmd);//收到数据请求

@@ -76,7 +76,7 @@ void DataRequireManager::requirePosted(const QString &_rpcId, const QString & _r
 
 void DataRequireManager::receiveResponse(const QString &message)
 {
-    QString id = _p->pendingRpcs.empty()?"":_p->pendingRpcs.at(0).split(SPLITFLAG).at(0);
+    QString id = _p->pendingRpcs.empty()?"":_p->pendingRpcs.front().split(SPLITFLAG).front();
 
     {
         std::lock_guard<std::mutex> loc(_p->dataMutex);
@@ -95,6 +95,7 @@ void DataRequireManager::requireClear()
 {
     std::lock_guard<std::mutex> loc(_p->dataMutex);
     _p->isBusy = false;
+    _p->loopNumber = 0;
     _p->pendingRpcs.clear();
 }
 
@@ -151,18 +152,27 @@ void DataRequireManager::processRequire()
 {
     if(_p->isBusy)
     {
-        std::lock_guard<std::mutex> loc(_p->dataMutex);
-        ++_p->loopNumber;
+        {
+            std::lock_guard<std::mutex> loc(_p->dataMutex);
+            ++_p->loopNumber;
+        }
         if(_p->loopNumber >= MAXLOOPNUMBER)
         {
-            //请求超时，清楚该请求，继续下一个
+            //请求超时，清楚请求
             if(!_p->pendingRpcs.empty())
             {
                 qDebug()<<"require outtime "<<_p->pendingRpcs.front();
+                emit requireOvertime(_p->pendingRpcs.front().split(SPLITFLAG).front(),_p->pendingRpcs.front().split(SPLITFLAG).back());
+                //清空所有请求
+                requireClear();
+                return;
             }
-            _p->loopNumber = 0;
-            _p->pendingRpcs.removeFirst();
-            _p->isBusy = false;
+//            {
+//                std::lock_guard<std::mutex> loc(_p->dataMutex);
+//                _p->loopNumber = 0;
+//                _p->pendingRpcs.removeFirst();
+//                _p->isBusy = false;
+//            }
         }
     }
 
@@ -171,8 +181,9 @@ void DataRequireManager::processRequire()
     {
         std::lock_guard<std::mutex> loc(_p->dataMutex);
         _p->isBusy = true;
+        _p->loopNumber = 1;
     }
-    _p->requireBase->postData(_p->pendingRpcs.at(0).split(SPLITFLAG).at(1));
+    _p->requireBase->postData(_p->pendingRpcs.front().split(SPLITFLAG).back());
 }
 
 void DataRequireManager::InitManager()

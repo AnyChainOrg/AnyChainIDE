@@ -56,7 +56,7 @@
 #include "ConvenientOp.h"
 #include "IDEUtil.h"
 
-#define DEBUG_FUNC_OFF
+//#define DEBUG_FUNC_OFF
 
 class MainWindow::DataPrivate
 {

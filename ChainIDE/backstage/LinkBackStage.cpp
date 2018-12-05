@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QCoreApplication>
 #include <QDir>
+#include <QFile>
 #include <QTime>
 
 #include "DataDefine.h"
@@ -146,21 +147,40 @@ void LinkBackStage::startNodeProc()
     connect(_p->nodeProc,&QProcess::readyReadStandardError,this,&LinkBackStage::readNodeStandError);
     connect(_p->nodeProc,&QProcess::readyReadStandardOutput,this,&LinkBackStage::readNodeStandOutput);
     QStringList strList;
+    strList << "--data-dir=" +_p->dataPath
+            << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->nodePort)
+            <<"--rewind-on-close";
+    qDebug() << "start hx_node " << strList;
+
     if(1 == _p->chaintype)
     {//测试链
-        strList << "--data-dir=" +_p->dataPath
-                << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->nodePort)
-                <<"--rewind-on-close"<<"--testnet";
+        //启动前，先判断是否需要复制config到对应目录
+        QFile conf(_p->dataPath+"/config.ini");
+        if(conf.exists() && conf.open(QIODevice::ReadOnly|QIODevice::Text)){
+            if(!QString(conf.readAll()).contains("1.6.25")){
+                conf.close();
+                conf.remove();
+                QFile::copy(QCoreApplication::applicationDirPath()+"/"+DataDefine::LINK_TEST_CONFIG_PATH,_p->dataPath+"/config.ini");
+            }
+            else{
+                conf.close();
+            }
+        }
+        else{
+            QDir dir(_p->dataPath);
+            if(!dir.exists()){
+                dir.mkpath(_p->dataPath);
+            }
+
+            QFile::copy(QCoreApplication::applicationDirPath()+"/"+DataDefine::LINK_TEST_CONFIG_PATH,_p->dataPath+"/config.ini");
+        }
+        _p->nodeProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_NODE_TEST_EXE,strList);
     }
     else if(2 == _p->chaintype)
     {//正式链
-        strList << "--data-dir=" +_p->dataPath
-                << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->nodePort)
-                <<"--rewind-on-close";
+        _p->nodeProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_NODE_EXE,strList);
     }
 
-    qDebug() << "start hx_node " << strList;
-    _p->nodeProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_NODE_EXE,strList);
 }
 
 void LinkBackStage::startClientProc()
@@ -170,22 +190,18 @@ void LinkBackStage::startClientProc()
     connect(_p->clientProc,&QProcess::readyReadStandardOutput,this,&LinkBackStage::readClientStandOutput);
 
     QStringList strList;
+    strList << "--wallet-file=" + _p->dataPath + "/wallet.json"
+            << QString("--server-rpc-endpoint=ws://127.0.0.1:%1").arg(_p->nodePort)
+            << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->clientPort);
+    qDebug()<<"start hx_client"<<strList;
     if(1 == _p->chaintype)
     {
-        strList << "--wallet-file=" + _p->dataPath + "/wallet.json"
-                << QString("--server-rpc-endpoint=ws://127.0.0.1:%1").arg(_p->nodePort)
-                << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->clientPort)
-                <<"--testnet";;
+        _p->clientProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_CLIENT_TEST_EXE,strList);
     }
     else if(2 == _p->chaintype)
     {
-        strList << "--wallet-file=" + _p->dataPath + "/wallet.json"
-                << QString("--server-rpc-endpoint=ws://127.0.0.1:%1").arg(_p->nodePort)
-                << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->clientPort);
+        _p->clientProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_CLIENT_EXE,strList);
     }
-    qDebug()<<"start hx_client"<<strList;
-
-    _p->clientProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_CLIENT_EXE,strList);
 }
 
 void LinkBackStage::readNodeStandError()
@@ -238,7 +254,7 @@ void LinkBackStage::checkNodeMessage(const QString &message)
 void LinkBackStage::checkClientMessage(const QString &message)
 {
     if(_p->startClient) return;
-    if(message.contains("Listening for incoming RPC"))
+    if(message.contains("Listening for"))
     {
         qDebug()<<"start datarequire hx";
         _p->startClient = true;

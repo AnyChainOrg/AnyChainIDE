@@ -17,7 +17,7 @@ class DebugManager::DataPrivate
 public:
     DataPrivate()
         :currentBreakLine(-1)
-        ,uvmProcess(new QProcess)
+        ,uvmProcess(new QProcess())
         ,debuggerState(DebugDataStruct::Available)
     {
 
@@ -223,6 +223,8 @@ void DebugManager::InitDebugger()
 
 void DebugManager::ResetDebugger()
 {
+    //设置uvm工作目录为当前exe所在目录
+    _p->uvmProcess->setWorkingDirectory(QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR);
     setDebuggerState(DebugDataStruct::Available);
     SetCurrentBreakLine(-1);
 }

@@ -15,6 +15,7 @@ public:
     const DataManagerStruct::AddressContractDataPtr &getContract()const;
 
     void dealNewState();//处理第一次打开ide的情况
+    void initTestChain();//初始化测试数据
 
     void unlockWallet(const QString &password);
 public:

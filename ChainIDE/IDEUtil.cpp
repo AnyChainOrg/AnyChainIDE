@@ -273,11 +273,11 @@ void IDEUtil::showInExplorer(const QString &filePath)
         return;
     }
 
-#ifdef _WIN32
+#ifdef WIN32
     QStringList args;
     args << "/select," << QDir::toNativeSeparators(filePath);
     QProcess::startDetached("explorer", args);
-#elif TARGET_OS_MAC
+#elif defined(TARGET_OS_MAC)
     QStringList args;
     args << "-e";
     args << "tell application \"Finder\"";

@@ -310,6 +310,10 @@ bool ConvenientOp::readApiFromPath(const QString &filePath, DataDefine::ApiEvent
     foreach (QJsonValue obj, Apis) {
         results->addApi(obj.toString());
     }
+    QJsonArray offApis = jsonObject.value("offline_api").toArray();
+    foreach (QJsonValue obj, offApis) {
+        results->addOfflineApi(obj.toString());
+    }
 
     QJsonArray Events = jsonObject.value("event").toArray();
     foreach (QJsonValue obj, Events) {

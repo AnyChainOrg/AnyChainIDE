@@ -124,7 +124,7 @@ void DataManagerCTC::jsonDataUpdated(const QString &id, const QString &data)
         else
         {
             ChainIDE::getInstance()->postRPC("deal-is_new_create",IDEUtil::toJsonFormat("wallet_create",QJsonArray()<<"wallet"<<"11111111"));
-            if(ChainIDE::getInstance()->getStartChainTypes() & DataDefine::TEST)
+            if(ChainIDE::getInstance()->getCurrentChainType() == DataDefine::TEST)
             {
                 DataManagerCTC::getInstance()->initTestChain();
             }

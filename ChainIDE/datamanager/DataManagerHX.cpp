@@ -12,6 +12,7 @@
 
 #include "ChainIDE.h"
 #include "IDEUtil.h"
+#include "ConvenientOp.h"
 using namespace DataManagerStruct;
 
 static std::mutex dataMutex;
@@ -92,6 +93,15 @@ void DataManagerHX::dealNewState()
     ChainIDE::getInstance()->postRPC("deal-is_new",IDEUtil::toJsonFormat("is_new",QJsonArray()));
 }
 
+void DataManagerHX::initTestChain()
+{
+//    ChainIDE::getInstance()->postRPC("init_",IDEUtil::toJsonFormat("import_key",QJsonArray()<<"citizen0"<<"5JvyfrdzixXvvusmhkb7DvvMSuMXf8NQ96w5FAx46UkvdnqpxQH"));
+//    QFile::remove(ChainIDE::getInstance()->getConfigAppDataPath()+"/testhx/config.ini" );
+//    QFile::copy(QCoreApplication::applicationDirPath()+"/"+DataDefine::LINK_TEST_CONFIG_PATH,ChainIDE::getInstance()->getConfigAppDataPath()+"/testhx/config.ini" );
+    ChainIDE::getInstance()->postRPC("init_",IDEUtil::toJsonFormat("import_key",QJsonArray()<<"test"<<"5KGs5qcicF32Faepdeb9THfVaR4Xah3jPWMHQHsCAKEqo7bxaoP"));
+//    ConvenientOp::ShowNotifyMessage(tr("auto generate block will take effect after restart!"));
+}
+
 void DataManagerHX::unlockWallet(const QString &password)
 {
     ChainIDE::getInstance()->postRPC( "deal_unlock-lockpage", IDEUtil::toJsonFormat( "unlock", QJsonArray() << password ));
@@ -150,9 +160,17 @@ void DataManagerHX::jsonDataUpdated(const QString &id, const QString &data)
         {
             //设置默认密码 11111111
             ChainIDE::getInstance()->postRPC("deal-set_password",IDEUtil::toJsonFormat("set_password",QJsonArray()<<"11111111"));
+            ChainIDE::getInstance()->postRPC("deal-unlockchain",IDEUtil::toJsonFormat("unlock",QJsonArray()<<"11111111"));
+            if(ChainIDE::getInstance()->getCurrentChainType() == DataDefine::TEST)
+            {
+                DataManagerHX::getInstance()->initTestChain();
+            }
         }
-        //直接解锁
-        ChainIDE::getInstance()->postRPC("deal-unlockchain",IDEUtil::toJsonFormat("unlock",QJsonArray()<<"11111111"));
+        else
+        {
+            //直接解锁
+            ChainIDE::getInstance()->postRPC("deal-unlockchain",IDEUtil::toJsonFormat("unlock",QJsonArray()<<"11111111"));
+        }
     }
     //处理查询结果
     else if(id.startsWith("query-get_contract_"))

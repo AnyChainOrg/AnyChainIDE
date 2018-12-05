@@ -147,8 +147,10 @@ void DebugFunctionWidget::ResetStorageData()
     }
     QProcess pro;
     pro.setWorkingDirectory(QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR);
+    QStringList params(QStringList()<<"-k"<<_p->outFile<<"init"<<" "<<DataDefine::DEBUG_TEST_ADDRESS<<DataDefine::DEBUG_TEST_PUBKEY);
+    qDebug()<<"init storage"<<QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR+"/"+DataDefine::DEBUGGER_UVM_NAME<<params;
     pro.start(QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR+"/"+DataDefine::DEBUGGER_UVM_NAME,
-                QStringList()<<"-k"<<_p->outFile<<"init"<<DataDefine::DEBUG_TEST_ADDRESS<<DataDefine::DEBUG_TEST_PUBKEY);
+                params);
     pro.waitForFinished();
 }
 

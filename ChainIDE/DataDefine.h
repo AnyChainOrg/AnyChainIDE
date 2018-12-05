@@ -52,9 +52,12 @@ namespace DataDefine
 
     static const QString LINK_NODE_EXE = "backstage/hx_node.exe";
     static const QString LINK_CLIENT_EXE = "backstage/hx_client.exe";
+    static const QString LINK_NODE_TEST_EXE = "backstage/hx_node_test.exe";
+    static const QString LINK_CLIENT_TEST_EXE = "backstage/hx_client_test.exe";
+    static const QString LINK_TEST_CONFIG_PATH = "backstage/hx_test_config.ini";
 
     static const QString CTC_NODE_TEST_EXE = "backstage/ctc_test.exe";
-    static const QString CTC_TEST_SCRIPT = "backstage/import_wif_keys.json";
+    static const QString CTC_TEST_SCRIPT = "backstage/ctc_test_import_wif_keys.json";
     static const QString CTC_NODE_FORMAL_EXE = "backstage/ctc_formal.exe";
 #else
     static const QString UBCD_NODE_EXE = "backstage/ubcd";
@@ -62,9 +65,12 @@ namespace DataDefine
 
     static const QString LINK_NODE_EXE = "backstage/hx_node";
     static const QString LINK_CLIENT_EXE = "backstage/hx_client";
+    static const QString LINK_NODE_TEST_EXE = "backstage/hx_node_test";
+    static const QString LINK_CLIENT_TEST_EXE = "backstage/hx_client_test";
+    static const QString LINK_TEST_CONFIG_PATH = "backstage/hx_test_config.ini";
 
     static const QString CTC_NODE_TEST_EXE = "backstage/ctc_test";
-    static const QString CTC_TEST_SCRIPT = "backstage/import_wif_keys.json";
+    static const QString CTC_TEST_SCRIPT = "backstage/ctc_test_import_wif_keys.json";
     static const QString CTC_NODE_FORMAL_EXE = "backstage/ctc_formal";
 #endif
 

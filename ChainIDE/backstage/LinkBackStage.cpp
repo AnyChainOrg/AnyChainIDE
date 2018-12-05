@@ -155,26 +155,27 @@ void LinkBackStage::startNodeProc()
     if(1 == _p->chaintype)
     {//测试链
         //启动前，先判断是否需要复制config到对应目录
-        QFile conf(_p->dataPath+"/config.ini");
+        QFile conf(_p->dataPath+"/testnet/config.ini");
         if(conf.exists() && conf.open(QIODevice::ReadOnly|QIODevice::Text)){
             if(!QString(conf.readAll()).contains("1.6.25")){
                 conf.close();
                 conf.remove();
-                QFile::copy(QCoreApplication::applicationDirPath()+"/"+DataDefine::LINK_TEST_CONFIG_PATH,_p->dataPath+"/config.ini");
+                QFile::copy(QCoreApplication::applicationDirPath()+"/"+DataDefine::LINK_TEST_CONFIG_PATH,_p->dataPath+"/testnet/config.ini");
             }
             else{
                 conf.close();
             }
         }
         else{
-            QDir dir(_p->dataPath);
+            QDir dir(_p->dataPath+"/testnet");
             if(!dir.exists()){
-                dir.mkpath(_p->dataPath);
+                dir.mkpath(_p->dataPath+"/testnet");
             }
 
-            QFile::copy(QCoreApplication::applicationDirPath()+"/"+DataDefine::LINK_TEST_CONFIG_PATH,_p->dataPath+"/config.ini");
+            QFile::copy(QCoreApplication::applicationDirPath()+"/"+DataDefine::LINK_TEST_CONFIG_PATH,_p->dataPath+"/testnet/config.ini");
         }
-        _p->nodeProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_NODE_TEST_EXE,strList);
+        strList<<"--testnet";
+        _p->nodeProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_NODE_EXE,strList);
     }
     else if(2 == _p->chaintype)
     {//正式链
@@ -196,7 +197,8 @@ void LinkBackStage::startClientProc()
     qDebug()<<"start hx_client"<<strList;
     if(1 == _p->chaintype)
     {
-        _p->clientProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_CLIENT_TEST_EXE,strList);
+        strList<<"--testnet";
+        _p->clientProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_CLIENT_EXE,strList);
     }
     else if(2 == _p->chaintype)
     {

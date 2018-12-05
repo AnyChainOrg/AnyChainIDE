@@ -190,6 +190,7 @@ void DataManagerHX::jsonDataUpdated(const QString &id, const QString &data)
         int blockcount = object.value("head_block_num").toInt();
         if(1 <= blockcount)
         {
+            qDebug()<<"import nathan at"<< QString::number(blockcount);
             ChainIDE::getInstance()->postRPC("init_nathan",IDEUtil::toJsonFormat("import_key",QJsonArray()<<"nathan"<<"5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"));
         }
         else

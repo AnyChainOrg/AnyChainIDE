@@ -123,6 +123,8 @@ void DebugManager::fetchBreakPointsFinish(const std::vector<int> &data)
         ModifyBreakPoint(data);
 
         emit debugStarted();
+        //直接进行调试，因为默认会停在第一行
+        debugContinue();
 
     }
     else if(getDebuggerState() == DebugDataStruct::StepDebug)

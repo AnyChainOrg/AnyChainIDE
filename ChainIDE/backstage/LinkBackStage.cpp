@@ -150,7 +150,6 @@ void LinkBackStage::startNodeProc()
     strList << "--data-dir=" +_p->dataPath
             << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->nodePort)
             <<"--rewind-on-close";
-    qDebug() << "start hx_node " << strList;
 
     if(1 == _p->chaintype)
     {//测试链
@@ -175,10 +174,12 @@ void LinkBackStage::startNodeProc()
             QFile::copy(QCoreApplication::applicationDirPath()+"/"+DataDefine::LINK_TEST_CONFIG_PATH,_p->dataPath+"/testnet/config.ini");
         }
         strList<<"--testnet";
+        qDebug() << "start hx_node " << strList;
         _p->nodeProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_NODE_EXE,strList);
     }
     else if(2 == _p->chaintype)
     {//正式链
+        qDebug() << "start hx_node " << strList;
         _p->nodeProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_NODE_EXE,strList);
     }
 
@@ -194,15 +195,16 @@ void LinkBackStage::startClientProc()
     strList << "--wallet-file=" + _p->dataPath + "/wallet.json"
             << QString("--server-rpc-endpoint=ws://127.0.0.1:%1").arg(_p->nodePort)
             << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->clientPort);
-    qDebug()<<"start hx_client"<<strList;
     _p->clientProc->setWorkingDirectory(_p->dataPath);
     if(1 == _p->chaintype)
     {
         strList<<"--testnet";
+        qDebug()<<"start hx_client"<<strList;
         _p->clientProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_CLIENT_EXE,strList);
     }
     else if(2 == _p->chaintype)
     {
+        qDebug()<<"start hx_client"<<strList;
         _p->clientProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_CLIENT_EXE,strList);
     }
 }

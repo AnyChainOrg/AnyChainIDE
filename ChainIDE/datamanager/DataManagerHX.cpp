@@ -99,8 +99,8 @@ void DataManagerHX::initTestChain()
 //    QFile::remove(ChainIDE::getInstance()->getConfigAppDataPath()+"/testhx/config.ini" );
 //    QFile::copy(QCoreApplication::applicationDirPath()+"/"+DataDefine::LINK_TEST_CONFIG_PATH,ChainIDE::getInstance()->getConfigAppDataPath()+"/testhx/config.ini" );
     //等待第一个块产出，才开始导入有钱的私钥
-
-    ChainIDE::getInstance()->postRPC("init_get_info_test",IDEUtil::toJsonFormat("info",QJsonArray()));
+ChainIDE::getInstance()->postRPC("deal-unlockchain",IDEUtil::toJsonFormat("unlock",QJsonArray()<<"11111111"));
+//    ChainIDE::getInstance()->postRPC("init_get_info_test",IDEUtil::toJsonFormat("info",QJsonArray()));
 //    ConvenientOp::ShowNotifyMessage(tr("auto generate block will take effect after restart!"));
 }
 

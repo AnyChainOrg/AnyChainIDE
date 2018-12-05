@@ -246,7 +246,7 @@ void LinkBackStage::readClientStandOutput()
 void LinkBackStage::checkNodeMessage(const QString &message)
 {
     if(_p->startNode) return;
-    if(message.contains("Chain ID is"))
+    if(message.contains("Chain ID"))
     {
         _p->startNode = true;
         startClientProc();

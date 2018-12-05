@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QCoreApplication>
 #include <QDir>
+#include <QTimer>
 #include <QTextCodec>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -98,7 +99,9 @@ void DataManagerHX::initTestChain()
 //    ChainIDE::getInstance()->postRPC("init_",IDEUtil::toJsonFormat("import_key",QJsonArray()<<"citizen0"<<"5JvyfrdzixXvvusmhkb7DvvMSuMXf8NQ96w5FAx46UkvdnqpxQH"));
 //    QFile::remove(ChainIDE::getInstance()->getConfigAppDataPath()+"/testhx/config.ini" );
 //    QFile::copy(QCoreApplication::applicationDirPath()+"/"+DataDefine::LINK_TEST_CONFIG_PATH,ChainIDE::getInstance()->getConfigAppDataPath()+"/testhx/config.ini" );
-    ChainIDE::getInstance()->postRPC("init_",IDEUtil::toJsonFormat("import_key",QJsonArray()<<"nathan"<<"5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"));
+    QTimer::singleShot(500,[](){
+        ChainIDE::getInstance()->postRPC("init_",IDEUtil::toJsonFormat("import_key",QJsonArray()<<"nathan"<<"5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"));
+    });
 //    ConvenientOp::ShowNotifyMessage(tr("auto generate block will take effect after restart!"));
 }
 

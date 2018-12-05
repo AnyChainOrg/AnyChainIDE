@@ -195,6 +195,7 @@ void LinkBackStage::startClientProc()
             << QString("--server-rpc-endpoint=ws://127.0.0.1:%1").arg(_p->nodePort)
             << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->clientPort);
     qDebug()<<"start hx_client"<<strList;
+    _p->clientProc->setWorkingDirectory(_p->dataPath);
     if(1 == _p->chaintype)
     {
         strList<<"--testnet";

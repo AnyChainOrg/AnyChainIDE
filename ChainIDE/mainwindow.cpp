@@ -343,7 +343,7 @@ void MainWindow::exeErrorSlots()
     else
     {
         updateNeededSlot(false);
-        close();
+//        close();
     }
 }
 

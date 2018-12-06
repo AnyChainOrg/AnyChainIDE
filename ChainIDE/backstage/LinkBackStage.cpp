@@ -1,8 +1,8 @@
 #include "LinkBackStage.h"
 
 #include <QProcess>
-#include <QTimer>
 #include <QDebug>
+#include <QRegExp>
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
@@ -109,12 +109,14 @@ QProcess *LinkBackStage::getProcess() const
 
 void LinkBackStage::ReadyClose()
 {
+    disconnect(_p->clientProc,&QProcess::stateChanged,this,&LinkBackStage::onClientExeStateChanged);
+    disconnect(_p->clientProc,&QProcess::readyReadStandardError,this,&LinkBackStage::readClientStandError);
+    disconnect(_p->clientProc,&QProcess::readyReadStandardOutput,this,&LinkBackStage::readClientStandOutput);
+    disconnect(_p->nodeProc,&QProcess::stateChanged,this,&LinkBackStage::onNodeExeStateChanged);
+    disconnect(_p->nodeProc,&QProcess::readyReadStandardError,this,&LinkBackStage::readNodeStandError);
+    disconnect(_p->nodeProc,&QProcess::readyReadStandardOutput,this,&LinkBackStage::readNodeStandOutput);
     if(exeRunning())
     {
-        disconnect(_p->clientProc,&QProcess::stateChanged,this,&LinkBackStage::onClientExeStateChanged);
-        disconnect(_p->nodeProc,&QProcess::stateChanged,this,&LinkBackStage::onNodeExeStateChanged);
-        //先lock
-
         QSharedPointer<QEventLoop> loop = QSharedPointer<QEventLoop>(new QEventLoop());
 
         connect(_p->dataRequire,&DataRequireManager::requireResponse,[&loop,this](const QString &_rpcId,const QString &message){
@@ -138,6 +140,27 @@ void LinkBackStage::ReadyClose()
 
         loop->exec();
     }
+    else
+    {
+        if(_p->clientProc)
+        {
+            if(_p->clientProc->state() == QProcess::Running)
+            {
+                _p->clientProc->close();
+            }
+            delete _p->clientProc;
+            _p->clientProc = nullptr;
+        }
+        if(_p->nodeProc)
+        {
+            if(_p->nodeProc->state() == QProcess::Running)
+            {
+                _p->nodeProc->close();
+            }
+            delete _p->nodeProc;
+            _p->nodeProc = nullptr;
+        }
+    }
     emit exeClosed();
 }
 
@@ -148,8 +171,7 @@ void LinkBackStage::startNodeProc()
     connect(_p->nodeProc,&QProcess::readyReadStandardOutput,this,&LinkBackStage::readNodeStandOutput);
     QStringList strList;
     strList << "--data-dir=" +_p->dataPath
-            << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->nodePort)
-            <<"--rewind-on-close";
+            << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->nodePort);
 
     if(1 == _p->chaintype)
     {//测试链
@@ -173,12 +195,13 @@ void LinkBackStage::startNodeProc()
 
             QFile::copy(QCoreApplication::applicationDirPath()+"/"+DataDefine::LINK_TEST_CONFIG_PATH,_p->dataPath+"/testnet/config.ini");
         }
-        strList<<"--testnet";
+        strList<<"--testnet";//测试链启动测试机制
         qDebug() << "start hx_node " << strList;
         _p->nodeProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_NODE_EXE,strList);
     }
     else if(2 == _p->chaintype)
     {//正式链
+        strList<<"--rewind-on-close";//正式链启动回退策略
         qDebug() << "start hx_node " << strList;
         _p->nodeProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_NODE_EXE,strList);
     }
@@ -213,7 +236,7 @@ void LinkBackStage::readNodeStandError()
 {
     QString str = _p->nodeProc->readAllStandardError();
     if(str.isEmpty()) return;
-    qDebug() << "node exe standardError: " << str ;
+//    qDebug() << "node exe standardError: " << str ;
     emit AdditionalOutputMessage(str);
     checkNodeMessage(str);
 }
@@ -224,16 +247,15 @@ void LinkBackStage::readNodeStandOutput()
     if(str.isEmpty()) return;
 //    qDebug() << "node exe standardOut: " << str ;
     emit AdditionalOutputMessage(str);
-//    checkNodeMessage(str);
 }
 
 void LinkBackStage::readClientStandError()
 {
     QString str = _p->clientProc->readAllStandardError();
     if(str.isEmpty()) return;
-    qDebug() << "client exe standardError: " << str ;
+//    qDebug() << "client exe standardError: " << str ;
     emit AdditionalOutputMessage(str);
-    checkClientMessage(str);
+//    checkClientMessage(str);
 
 }
 
@@ -241,16 +263,17 @@ void LinkBackStage::readClientStandOutput()
 {
     QString str = _p->clientProc->readAllStandardOutput();
     if(str.isEmpty()) return;
-    qDebug() << "client exe standardOut: " << str ;
+//    qDebug() << "client exe standardOut: " << str ;
     emit AdditionalOutputMessage(str);
-//    checkClientMessage(str);
+    checkClientMessage(str);
 }
 
 void LinkBackStage::checkNodeMessage(const QString &message)
 {
     if(_p->startNode) return;
-    if(message.contains("Chain ID"))
+    if(message.contains("Chain ID") || message.contains("Chain ") || message.contains("ain ID "))
     {
+        qDebug()<<"find chain id is:"<<message;
         _p->startNode = true;
         startClientProc();
     }
@@ -259,9 +282,9 @@ void LinkBackStage::checkNodeMessage(const QString &message)
 void LinkBackStage::checkClientMessage(const QString &message)
 {
     if(_p->startClient) return;
-    if(message.contains("Listening for"))
+    if(message.contains("locked"))
     {
-        qDebug()<<"start datarequire hx";
+        qDebug()<<"find listening for incoming:"<<message;
         _p->startClient = true;
         initSocketManager();
     }
@@ -311,6 +334,7 @@ void LinkBackStage::initSocketManager()
     connect(_p->dataRequire,&DataRequireManager::requireResponse,this,&LinkBackStage::rpcReceivedSlot);
     connect(_p->dataRequire,&DataRequireManager::connectFinish,this,&BackStageBase::exeStarted);
 
+    qDebug()<<"start dateRequire";
     _p->dataRequire->startManager(DataRequireManager::WEBSOCKET);
 }
 

@@ -145,7 +145,10 @@ namespace DataManagerStruct {
             }
         }
 
-        void clear(){data.clear();}
+        void clear(){
+            std::lock_guard<std::mutex> lockguard(mutexLock);
+            data.clear();
+        }
     private:
         AddressContractVec data;
         std::mutex mutexLock;//数据修改锁

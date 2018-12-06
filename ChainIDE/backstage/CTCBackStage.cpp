@@ -123,7 +123,22 @@ QProcess *CTCBackStage::getProcess() const
 void CTCBackStage::ReadyClose()
 {
     disconnect(_p->nodeProc,&QProcess::stateChanged,this,&CTCBackStage::onNodeExeStateChanged);
-    _p->nodeProc->close();
+    if(exeRunning())
+    {
+        _p->nodeProc->close();
+    }
+    else
+    {
+        if(_p->nodeProc)
+        {
+            if(_p->nodeProc->state() == QProcess::Running)
+            {
+                _p->nodeProc->close();
+            }
+            delete _p->nodeProc;
+            _p->nodeProc = nullptr;
+        }
+    }
     emit exeClosed();
 }
 

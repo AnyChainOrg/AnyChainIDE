@@ -8,7 +8,7 @@
 #include "httpRequire.h"
 
 static const QString SPLITFLAG = "****";
-static const int MAXLOOPNUMBER = 2000;
+static const int MAXLOOPNUMBER = 3000;
 
 class DataRequireManager::DataPrivate
 {

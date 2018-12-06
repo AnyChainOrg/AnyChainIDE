@@ -99,9 +99,10 @@ void DebugManager::debugContinue()
 void DebugManager::stopDebug()
 {
     CancelBreakPoint();
-    ResetDebugger();
     _p->uvmProcess->write("continue\n");
+    _p->uvmProcess->waitForFinished();
     _p->uvmProcess->close();
+    ResetDebugger();
     emit debugFinish();
 }
 
@@ -264,7 +265,7 @@ void DebugManager::CancelBreakPoint()
 {
     setDebuggerState(DebugDataStruct::DeleteBreakPoint);
     _p->uvmProcess->write("delete\n");
-    _p->uvmProcess->waitForReadyRead();
+//    _p->uvmProcess->waitForFinished();
 }
 
 void DebugManager::SetCurrentBreakLine(int li)

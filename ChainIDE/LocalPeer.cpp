@@ -9,9 +9,9 @@ class LocalPeer::DataPrivate
 public:
 	DataPrivate()
 		:localServer(new QLocalServer())
-		, isRuning(false)
-        , OutTime(5000)
+        , isRuning(false)
         , ServerName(QCoreApplication::applicationName())
+        , OutTime(5000)
 	{
 	}
 	~DataPrivate()

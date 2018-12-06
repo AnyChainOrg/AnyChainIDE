@@ -86,14 +86,14 @@ void ConfigWidget::InitWidget()
 
     //初始化链类型
     ui->chainclass->clear();
-    ui->chainclass->addItem(tr("  UB"),static_cast<int>(DataDefine::UB));
     ui->chainclass->addItem(tr("  HX"),static_cast<int>(DataDefine::HX));
+    ui->chainclass->addItem(tr("  UB"),static_cast<int>(DataDefine::UB));
     ui->chainclass->addItem(tr("  CTC"),static_cast<int>(DataDefine::CTC));
-    if(ChainIDE::getInstance()->getChainClassConfig() ==DataDefine::UB)
+    if(ChainIDE::getInstance()->getChainClassConfig() ==DataDefine::HX)
     {
         ui->chainclass->setCurrentIndex(0);
     }
-    else if(ChainIDE::getInstance()->getChainClassConfig() ==DataDefine::HX)
+    else if(ChainIDE::getInstance()->getChainClassConfig() ==DataDefine::UB)
     {
         ui->chainclass->setCurrentIndex(1);
     }
@@ -103,25 +103,25 @@ void ConfigWidget::InitWidget()
     }
     //初始化启动类型
     ui->starttype->clear();
-    ui->starttype->addItem(tr("  All"),static_cast<int>(DataDefine::TEST|DataDefine::FORMAL));
     ui->starttype->addItem(tr("  Test"),static_cast<int>(DataDefine::TEST));
     ui->starttype->addItem(tr("  Formal"),static_cast<int>(DataDefine::FORMAL));
     ui->starttype->addItem(tr("  None"),static_cast<int>(DataDefine::NONE));
+    ui->starttype->addItem(tr("  All"),static_cast<int>(DataDefine::TEST|DataDefine::FORMAL));
     if(ChainIDE::getInstance()->getStartChainTypesConfig() ==DataDefine::TEST)
     {
-        ui->starttype->setCurrentIndex(1);
+        ui->starttype->setCurrentIndex(0);
     }
     else if(ChainIDE::getInstance()->getStartChainTypesConfig() ==DataDefine::FORMAL)
     {
-        ui->starttype->setCurrentIndex(2);
+        ui->starttype->setCurrentIndex(1);
     }
     else if(ChainIDE::getInstance()->getStartChainTypesConfig() ==DataDefine::NONE)
     {
-        ui->starttype->setCurrentIndex(3);
+        ui->starttype->setCurrentIndex(2);
     }
     else if((ChainIDE::getInstance()->getStartChainTypesConfig() & DataDefine::TEST) &&(ChainIDE::getInstance()->getStartChainTypesConfig() & DataDefine::FORMAL))
     {
-        ui->starttype->setCurrentIndex(0);
+        ui->starttype->setCurrentIndex(3);
     }
 
     //初始化数据路径

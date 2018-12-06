@@ -136,17 +136,26 @@ namespace DataDefine
         }
         void addApi(const QString &name){
             std::lock_guard<std::mutex> lock(lockMutex);
-            apis<<name;
+            if(!apis.contains(name))
+            {
+                apis<<name;
+            }
         }
 
         void addOfflineApi(const QString &name){
             std::lock_guard<std::mutex> lock(lockMutex);
-            offlineApis<<name;
+            if(!offlineApis.contains(name))
+            {
+                offlineApis<<name;
+            }
         }
 
         void addEvent(const QString &name){
             std::lock_guard<std::mutex> lock(lockMutex);
-            events<<name;
+            if(!events.contains(name))
+            {
+                events<<name;
+            }
         }
 
         const QStringList &getAllApiName()const{

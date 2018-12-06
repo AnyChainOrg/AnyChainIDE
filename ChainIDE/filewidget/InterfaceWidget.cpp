@@ -61,14 +61,6 @@ void InterfaceWidget::InitData()
     //寻找对应的.meta.json，，glua文件寻找自身名字的.meta.json文件，，java文件寻找自身所在目录的.meta.json文件
     QFileInfo file(_p->currentFilePath);
     QString filePath;
-//    if(_p->currentFilePath.endsWith("."+DataDefine::GLUA_SUFFIX))
-//    {//查找同样的文件名即可
-//        filePath = _p->currentFilePath+".meta.json";
-//    }
-//    else
-//    {//查找文件夹对应的名称的文件
-//        filePath = file.absoluteDir().absolutePath()+QDir::separator()+file.dir().dirName() + ".meta.json";
-//    }
     if(_p->currentFilePath.endsWith("."+DataDefine::GLUA_SUFFIX)||
        _p->currentFilePath.endsWith("."+DataDefine::JAVA_SUFFIX)||
        _p->currentFilePath.endsWith("."+DataDefine::CSHARP_SUFFIX)||
@@ -84,11 +76,26 @@ void InterfaceWidget::InitData()
 
     if(readApiFromPath(filePath,_p->data))
     {
+        QTreeWidgetItem *item = new QTreeWidgetItem(QStringList()<<"api");
+        item->setFlags(Qt::ItemIsEnabled);
+        ui->treeWidget_function->addTopLevelItem(item);
+
+        QTreeWidgetItem *item1 = new QTreeWidgetItem(QStringList()<<"offline-api");
+        item1->setFlags(Qt::ItemIsEnabled);
+        ui->treeWidget_function->addTopLevelItem(item1);
+
         QStringList apis = _p->data->getAllApiName();
         foreach (QString api, apis) {
-            QTreeWidgetItem *item = new QTreeWidgetItem(QStringList()<<api);
-            ui->treeWidget_function->addTopLevelItem(item);
+            QTreeWidgetItem *itema = new QTreeWidgetItem(QStringList()<<api);
+            item->addChild(itema);
         }
+
+        QStringList off_apis = _p->data->getAllOfflineApiName();
+        foreach (QString api, off_apis) {
+            QTreeWidgetItem *itema = new QTreeWidgetItem(QStringList()<<api);
+            item1->addChild(itema);
+        }
+        ui->treeWidget_function->expandAll();
 
         QStringList events = _p->data->getAllEventName();
         foreach (QString api, events) {
@@ -136,7 +143,10 @@ bool InterfaceWidget::readApiFromPath(const QString &filePath, DataDefine::ApiEv
     foreach (QJsonValue obj, Apis) {
         results->addApi(obj.toString());
     }
-
+    QJsonArray offApis = jsonObject.value("offline_api").toArray();
+    foreach (QJsonValue obj, offApis) {
+        results->addOfflineApi(obj.toString());
+    }
     QJsonArray Events = jsonObject.value("event").toArray();
     foreach (QJsonValue obj, Events) {
         results->addEvent(obj.toString());

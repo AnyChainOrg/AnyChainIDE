@@ -54,7 +54,7 @@ void CallContractWidgetCTC::CallContract()
 
     if(ui->fee->isEnabled() )
     {
-        ChainIDE::getInstance()->postRPC("call_callcontract",IDEUtil::toJsonFormat("contract_call_offline",QJsonArray()<<
+        ChainIDE::getInstance()->postRPC("call_callcontract",IDEUtil::toJsonFormat("contract_call",QJsonArray()<<
                                          ui->contractAddress->currentText()<<ui->callAddress->currentText()
                                          <<ui->function->currentText()<<ui->param->text()
                                          <<"CTC"<<ui->fee->text()
@@ -62,7 +62,7 @@ void CallContractWidgetCTC::CallContract()
     }
     else if(!ui->fee->isEnabled())
     {
-        ChainIDE::getInstance()->postRPC("call_callcontract",IDEUtil::toJsonFormat("invoke_contract_offline",QJsonArray()<<
+        ChainIDE::getInstance()->postRPC("call_callcontract",IDEUtil::toJsonFormat("contract_call_offline",QJsonArray()<<
                                          ui->contractAddress->currentText()<<ui->callAddress->currentText()
                                          <<ui->function->currentText()<<ui->param->text()));
     }

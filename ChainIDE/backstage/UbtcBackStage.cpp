@@ -134,9 +134,9 @@ QProcess *UbtcBackStage::getProcess() const
 
 void UbtcBackStage::ReadyClose()
 {
+    disconnect(_p->nodeProc,&QProcess::stateChanged,this,&UbtcBackStage::onNodeExeStateChanged);
     if(exeRunning())
     {
-        disconnect(_p->nodeProc,&QProcess::stateChanged,this,&UbtcBackStage::onNodeExeStateChanged);
         QSharedPointer<QEventLoop> loop = QSharedPointer<QEventLoop>(new QEventLoop());
 
         disconnect(_p->dataRequire,&DataRequireManager::requireResponse,this,&BackStageBase::rpcReceived);
@@ -154,6 +154,18 @@ void UbtcBackStage::ReadyClose()
         _p->dataRequire->requirePosted("id-stop-onCloseIDE",IDEUtil::toJsonFormat( "stop", QJsonArray()));
 
         loop->exec();
+    }
+    else
+    {
+        if(_p->nodeProc)
+        {
+            if(_p->nodeProc->state() == QProcess::Running)
+            {
+                _p->nodeProc->close();
+            }
+            delete _p->nodeProc;
+            _p->nodeProc = nullptr;
+        }
     }
     emit exeClosed();
 }

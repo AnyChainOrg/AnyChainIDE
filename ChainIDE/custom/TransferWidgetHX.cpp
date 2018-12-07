@@ -32,7 +32,6 @@ void TransferWidgetHX::transferSlot()
                                                    QJsonArray() << ui->comboBox_account->currentText()<< ui->lineEdit->text()
                                                    << ui->doubleSpinBox->text() << ui->comboBox_asset->currentText()
                                                    << "" << true ));
-
 }
 
 

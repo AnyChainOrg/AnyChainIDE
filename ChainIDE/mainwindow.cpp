@@ -51,6 +51,9 @@
 #include "custom/CallContractWidgetCTC.h"
 #include "custom/UpgradeContractDialogCTC.h"
 
+#include "custom/TransferToContractHX.h"
+#include "custom/TransferToContractCTC.h"
+
 #include "debugwidget/DebugFunctionWidget.h"
 
 #include "ConvenientOp.h"
@@ -448,7 +451,6 @@ void MainWindow::HideAction()
     ui->enterSandboxAction->setVisible(false);
     ui->exitSandboxAction->setVisible(false);
     ui->withdrawAction->setVisible(false);
-    ui->transferAction->setVisible(false);
     ui->importAction->setVisible(false);
     ui->exportAction->setVisible(false);
 
@@ -464,6 +466,8 @@ void MainWindow::HideAction()
     ui->callAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
     ui->registerAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
     ui->upgradeAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE &&
+                                  (ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::CTC));
+    ui->transferAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE &&
                                   (ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::CTC));
     ui->accountListAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
     ui->transferToAccountAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
@@ -532,7 +536,21 @@ void MainWindow::on_registerAction_triggered()
 
 void MainWindow::on_transferAction_triggered()
 {
-
+    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX)
+    {
+        TransferToContractHX dia;
+        dia.exec();
+    }
+    else if(ChainIDE::getInstance()->getChainClass() == DataDefine::UB)
+    {
+//        TransferToContractUB dia;
+//        dia.exec();
+    }
+    else if(ChainIDE::getInstance()->getChainClass() == DataDefine::CTC)
+    {
+        TransferToContractCTC dia;
+        dia.exec();
+    }
 }
 
 void MainWindow::on_callAction_triggered()

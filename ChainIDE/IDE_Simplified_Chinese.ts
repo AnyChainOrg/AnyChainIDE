@@ -1649,7 +1649,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="MainWindow.ui" line="508"/>
-        <location filename="MainWindow.cpp" line="767"/>
+        <location filename="MainWindow.cpp" line="785"/>
         <source>切换到正式链</source>
         <translation type="unfinished">切换到正式链</translation>
     </message>
@@ -1765,7 +1765,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="208"/>
+        <location filename="MainWindow.cpp" line="211"/>
         <source>IDE</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1794,72 +1794,72 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">IDE-HX正式链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="214"/>
+        <location filename="MainWindow.cpp" line="217"/>
         <source>IDE-UB TEST CHAIN</source>
         <translation type="unfinished">IDE-UB测试链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="218"/>
+        <location filename="MainWindow.cpp" line="221"/>
         <source>IDE-HX TEST CHAIN</source>
         <translation type="unfinished">IDE-HX测试链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="222"/>
+        <location filename="MainWindow.cpp" line="225"/>
         <source>IDE-CTC TEST CHAIN</source>
         <translation type="unfinished">IDE-CTC测试链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="229"/>
+        <location filename="MainWindow.cpp" line="232"/>
         <source>IDE-UB FORMAL CHAIN</source>
         <translation type="unfinished">IDE-UB正式链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="233"/>
+        <location filename="MainWindow.cpp" line="236"/>
         <source>IDE-HX FORMAL CHAIN</source>
         <translation type="unfinished">IDE-HX正式链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="237"/>
+        <location filename="MainWindow.cpp" line="240"/>
         <source>IDE-CTC FORMAL CHAIN</source>
         <translation type="unfinished">IDE-CTC正式链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="273"/>
+        <location filename="MainWindow.cpp" line="276"/>
         <source>请耐心等待程序自动关闭，不要关闭本窗口!</source>
         <translation type="unfinished">请耐心等待程序自动关闭，不要关闭本窗口!</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="301"/>
+        <location filename="MainWindow.cpp" line="304"/>
         <source>未找到Update更新程序包!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="337"/>
+        <location filename="MainWindow.cpp" line="340"/>
         <source>Backstage error! Please check the chain!</source>
         <translation type="unfinished">后台链错误，请检查区块链程序！</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="354"/>
+        <location filename="MainWindow.cpp" line="357"/>
         <source>Initialize done...</source>
         <translation type="unfinished">初始化完成。</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="361"/>
+        <location filename="MainWindow.cpp" line="364"/>
         <source>Initialize IDE,please wait...</source>
         <translation type="unfinished">正在初始化IDE，请稍等。。。</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="587"/>
+        <location filename="MainWindow.cpp" line="605"/>
         <source>Sure to switch to formal chain?</source>
         <translation type="unfinished">是否确认切换到正式链？</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="613"/>
+        <location filename="MainWindow.cpp" line="631"/>
         <source>文件已修改，是否保存?</source>
         <translation type="unfinished">文件已修改，是否保存？</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="634"/>
+        <location filename="MainWindow.cpp" line="652"/>
         <source>Debug function is in progress!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1868,7 +1868,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">单步调试功能正在紧急开发中，敬请期待！</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="767"/>
+        <location filename="MainWindow.cpp" line="785"/>
         <source>切换到测试链</source>
         <translation type="unfinished">切换到测试链</translation>
     </message>
@@ -2483,6 +2483,138 @@ p, li { white-space: pre-wrap; }
         <location filename="control/tabcontextmenu.cpp" line="54"/>
         <source>Open With Native App</source>
         <translation type="unfinished">使用默认查看器打开</translation>
+    </message>
+</context>
+<context>
+    <name>TransferToContractCTC</name>
+    <message>
+        <location filename="custom/TransferToContractCTC.ui" line="14"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractCTC.ui" line="26"/>
+        <source>转账至合约</source>
+        <translation type="unfinished">转账至合约</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractCTC.ui" line="58"/>
+        <source>调用者账户：</source>
+        <translation type="unfinished">调用者账户：</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractCTC.ui" line="78"/>
+        <source>币种：</source>
+        <translation type="unfinished">资产类型：</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractCTC.ui" line="98"/>
+        <source>账户余额：</source>
+        <translation type="unfinished">账户余额：</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractCTC.ui" line="118"/>
+        <source>数量：</source>
+        <translation type="unfinished">数量：</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractCTC.ui" line="128"/>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractCTC.ui" line="135"/>
+        <source>合约地址：</source>
+        <translation type="unfinished">合约地址：</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractCTC.ui" line="145"/>
+        <source>手续费：</source>
+        <translation type="unfinished">手续费：</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractCTC.ui" line="180"/>
+        <source>取消</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractCTC.ui" line="196"/>
+        <source>确定</source>
+        <translation type="unfinished">确定</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractCTC.cpp" line="96"/>
+        <source>approximatefee:%1</source>
+        <translation type="unfinished">预计手续费:%1</translation>
+    </message>
+</context>
+<context>
+    <name>TransferToContractHX</name>
+    <message>
+        <location filename="custom/TransferToContractHX.ui" line="14"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractHX.ui" line="29"/>
+        <source>确定</source>
+        <translation type="unfinished">确定</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractHX.ui" line="58"/>
+        <source>转账至合约</source>
+        <translation type="unfinished">转账至合约</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractHX.ui" line="74"/>
+        <source>取消</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractHX.ui" line="90"/>
+        <source>调用者账户：</source>
+        <translation type="unfinished">调用者账户：</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractHX.ui" line="110"/>
+        <source>币种：</source>
+        <translation type="unfinished">资产类型:</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractHX.ui" line="130"/>
+        <source>账户余额：</source>
+        <translation type="unfinished">账户余额：</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractHX.ui" line="140"/>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractHX.ui" line="147"/>
+        <source>合约地址：</source>
+        <translation type="unfinished">合约地址：</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractHX.ui" line="167"/>
+        <source>数量：</source>
+        <translation type="unfinished">数量：</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractHX.ui" line="187"/>
+        <source>调用步数：</source>
+        <translation type="unfinished">调用步数：</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractHX.ui" line="200"/>
+        <source>基本费用：</source>
+        <translation type="unfinished">基本费用：</translation>
+    </message>
+    <message>
+        <location filename="custom/TransferToContractHX.cpp" line="90"/>
+        <location filename="custom/TransferToContractHX.cpp" line="91"/>
+        <source>approximatefee:%1</source>
+        <translation type="unfinished">预计手续费:%1</translation>
     </message>
 </context>
 <context>

@@ -306,13 +306,16 @@ bool ConvenientOp::readApiFromPath(const QString &filePath, DataDefine::ApiEvent
 
     QJsonObject jsonObject = parse_doucment.object();
 
-    QJsonArray Apis = jsonObject.value("api").toArray();
-    foreach (QJsonValue obj, Apis) {
-        results->addApi(obj.toString());
-    }
     QJsonArray offApis = jsonObject.value("offline_api").toArray();
     foreach (QJsonValue obj, offApis) {
         results->addOfflineApi(obj.toString());
+    }
+
+    QJsonArray Apis = jsonObject.value("api").toArray();
+    foreach (QJsonValue obj, Apis) {
+        if(!results->getAllOfflineApiName().contains(obj.toString())){
+            results->addApi(obj.toString());
+        }
     }
 
     QJsonArray Events = jsonObject.value("event").toArray();

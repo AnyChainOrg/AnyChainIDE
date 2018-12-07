@@ -74,7 +74,7 @@ void InterfaceWidget::InitData()
         filePath = file.absoluteDir().absolutePath()+QDir::separator()+file.dir().dirName() + "."+DataDefine::META_SUFFIX;
     }
 
-    if(readApiFromPath(filePath,_p->data))
+    if(ConvenientOp::readApiFromPath(filePath,_p->data))
     {
         QTreeWidgetItem *item = new QTreeWidgetItem(QStringList()<<"api");
         item->setFlags(Qt::ItemIsEnabled);
@@ -115,42 +115,4 @@ void InterfaceWidget::InitWidget()
     ui->treeWidget_function->header()->setVisible(false);
     ui->title_Label->setVisible(false);
     ui->tabWidget->setCurrentIndex(0);
-}
-
-bool InterfaceWidget::readApiFromPath(const QString &filePath, DataDefine::ApiEventPtr &results)
-{
-    //解析json文档
-    if (!results) results = std::make_shared<DataDefine::ApiEvent>();
-    results->clear();
-
-    QFile contractFile(filePath);
-    if(!contractFile.open(QIODevice::ReadOnly)) return false;
-
-    QString jsonStr(contractFile.readAll());
-    contractFile.close();
-
-    QTextCodec* utfCodec = QTextCodec::codecForName("UTF-8");
-    QByteArray ba = utfCodec->fromUnicode(jsonStr);
-
-    QJsonParseError json_error;
-    QJsonDocument parse_doucment = QJsonDocument::fromJson(ba, &json_error);
-
-    if(json_error.error != QJsonParseError::NoError || !parse_doucment.isObject()) return false;
-
-    QJsonObject jsonObject = parse_doucment.object();
-
-    QJsonArray Apis = jsonObject.value("api").toArray();
-    foreach (QJsonValue obj, Apis) {
-        results->addApi(obj.toString());
-    }
-    QJsonArray offApis = jsonObject.value("offline_api").toArray();
-    foreach (QJsonValue obj, offApis) {
-        results->addOfflineApi(obj.toString());
-    }
-    QJsonArray Events = jsonObject.value("event").toArray();
-    foreach (QJsonValue obj, Events) {
-        results->addEvent(obj.toString());
-    }
-
-    return true;
 }

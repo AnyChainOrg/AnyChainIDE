@@ -92,7 +92,9 @@ private slots:
     void on_transferToAccountAction_triggered();
 
     //帮助菜单
-    void on_helpAction_triggered();
+    void on_contractHelpAction_triggered();
+
+    void on_editorHelpAction_triggered();
 
     void on_aboutAction_triggered();
 

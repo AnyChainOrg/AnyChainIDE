@@ -738,10 +738,16 @@ void MainWindow::on_transferToAccountAction_triggered()
 
 }
 
-void MainWindow::on_helpAction_triggered()
+void MainWindow::on_contractHelpAction_triggered()
 {
-//打开帮助网页
-    QDesktopServices::openUrl(QUrl(QString("file:///%1/%2").arg(QCoreApplication::applicationDirPath()).arg(DataDefine::HELP_PATH)));
+    //打开合约帮助网页
+    QDesktopServices::openUrl(QUrl(QString("file:///%1/%2").arg(QCoreApplication::applicationDirPath()).arg(DataDefine::CONTRACT_HELP_PATH)));
+}
+
+void MainWindow::on_editorHelpAction_triggered()
+{
+    //打开编辑器帮助网页
+    QDesktopServices::openUrl(QUrl(QString("file:///%1/%2").arg(QCoreApplication::applicationDirPath()).arg(DataDefine::EDITOR_HELP_PATH)));
 }
 
 void MainWindow::on_aboutAction_triggered()

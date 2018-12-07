@@ -19,8 +19,6 @@ public slots:
     void ShowInterface(const QString &filePath);
     void retranslator();
 private:
-    bool readApiFromPath(const QString &filePath, DataDefine::ApiEventPtr &results);
-private:
     void InitData();
 private:
     void InitWidget();

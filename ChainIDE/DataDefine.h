@@ -24,7 +24,8 @@ namespace DataDefine
     static const QString CODEMIRROR_WHITE = "codemirror/editor_white.html";
 
     //帮助网页路径
-    static const QString HELP_PATH = "help/html/index.html";
+    static const QString CONTRACT_HELP_PATH = "help/contract_html/index.html";
+    static const QString EDITOR_HELP_PATH = "help/editor_html/index.html";
 
     //合约文件后缀
     static const QString META_SUFFIX = "meta.json";

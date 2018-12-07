@@ -94,5 +94,7 @@
         <file>widgets_Chinese.qm</file>
         <file>widgets_English.qm</file>
         <file>pic/bg.png</file>
+        <file>template/newtoken.cs</file>
+        <file>template/newtoken.kt</file>
     </qresource>
 </RCC>

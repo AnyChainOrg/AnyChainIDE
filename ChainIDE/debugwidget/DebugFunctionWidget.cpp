@@ -1,6 +1,7 @@
 #include "DebugFunctionWidget.h"
 #include "ui_DebugFunctionWidget.h"
 
+#include <vector>
 #include <QDebug>
 #include <QProcess>
 #include <QTreeWidgetItem>
@@ -24,7 +25,9 @@ public:
         //.out
         outFile = gpcFile;
         outFile.replace(QRegExp(DataDefine::CONTRACT_SUFFIX+"$"),DataDefine::BYTE_OUT_SUFFIX);
-    }
+        //function-param-template
+        functionParamTemplate.emplace_back(std::make_pair("on_deposit",std::make_pair("[0-9]*","0")));
+        functionParamTemplate.emplace_back(std::make_pair("on_deposit_asset",std::make_pair("^{\"symbol\":\"[a-zA-A]*\",\"num\":[0-9]*,\"param\":\"[a-zA-Z0-9_]*\"}$","{\"symbol\":\"HX\",\"num\":0,\"param\":\"none\"}")));    }
 public:
     QString sourcefile;
     QString gpcFile;
@@ -34,8 +37,8 @@ public:
     QString api;
     QStringList params;
 
-    QString storageFile;
-
+    QString storageFile;//uvm数据内容
+    std::vector<std::pair<QString,std::pair<QString,QString>>> functionParamTemplate;//函数参数模板,function+正则+默认参数
 };
 
 DebugFunctionWidget::DebugFunctionWidget(const QString &sourcefile,const QString &gpcFile,QWidget *parent) :
@@ -166,4 +169,19 @@ void DebugFunctionWidget::InitWidget()
     connect(ui->okBtn,&QToolButton::clicked,this,&DebugFunctionWidget::OnOKClicked);
     connect(ui->param,&QLineEdit::returnPressed,this,&DebugFunctionWidget::OnOKClicked);
     connect(ui->resetDataBtn,&QToolButton::clicked,this,&DebugFunctionWidget::OnResetClicked);
+    connect(ui->function,static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated),[this](const QString &functionName){
+        auto res = std::find_if(_p->functionParamTemplate.begin(),_p->functionParamTemplate.end(),[functionName](std::pair<QString,std::pair<QString,QString>> info){
+                return info.first == functionName;});
+        if( res != _p->functionParamTemplate.end())
+        {
+//            QRegExpValidator *va = new QRegExpValidator(QRegExp((*res).second.first),this->ui->param);
+//            this->ui->param->setValidator(va);
+            this->ui->param->setText((*res).second.second);
+        }
+        else
+        {
+//            this->ui->param->setValidator(nullptr);
+            this->ui->param->clear();
+        }
+    });
 }

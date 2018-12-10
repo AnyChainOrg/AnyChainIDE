@@ -25,7 +25,8 @@ namespace DataDefine
 
     //帮助网页路径
     static const QString CONTRACT_HELP_PATH = "help/contract_html/index.html";
-    static const QString EDITOR_HELP_PATH = "help/editor_html/index.html";
+    static const QString EDITOR_HELP_PATH_CH = "help/editor_html/index_ch.html";
+    static const QString EDITOR_HELP_PATH_ENG = "help/editor_html/index_eng.html";
 
     //合约文件后缀
     static const QString META_SUFFIX = "meta.json";

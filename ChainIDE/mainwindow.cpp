@@ -765,7 +765,19 @@ void MainWindow::on_contractHelpAction_triggered()
 void MainWindow::on_editorHelpAction_triggered()
 {
     //打开编辑器帮助网页
-    QDesktopServices::openUrl(QUrl(QString("file:///%1/%2").arg(QCoreApplication::applicationDirPath()).arg(DataDefine::EDITOR_HELP_PATH)));
+    QString fileName = DataDefine::EDITOR_HELP_PATH_CH;
+    switch (ChainIDE::getInstance()->getCurrentLanguage()) {
+    case DataDefine::SimChinese:
+        fileName = DataDefine::EDITOR_HELP_PATH_CH;
+        break;
+    case DataDefine::English:
+        fileName = DataDefine::EDITOR_HELP_PATH_ENG;
+        break;
+    default:
+        fileName = DataDefine::EDITOR_HELP_PATH_CH;
+        break;
+    }
+    QDesktopServices::openUrl(QUrl(QString("file:///%1/%2").arg(QCoreApplication::applicationDirPath()).arg(fileName)));
 }
 
 void MainWindow::on_aboutAction_triggered()

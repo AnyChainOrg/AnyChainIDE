@@ -282,7 +282,7 @@ void LinkBackStage::checkNodeMessage(const QString &message)
 void LinkBackStage::checkClientMessage(const QString &message)
 {
     if(_p->startClient) return;
-    if(message.contains("locked") || message.contains("new "))
+    if(message.contains("locked") || message.contains("new"))
     {
         qDebug()<<"find listening for incoming:"<<message;
         _p->startClient = true;

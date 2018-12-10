@@ -38,7 +38,7 @@ void TransferToContractHX::transferSlot()
 void TransferToContractHX::testTransfer()
 {
     if(ui->comboBox_account->currentText().isEmpty() || ui->comboBox_asset->currentText().isEmpty() ||
-       ui->lineEdit_address->text().isEmpty() || ui->doubleSpinBox_ammount->value() < 1e-8)
+       ui->lineEdit_address->text().isEmpty() || ui->doubleSpinBox_ammount->value() < 1e-5)
     {
         return;
     }

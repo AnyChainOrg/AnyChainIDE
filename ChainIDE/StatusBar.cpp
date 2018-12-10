@@ -106,7 +106,9 @@ void StatusBar::jsonDataUpdated(const QString &id, const QString &data)
         QJsonObject jsonObject = parse_doucment.object();
         QJsonObject object = jsonObject.value("result").toObject();
         QString blockcount = QString::number(object.value("head_block_num").toInt());
-        QString age = object.value("head_block_age").toString();
+        QString age = object.value("head_block_age").toString().
+                      replace(QRegExp("second\\s"),"seconds ").replace(QRegExp("minute\\s"),"minutes ").replace(QRegExp("hour\\s"),"hours ").
+                      replace(QRegExp("day\\s"),"days ").replace(QRegExp("month\\s"),"months ").replace(QRegExp("year\\s"),"years ");
         setPermanentMessage(QStringLiteral("Height: ") + blockcount + QStringLiteral("  Age: ") + age);
     }
     else if("status-ctcinfo" == id)

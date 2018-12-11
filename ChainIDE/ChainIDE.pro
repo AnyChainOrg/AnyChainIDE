@@ -97,7 +97,9 @@ SOURCES += main.cpp\
     control/CustomShadowEffect.cpp \
     popwidget/AboutWidgetGit.cpp \
     custom/TransferToContractHX.cpp \
-    custom/TransferToContractCTC.cpp
+    custom/TransferToContractCTC.cpp \
+    popwidget/MoveableWidget.cpp \
+    popwidget/MessageTypeShowWidget.cpp
 
 HEADERS  += MainWindow.h \
     ChainIDE.h \
@@ -184,7 +186,9 @@ HEADERS  += MainWindow.h \
     control/CustomShadowEffect.h \
     popwidget/AboutWidgetGit.h \
     custom/TransferToContractHX.h \
-    custom/TransferToContractCTC.h
+    custom/TransferToContractCTC.h \
+    popwidget/MoveableWidget.h \
+    popwidget/MessageTypeShowWidget.h
 
 FORMS    += MainWindow.ui \
     popwidget/commondialog.ui \
@@ -230,7 +234,8 @@ FORMS    += MainWindow.ui \
     debugwidget/DebugFunctionWidget.ui \
     popwidget/AboutWidgetGit.ui \
     custom/TransferToContractHX.ui \
-    custom/TransferToContractCTC.ui
+    custom/TransferToContractCTC.ui \
+    popwidget/MessageTypeShowWidget.ui
 
 RESOURCES += \
     chain.qrc

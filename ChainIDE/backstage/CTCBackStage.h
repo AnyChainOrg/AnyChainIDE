@@ -23,6 +23,8 @@ private slots:
     void testStartedFinish();
     void testStartReceiveSlot(const QString &id,const QString &message);
 
+    void readNodeStandError();
+    void readNodeStandOutput();
 private:
     void initSocketManager();
 private:

@@ -91,6 +91,8 @@ private slots:
 
     void on_transferToAccountAction_triggered();
 
+    void on_BackStageMessageAction_triggered();
+
     //帮助菜单
     void on_contractHelpAction_triggered();
 
@@ -115,11 +117,12 @@ private:
     void NewFileCreated(const QString &filePath);
 private:
     void InitWidget();
-    void showSelectPathWidget();
-    void startChain();
-    void showWaitingForSyncWidget();
+    void showSelectPathWidget();//展示选择数据路径
+    void startChain();//开启后台
+    void showWaitingForSyncWidget();//显示等待界面
+    void initMessageWidget();//初始化后台消息展示框
 
-    void startWidget();
+    void startWidget();//真正打开mainwindow
 private:
     void refreshTitle();
     void refreshStyle();
@@ -133,6 +136,7 @@ protected:
 signals:
     void initFinish();
     void exeError();
+    void windowClose();//按下关闭窗口按钮后发出该信号
 };
 
 #endif // MAINWINDOW_H

@@ -56,8 +56,9 @@ void CallContractWidgetHX::CallContract()
 
     if(ui->gaslimit->isEnabled() && ui->gasprice->isEnabled())
     {
+        QString price = QString::number(ui->gasprice->value()/pow(10,5));
         ChainIDE::getInstance()->postRPC("call_callcontract",IDEUtil::toJsonFormat("invoke_contract",QJsonArray()<<
-                                         ui->callAddress->currentText()<<ui->gasprice->text()<<ui->gaslimit->text()
+                                         ui->callAddress->currentText()<<price<<ui->gaslimit->text()
                                          <<ui->contractAddress->currentText()<<ui->function->currentText()
                                          <<ui->param->text()));
     }

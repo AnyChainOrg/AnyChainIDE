@@ -50,8 +50,9 @@ void UpgradeContractDialogHX::UpgradeContract()
     {
         return;
     }
+    QString price = QString::number(ui->gasprice->value()/pow(10,5));
     ChainIDE::getInstance()->postRPC("upgrade_upgrade_contract",IDEUtil::toJsonFormat("upgrade_contract",QJsonArray()<<
-                                     ui->callAddress->currentText()<<ui->gasprice->text()<<ui->gaslimit->text()
+                                     ui->callAddress->currentText()<<price<<ui->gaslimit->text()
                                      <<ui->contractAddress->currentText()<<ui->contractName->text()
                                      <<ui->contractDes->text()));
 

@@ -1,6 +1,8 @@
 #include "waitingforsync.h"
 #include "ui_waitingforsync.h"
 
+#include <QScrollBar>
+
 WaitingForSync::WaitingForSync(QWidget *parent) :
     MoveableDialog(parent),
     ui(new Ui::WaitingForSync)
@@ -14,9 +16,15 @@ WaitingForSync::~WaitingForSync()
     delete ui;
 }
 
-void WaitingForSync::ReceiveMessage(const QString &message)
+void WaitingForSync::ReceiveMessage(const QString &message,int messageType)
 {
+    if(message.isEmpty()) return;
     ui->waitSync->append(message);
+    QScrollBar *scrollbar = ui->waitSync->verticalScrollBar();
+    if(scrollbar)
+    {
+        scrollbar->setSliderPosition(scrollbar->maximum());
+    }
 }
 
 void WaitingForSync::InitWidget()

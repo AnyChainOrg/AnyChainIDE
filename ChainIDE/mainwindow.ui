@@ -173,6 +173,7 @@
     <addaction name="consoleAction"/>
     <addaction name="accountListAction"/>
     <addaction name="transferToAccountAction"/>
+    <addaction name="BackStageMessageAction"/>
    </widget>
    <widget class="QMenu" name="helpMenu">
     <property name="contextMenuPolicy">
@@ -264,6 +265,7 @@
    <addaction name="consoleAction"/>
    <addaction name="accountListAction"/>
    <addaction name="transferToAccountAction"/>
+   <addaction name="BackStageMessageAction"/>
    <addaction name="separator"/>
    <addaction name="contractHelpAction"/>
   </widget>
@@ -678,6 +680,15 @@
    </property>
    <property name="shortcut">
     <string>F1</string>
+   </property>
+  </action>
+  <action name="BackStageMessageAction">
+   <property name="icon">
+    <iconset resource="chain.qrc">
+     <normaloff>:/pic/enterSandbox_enable.png</normaloff>:/pic/enterSandbox_enable.png</iconset>
+   </property>
+   <property name="text">
+    <string>后台输出</string>
    </property>
   </action>
  </widget>

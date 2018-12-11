@@ -228,6 +228,22 @@ void UbtcBackStage::testStartReceiveSlot(const QString &id, const QString &messa
     }
 }
 
+void UbtcBackStage::readNodeStandError()
+{
+    QString str = _p->nodeProc->readAllStandardError();
+    if(str.isEmpty()) return;
+    int chainFlag = static_cast<int>(_p->chaintype==1?DataDefine::NODE_ERROR_TEST_TYPE:DataDefine::NODE_ERROR_FORMAL_TYPE);
+    emit AdditionalOutputMessage(str,chainFlag);
+}
+
+void UbtcBackStage::readNodeStandOutput()
+{
+    QString str = _p->nodeProc->readAllStandardOutput();
+    if(str.isEmpty()) return;
+    int chainFlag = static_cast<int>(_p->chaintype==1?DataDefine::NODE_OUT_TEST_TYPE:DataDefine::NODE_OUT_FORMAL_TYPE);
+    emit AdditionalOutputMessage(str,chainFlag);
+}
+
 void UbtcBackStage::initSocketManager()
 {
     connect(_p->dataRequire,&DataRequireManager::connectFinish,this,&UbtcBackStage::testStartedFinish);

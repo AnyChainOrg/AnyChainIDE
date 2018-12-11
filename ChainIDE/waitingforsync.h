@@ -21,7 +21,7 @@ public:
 signals:
     void closeIDE();
 public slots:
-    void ReceiveMessage(const QString &message);
+    void ReceiveMessage(const QString &message,int messageType = 0);
 private:
     void InitWidget();
 private:

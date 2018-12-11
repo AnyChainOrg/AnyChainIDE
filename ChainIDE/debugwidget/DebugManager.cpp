@@ -199,6 +199,7 @@ void DebugManager::readyReadStandardOutputSlot()
     if(getDebuggerState() == DebugDataStruct::QueryInfo)
     {
         ParseQueryInfo(outPut);
+//        emit debugOutput(outPut);
     }
     else
     {

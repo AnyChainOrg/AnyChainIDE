@@ -220,7 +220,7 @@ QComboBox{
 }
 QComboBox:on{
     border:0px solid rgb(93,107,144);
-    color:white;
+    color:black;
     background-color:rgb(255,255,255);
 }
 QComboBox::drop-down {
@@ -422,4 +422,8 @@ QListView#completer{
     color:black;
     font:65 15px \"Microsoft YaHei UI\";
     outline:0px;
+}
+
+QWidget#MessageTypeShowWidget{
+    background-color:white;
 }

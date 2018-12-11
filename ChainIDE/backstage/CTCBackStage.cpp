@@ -83,6 +83,8 @@ void CTCBackStage::startExe(const QString &appDataPath)
     _p->dataPath =str + _p->dataPath;
 
     connect(_p->nodeProc,&QProcess::stateChanged,this,&CTCBackStage::onNodeExeStateChanged);
+    connect(_p->nodeProc,&QProcess::readyReadStandardError,this,&CTCBackStage::readNodeStandError);
+    connect(_p->nodeProc,&QProcess::readyReadStandardOutput,this,&CTCBackStage::readNodeStandOutput);
 
     //先确保目录存在
     QString dataPath = _p->dataPath;
@@ -123,6 +125,8 @@ QProcess *CTCBackStage::getProcess() const
 void CTCBackStage::ReadyClose()
 {
     disconnect(_p->nodeProc,&QProcess::stateChanged,this,&CTCBackStage::onNodeExeStateChanged);
+    disconnect(_p->nodeProc,&QProcess::readyReadStandardError,this,&CTCBackStage::readNodeStandError);
+    disconnect(_p->nodeProc,&QProcess::readyReadStandardOutput,this,&CTCBackStage::readNodeStandOutput);
     if(exeRunning())
     {
         _p->nodeProc->close();
@@ -197,6 +201,24 @@ void CTCBackStage::testStartReceiveSlot(const QString &id, const QString &messag
         connect(_p->dataRequire,&DataRequireManager::requireResponse,this,&CTCBackStage::rpcReceivedSlot);
         emit exeStarted();
     }
+}
+
+void CTCBackStage::readNodeStandError()
+{
+    QString str = _p->nodeProc->readAllStandardError();
+    if(str.isEmpty()) return;
+    int chainFlag = static_cast<int>(_p->chaintype==1?DataDefine::NODE_ERROR_TEST_TYPE:DataDefine::NODE_ERROR_FORMAL_TYPE);
+    emit AdditionalOutputMessage(str,chainFlag);
+
+}
+
+void CTCBackStage::readNodeStandOutput()
+{
+    QString str = _p->nodeProc->readAllStandardOutput();
+    if(str.isEmpty()) return;
+    int chainFlag = static_cast<int>(_p->chaintype==1?DataDefine::NODE_OUT_TEST_TYPE:DataDefine::NODE_OUT_FORMAL_TYPE);
+    emit AdditionalOutputMessage(str,chainFlag);
+
 }
 
 void CTCBackStage::initSocketManager()

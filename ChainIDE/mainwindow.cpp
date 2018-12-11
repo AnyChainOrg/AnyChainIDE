@@ -28,6 +28,7 @@
 #include "popwidget/commondialog.h"
 #include "popwidget/AboutWidget.h"
 #include "popwidget/AboutWidgetGit.h"
+#include "popwidget/MessageTypeShowWidget.h"
 
 #include "datamanager/DataManagerHX.h"
 #include "datamanager/DataManagerUB.h"
@@ -66,15 +67,21 @@ class MainWindow::DataPrivate
 public:
     DataPrivate()
         :updateNeeded(false)
+        ,backstageMessageShow(nullptr)
     {
 
     }
     ~DataPrivate()
     {
-
+        if(backstageMessageShow)
+        {
+            delete backstageMessageShow;
+            backstageMessageShow = nullptr;
+        }
     }
 public:
     bool updateNeeded;//是否需要更新文件---启动copy
+    MessageTypeShowWidget *backstageMessageShow;
 };
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -198,6 +205,8 @@ void MainWindow::startWidget()
     connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::addBreakPoint,ui->contentWidget,&ContextWidget::AddBreakPoint);
     connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::removeBreakPoint,ui->contentWidget,&ContextWidget::RemoveBreakPoint);
 
+    //初始化后台消息展示框
+    initMessageWidget();
     //调整按钮状态
     ModifyActionState();
     //状态栏开始更新
@@ -262,11 +271,13 @@ void MainWindow::refreshTranslator()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+
     if(!ui->contentWidget->closeAll())
     {
         event->ignore();
         return;
     }
+    emit windowClose();
     hide();
 
     if((ChainIDE::getInstance()->getStartChainTypes() | DataDefine::NONE) ||
@@ -354,7 +365,7 @@ void MainWindow::showWaitingForSyncWidget()
 {
     WaitingForSync *waitingForSync = new WaitingForSync();
     waitingForSync->setAttribute(Qt::WA_DeleteOnClose);
-    connect(this,&MainWindow::initFinish,std::bind(&WaitingForSync::ReceiveMessage,waitingForSync,tr("Initialize done...")));
+    connect(this,&MainWindow::initFinish,std::bind(&WaitingForSync::ReceiveMessage,waitingForSync,tr("Initialize done..."),0));
     connect(this,&MainWindow::initFinish,waitingForSync,&WaitingForSync::close);
     connect(this,&MainWindow::exeError,waitingForSync,&WaitingForSync::close);
     connect(ChainIDE::getInstance()->getBackStageManager(),&BackStageManager::OutputMessage,waitingForSync,&WaitingForSync::ReceiveMessage);
@@ -364,6 +375,24 @@ void MainWindow::showWaitingForSyncWidget()
     waitingForSync->ReceiveMessage(tr("Initialize IDE,please wait..."));
 
     waitingForSync->show();
+}
+
+void MainWindow::initMessageWidget()
+{
+    if(_p->backstageMessageShow) return;
+    _p->backstageMessageShow = new MessageTypeShowWidget();
+    //消息匹配框
+    std::map<DataDefine::BackStageMessageType,QString> messTypeMap = {
+        {DataDefine::NONE_TYPE,""},
+        {DataDefine::NODE_ERROR_TEST_TYPE,"node_test"} ,{DataDefine::NODE_OUT_TEST_TYPE,"node_test"} ,
+        {DataDefine::NODE_ERROR_FORMAL_TYPE,"node_formal"} ,{DataDefine::NODE_OUT_FORMAL_TYPE,"node_formal"} ,
+        {DataDefine::CLIENT_ERROR_TEST_TYPE,"client_test"} ,{DataDefine::CLIENT_OUT_TEST_TYPE,"client_test"} ,
+        {DataDefine::CLIENT_ERROR_FORMAL_TYPE,"client_formal"} ,{DataDefine::CLIENT_OUT_FORMAL_TYPE,"client_formal"}
+    };
+    connect(ChainIDE::getInstance()->getBackStageManager(),&BackStageManager::OutputMessage,[this,messTypeMap](const QString &message,int messageType){
+        this->_p->backstageMessageShow->ReceiveMessage(message,messTypeMap.at(static_cast<DataDefine::BackStageMessageType>(messageType)));
+    });
+    connect(this,&MainWindow::windowClose,_p->backstageMessageShow,&MessageTypeShowWidget::close);
 }
 
 void MainWindow::on_newContractAction_glua_triggered()
@@ -462,7 +491,6 @@ void MainWindow::HideAction()
         ui->tabWidget->removeTab(1);
     }
 
-
     ui->callAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
     ui->registerAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
     ui->upgradeAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE &&
@@ -472,6 +500,7 @@ void MainWindow::HideAction()
     ui->accountListAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
     ui->transferToAccountAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
     ui->consoleAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
+    ui->BackStageMessageAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
 
 }
 
@@ -754,6 +783,14 @@ void MainWindow::on_transferToAccountAction_triggered()
         transfer.exec();
     }
 
+}
+
+void MainWindow::on_BackStageMessageAction_triggered()
+{
+    if(_p->backstageMessageShow)
+    {
+        _p->backstageMessageShow->show();
+    }
 }
 
 void MainWindow::on_contractHelpAction_triggered()

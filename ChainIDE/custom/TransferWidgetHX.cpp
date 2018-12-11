@@ -26,7 +26,10 @@ TransferWidgetHX::~TransferWidgetHX()
 
 void TransferWidgetHX::transferSlot()
 {
-
+    if(ui->comboBox_account->currentText().isEmpty() || ui->lineEdit->text().isEmpty() || ui->comboBox_asset->currentText().isEmpty())
+    {
+        return;
+    }
     ChainIDE::getInstance()->postRPC( "transfer-to",
                                      IDEUtil::toJsonFormat( "transfer_to_address",
                                                    QJsonArray() << ui->comboBox_account->currentText()<< ui->lineEdit->text()

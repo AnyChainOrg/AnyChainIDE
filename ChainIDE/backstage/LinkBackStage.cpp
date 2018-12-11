@@ -237,7 +237,8 @@ void LinkBackStage::readNodeStandError()
     QString str = _p->nodeProc->readAllStandardError();
     if(str.isEmpty()) return;
 //    qDebug() << "node exe standardError: " << str ;
-    emit AdditionalOutputMessage(str);
+    int chainFlag = static_cast<int>(_p->chaintype==1?DataDefine::NODE_ERROR_TEST_TYPE:DataDefine::NODE_ERROR_FORMAL_TYPE);
+    emit AdditionalOutputMessage(str,chainFlag);
     checkNodeMessage(str);
 }
 
@@ -246,7 +247,8 @@ void LinkBackStage::readNodeStandOutput()
     QString str = _p->nodeProc->readAllStandardOutput();
     if(str.isEmpty()) return;
 //    qDebug() << "node exe standardOut: " << str ;
-    emit AdditionalOutputMessage(str);
+    int chainFlag = static_cast<int>(_p->chaintype==1?DataDefine::NODE_OUT_TEST_TYPE:DataDefine::NODE_OUT_FORMAL_TYPE);
+    emit AdditionalOutputMessage(str,chainFlag);
 }
 
 void LinkBackStage::readClientStandError()
@@ -254,7 +256,8 @@ void LinkBackStage::readClientStandError()
     QString str = _p->clientProc->readAllStandardError();
     if(str.isEmpty()) return;
 //    qDebug() << "client exe standardError: " << str ;
-    emit AdditionalOutputMessage(str);
+    int chainFlag = static_cast<int>(_p->chaintype==1?DataDefine::CLIENT_ERROR_TEST_TYPE:DataDefine::CLIENT_ERROR_FORMAL_TYPE);
+    emit AdditionalOutputMessage(str,chainFlag);
 //    checkClientMessage(str);
 
 }
@@ -264,7 +267,8 @@ void LinkBackStage::readClientStandOutput()
     QString str = _p->clientProc->readAllStandardOutput();
     if(str.isEmpty()) return;
 //    qDebug() << "client exe standardOut: " << str ;
-    emit AdditionalOutputMessage(str);
+    int chainFlag = static_cast<int>(_p->chaintype==1?DataDefine::CLIENT_OUT_TEST_TYPE:DataDefine::CLIENT_OUT_FORMAL_TYPE);
+    emit AdditionalOutputMessage(str,chainFlag);
     checkClientMessage(str);
 }
 

@@ -18,7 +18,7 @@ signals:
     void backStageRunError();//后台运行失败
     void closeBackStageFinish();//后台关闭完成
 
-    void OutputMessage(const QString &);
+    void OutputMessage(const QString &message,int types);//内容+来源标识
 public:
     //数据发送
     void postRPC(const QString &_rpcId, const QString &_rpcCmd, DataDefine::ChainType chainType);

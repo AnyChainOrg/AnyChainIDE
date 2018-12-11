@@ -30,9 +30,16 @@ TransferToContractHX::~TransferToContractHX()
 
 void TransferToContractHX::transferSlot()
 {
+    if(ui->comboBox_account->currentText().isEmpty() || ui->comboBox_asset->currentText().isEmpty() ||
+       ui->lineEdit_address->text().isEmpty() || ui->doubleSpinBox_ammount->value() < 1e-5)
+    {
+        return;
+    }
+
+    QString price = QString::number(ui->gasprice->value()/pow(10,5));
     ChainIDE::getInstance()->postRPC("transtocontract_formal",IDEUtil::toJsonFormat("transfer_to_contract",QJsonArray()<<
                                       ui->comboBox_account->currentText()<< ui->lineEdit_address->text()<<ui->doubleSpinBox_ammount->text()
-                                      <<ui->comboBox_asset->currentText()<<""<<ui->gasprice->text()<<ui->gaslimit->text()<<true));
+                                      <<ui->comboBox_asset->currentText()<<""<<price<<ui->gaslimit->text()<<true));
 }
 
 void TransferToContractHX::testTransfer()
@@ -151,6 +158,7 @@ double TransferToContractHX::parseTestCallFee(const QString &data) const
         qDebug()<<json_error.errorString();
         return 0;
     }
+    qDebug()<<"ggggggggggg"<<data;
     QJsonArray resultArray = parse_doucment.object().value("result").toArray();
     foreach (QJsonValue addr, resultArray) {
         if(addr.isObject())

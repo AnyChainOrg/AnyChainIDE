@@ -87,7 +87,7 @@ void BackStageManager::startBackStage()
         {
             connect(_p->testBackStage,&BackStageBase::exeStarted,this,&BackStageManager::exeStartedSlots);
             connect(_p->testBackStage,&BackStageBase::exeNotRunning,this,&BackStageManager::backStageRunError);
-            emit OutputMessage(tr("start test chain ..."));
+            emit OutputMessage(tr("start test chain ..."),static_cast<int>(DataDefine::NONE_TYPE));
             _p->testBackStage->startExe(_p->dataPath);
         }
     }
@@ -97,7 +97,7 @@ void BackStageManager::startBackStage()
         {
             connect(_p->formalBackStage,&BackStageBase::exeStarted,this,&BackStageManager::exeStartedSlots);
             connect(_p->formalBackStage,&BackStageBase::exeNotRunning,this,&BackStageManager::backStageRunError);
-            emit OutputMessage(tr("start formal chain ..."));
+            emit OutputMessage(tr("start formal chain ..."),static_cast<int>(DataDefine::NONE_TYPE));
             _p->formalBackStage->startExe(_p->dataPath);
         }
     }
@@ -218,7 +218,7 @@ void BackStageManager::exeStartedSlots()
         {
             test = true;
             disconnect(_p->testBackStage,&BackStageBase::exeStarted,this,&BackStageManager::exeStartedSlots);
-            emit OutputMessage(tr("test chain start finish..."));
+            emit OutputMessage(tr("test chain start finish..."),static_cast<int>(DataDefine::NONE_TYPE));
         }
     }
     else
@@ -234,7 +234,7 @@ void BackStageManager::exeStartedSlots()
         {
           formal = true;
           disconnect(_p->formalBackStage,&BackStageBase::exeStarted,this,&BackStageManager::exeStartedSlots);
-          emit OutputMessage(tr("formal chain start finish..."));
+          emit OutputMessage(tr("formal chain start finish..."),static_cast<int>(DataDefine::NONE_TYPE));
         }
     }
     else

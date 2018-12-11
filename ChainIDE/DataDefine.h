@@ -1,6 +1,7 @@
 #ifndef DATADEFINE_H
 #define DATADEFINE_H
 
+#include <map>
 #include <memory>
 #include <mutex>
 #include <vector>
@@ -18,6 +19,13 @@ namespace DataDefine
     //链类型--测试、正式
     enum ChainType{NONE = 0,TEST = 1 << 0,FORMAL = 1 << 1};
     typedef int ChainTypes;
+
+    //输出类型
+    enum BackStageMessageType{NONE_TYPE = 0,
+                              NODE_ERROR_TEST_TYPE = 1<<0,NODE_OUT_TEST_TYPE = 1<<1,
+                              NODE_ERROR_FORMAL_TYPE = 1<<2,NODE_OUT_FORMAL_TYPE = 1<<3,
+                              CLIENT_ERROR_TEST_TYPE = 1<<4,CLIENT_OUT_TEST_TYPE = 1<<5,
+                              CLIENT_ERROR_FORMAL_TYPE = 1<<6,CLIENT_OUT_FORMAL_TYPE = 1<<7};
 
     //codemirror路径
     static const QString CODEMIRROR_BLACK = "codemirror/editor_black.html";

@@ -27,7 +27,8 @@ public:
         outFile.replace(QRegExp(DataDefine::CONTRACT_SUFFIX+"$"),DataDefine::BYTE_OUT_SUFFIX);
         //function-param-template
         functionParamTemplate.emplace_back(std::make_pair("on_deposit",std::make_pair("[0-9]*","0")));
-        functionParamTemplate.emplace_back(std::make_pair("on_deposit_asset",std::make_pair("^{\"symbol\":\"[a-zA-A]*\",\"num\":[0-9]*,\"param\":\"[a-zA-Z0-9_]*\"}$","{\"symbol\":\"HX\",\"num\":0,\"param\":\"none\"}")));    }
+        functionParamTemplate.emplace_back(std::make_pair("on_deposit_asset",std::make_pair("^{\"symbol\":\"[a-zA-A]*\",\"num\":[0-9]*,\"param\":\"[a-zA-Z0-9_]*\"}$","{\"symbol\":\"HX\",\"num\":0,\"param\":\"none\"}")));
+    }
 public:
     QString sourcefile;
     QString gpcFile;

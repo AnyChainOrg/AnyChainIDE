@@ -28,7 +28,7 @@ void MessageTypeShowWidget::ReceiveMessage(const QString &message, const QString
             break;
         }
     }
-    if(bro == nullptr)
+    if(nullptr == bro)
     {
         bro = new QTextBrowser(ui->tabWidget);
         ui->tabWidget->addTab(bro,messageLabel);

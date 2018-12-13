@@ -685,7 +685,9 @@
   <action name="BackStageMessageAction">
    <property name="icon">
     <iconset resource="chain.qrc">
-     <normaloff>:/pic/enterSandbox_enable.png</normaloff>:/pic/enterSandbox_enable.png</iconset>
+     <normaloff>:/pic/enterSandbox_enable.png</normaloff>
+     <disabledoff>:/pic/enterSandbox_disable.png</disabledoff>
+     <disabledon>:/pic/enterSandbox_disable.png</disabledon>:/pic/enterSandbox_enable.png</iconset>
    </property>
    <property name="text">
     <string>后台输出</string>

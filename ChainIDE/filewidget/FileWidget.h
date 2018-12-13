@@ -19,6 +19,7 @@ public:
 
 signals:
     void fileClicked(QString filepath);
+    void dirClicked(QString dirpath);
 
     void compileFile();
     void deleteFile();

@@ -13,6 +13,7 @@ public:
     ~FileView();
 signals:
     void fileClicked(QString filepath);
+    void dirClicked(QString dirPath);
 
     void compileFile();
     void deleteFile();

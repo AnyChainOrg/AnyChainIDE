@@ -15,8 +15,8 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     virtual ~MainWindow();
 private slots:
-    void exeStartedSlots();
-    void exeErrorSlots();
+    void exeStartedSlots();//响应后台开启成功
+    void exeErrorSlots();//响应后台开启失败
 
     //文件菜单
     void on_newContractAction_glua_triggered();
@@ -42,6 +42,8 @@ private slots:
     void on_saveAllAction_triggered();
 
     void on_closeAction_triggered();
+
+    void on_closeAllAction_triggered();
 
     void on_configAction_triggered();
 
@@ -72,8 +74,6 @@ private slots:
 
     void on_debugAction_triggered();
     void startDebugSlot(const QString &gpcFile);
-    void errorCompileSlot();
-
 
     void on_stopAction_triggered();
 
@@ -100,8 +100,7 @@ private slots:
 
     void on_aboutAction_triggered();
 
-    void on_closeAllAction_triggered();
-
+    //左侧文件树+链上合约树切换
     void tabWidget_currentChanged(int index);
 
     void HideAction();

@@ -176,6 +176,7 @@ void MainWindow::startWidget()
     connect(ui->fileWidget,&FileWidget::deleteFile,ui->contentWidget,&ContextWidget::CheckDeleteFile);
     connect(ui->fileWidget,&FileWidget::newFile,this,&MainWindow::NewFile);
     connect(ui->fileWidget,&FileWidget::fileClicked,this,&MainWindow::ModifyActionState);
+    connect(ui->fileWidget,&FileWidget::dirClicked,this,&MainWindow::ModifyActionState);
 
     connect(ui->contentWidget,&ContextWidget::fileSelected,ui->fileWidget,&FileWidget::SelectFile);
     connect(ui->contentWidget,&ContextWidget::contentStateChange,this,&MainWindow::ModifyActionState);
@@ -271,15 +272,18 @@ void MainWindow::refreshTranslator()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-
+    //关闭窗口是先判断编辑窗是否要关闭
     if(!ui->contentWidget->closeAll())
     {
         event->ignore();
         return;
     }
+//正式开始关闭操作
+    //发送关闭窗口信号，其他额外添加的关闭操作可连接此信号进行关闭，例如添加的后台消息输出框
     emit windowClose();
+    //隐藏自身，防止用户因为关闭太慢以为ide死掉了
     hide();
-
+    //先关闭后台链
     if((ChainIDE::getInstance()->getStartChainTypes() | DataDefine::NONE) ||
        (ChainIDE::getInstance()->getBackStageManager()->isBackStageRunning()))
     {
@@ -291,9 +295,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
         dia.exec();
     }
-
+    //关闭调试器
     ChainIDE::getInstance()->getDebugManager()->ReadyClose();
-
+    //判断是否需要更新重启---github无此需求，之前热更新有该需求
     if(_p->updateNeeded)
     {//开启copy，
         QString updateExe = QCoreApplication::applicationDirPath()+"/Update";
@@ -316,6 +320,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
             dia.exec();
         }
     }
+    //调用父类关闭其他默认内容
     QMainWindow::closeEvent(event);
 }
 
@@ -462,6 +467,7 @@ void MainWindow::on_closeAllAction_triggered()
 
 void MainWindow::tabWidget_currentChanged(int index)
 {
+    //左侧tab页面切换到合约界面时，需要刷新一下合约树
     if(index == 1)
     {
         ui->contractWidget->RefreshTree();
@@ -476,31 +482,34 @@ void MainWindow::HideAction()
     ui->tabWidget->tabBar()->setUsesScrollButtons(false);
 
     //隐藏不需要的按钮
-    ui->savaAsAction->setVisible(false);
-    ui->enterSandboxAction->setVisible(false);
-    ui->exitSandboxAction->setVisible(false);
-    ui->withdrawAction->setVisible(false);
-    ui->importAction->setVisible(false);
-    ui->exportAction->setVisible(false);
+    ui->savaAsAction->setVisible(false);//另存为
+    ui->enterSandboxAction->setVisible(false);//进入沙盒模式
+    ui->exitSandboxAction->setVisible(false);//离开沙盒模式
+    ui->withdrawAction->setVisible(false);//销毁合约
+    ui->importAction->setVisible(false);//导入合约
+    ui->exportAction->setVisible(false);//到处合约
 
     //启动链引起的按钮显示不可用
+    //切换正式、测试链--仅在同时加载了测试、正式链才会显示
     ui->changeChainAction->setVisible((ChainIDE::getInstance()->getStartChainTypes() & DataDefine::TEST) &&
                                       (ChainIDE::getInstance()->getStartChainTypes() & DataDefine::FORMAL));
+    //合约界面，不启动链，则不显示链上合约
     if(ChainIDE::getInstance()->getStartChainTypes() == DataDefine::NONE)
     {
         ui->tabWidget->removeTab(1);
     }
-
+    //调用合约、注册合约、账户、转账、控制台、后台输出按钮，不启动链的时候，都不显示
     ui->callAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
     ui->registerAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
-    ui->upgradeAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE &&
-                                  (ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::CTC));
-    ui->transferAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE &&
-                                  (ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::CTC));
     ui->accountListAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
     ui->transferToAccountAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
     ui->consoleAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
     ui->BackStageMessageAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
+    //升级合约、转账到合约，只有HX、CTC链支持，，，，UB这玩意有点复杂，先不支持了
+    ui->upgradeAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE &&
+                                  (ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::CTC));
+    ui->transferAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE &&
+                                  (ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::CTC));
 
 }
 
@@ -509,19 +518,17 @@ void MainWindow::on_configAction_triggered()
     ConfigWidget config;
     if(config.pop())
     {
+        //语言修改时、默认自动刷新，，其他的需要重启，比如样式表，，无法在不重新加载的时候更换，因为已经打开的编辑框无法更换
         refreshTranslator();
-        refreshStyle();
+//        refreshStyle();
     }
 
 }
 
 void MainWindow::on_exitAction_triggered()
 {
-    if(ui->contentWidget->closeAll())
-    {
-        hide();
-        close();
-    }
+    //关闭操作
+    close();
 }
 
 void MainWindow::on_undoAction_triggered()
@@ -687,7 +694,9 @@ void MainWindow::on_debugAction_triggered()
         if(ui->compileAction->isEnabled())
         {
             connect(ChainIDE::getInstance()->getCompileManager(),&CompileManager::finishCompile,this,&MainWindow::startDebugSlot);
-            connect(ChainIDE::getInstance()->getCompileManager(),&CompileManager::errorCompile,this,&MainWindow::errorCompileSlot);
+            connect(ChainIDE::getInstance()->getCompileManager(),&CompileManager::errorCompile,[this](){
+                disconnect(ChainIDE::getInstance()->getCompileManager(),&CompileManager::finishCompile,this,&MainWindow::startDebugSlot);
+            });
             on_compileAction_triggered();
 
         }
@@ -702,6 +711,7 @@ void MainWindow::startDebugSlot(const QString &gpcFile)
 {
     disconnect(ChainIDE::getInstance()->getCompileManager(),&CompileManager::finishCompile,this,&MainWindow::startDebugSlot);
 
+    //获取调试函数、参数
     DebugFunctionWidget fun(ui->fileWidget->getCurrentFile(),gpcFile);
     fun.exec();
     if(fun.SelectedApi().isEmpty()) return;
@@ -713,11 +723,6 @@ void MainWindow::startDebugSlot(const QString &gpcFile)
     QString outfile = gpcFile;
     outfile.replace(QRegExp(DataDefine::CONTRACT_SUFFIX+"$"),DataDefine::BYTE_OUT_SUFFIX);
     ChainIDE::getInstance()->getDebugManager()->startDebug(ui->fileWidget->getCurrentFile(),outfile,fun.SelectedApi(),fun.ApiParams());
-}
-
-void MainWindow::errorCompileSlot()
-{
-    disconnect(ChainIDE::getInstance()->getCompileManager(),&CompileManager::finishCompile,this,&MainWindow::startDebugSlot);
 }
 
 void MainWindow::on_stopAction_triggered()
@@ -829,20 +834,29 @@ void MainWindow::on_aboutAction_triggered()
 
 void MainWindow::ModifyActionState()
 {
-    ui->changeChainAction->setIcon(ChainIDE::getInstance()->getCurrentChainType()==DataDefine::TEST?
-                                   QIcon(":/pic/changeToFormal_enable.png"):QIcon(":/pic/changeToTest_enable.png"));
-    ui->changeChainAction->setText(ChainIDE::getInstance()->getCurrentChainType()==DataDefine::TEST?tr("切换到正式链"):tr("切换到测试链"));
-
+    //切换正式、测试链的按钮状态
+    if(ui->changeChainAction->isVisible())
+    {
+        ui->changeChainAction->setIcon(ChainIDE::getInstance()->getCurrentChainType()==DataDefine::TEST?
+                                       QIcon(":/pic/changeToFormal_enable.png"):QIcon(":/pic/changeToTest_enable.png"));
+        ui->changeChainAction->setText(ChainIDE::getInstance()->getCurrentChainType()==DataDefine::TEST?tr("切换到正式链"):tr("切换到测试链"));
+    }
+    //编辑菜单功能
     ui->undoAction->setEnabled(ui->contentWidget->isUndoAvailable());
     ui->redoAction->setEnabled(ui->contentWidget->isRedoAvailable());
     ui->saveAction->setEnabled(ui->contentWidget->currentFileUnsaved());
     ui->saveAllAction->setEnabled(ui->contentWidget->hasFileUnsaved());
+    ui->closeAction->setEnabled(!ui->contentWidget->getCurrentFilePath().isEmpty());
+    ui->closeAllAction->setEnabled(!ui->contentWidget->getCurrentFilePath().isEmpty());
+    ui->savaAsAction->setEnabled(ui->fileWidget->getCurrentFile().isEmpty());
 
+    //编译功能
     QString currentFile = ui->fileWidget->getCurrentFile();
-    if(currentFile.endsWith(DataDefine::GLUA_SUFFIX)||
+    if(QFileInfo(currentFile).isFile()&&
+       (currentFile.endsWith(DataDefine::GLUA_SUFFIX)||
        currentFile.endsWith(DataDefine::JAVA_SUFFIX)||
        currentFile.endsWith(DataDefine::CSHARP_SUFFIX)||
-       currentFile.endsWith(DataDefine::KOTLIN_SUFFIX))
+       currentFile.endsWith(DataDefine::KOTLIN_SUFFIX)))
     {
         ui->compileAction->setEnabled(true);
 
@@ -852,8 +866,6 @@ void MainWindow::ModifyActionState()
         ui->compileAction->setEnabled(false);
     }
 
-    ui->savaAsAction->setEnabled(ui->fileWidget->getCurrentFile().isEmpty());
-
     //调试按钮单独设置
     ModifyDebugActionState();
 }
@@ -861,10 +873,11 @@ void MainWindow::ModifyActionState()
 void MainWindow::ModifyDebugActionState()
 {
     QString currentFile = ui->fileWidget->getCurrentFile();
-    if(currentFile.endsWith(DataDefine::GLUA_SUFFIX)||
+    if(QFileInfo(currentFile).isFile()&&
+       (currentFile.endsWith(DataDefine::GLUA_SUFFIX)||
        currentFile.endsWith(DataDefine::JAVA_SUFFIX)||
        currentFile.endsWith(DataDefine::CSHARP_SUFFIX)||
-       currentFile.endsWith(DataDefine::KOTLIN_SUFFIX))
+       currentFile.endsWith(DataDefine::KOTLIN_SUFFIX)))
     {
         ui->debugAction->setEnabled(true);
     }
@@ -874,6 +887,22 @@ void MainWindow::ModifyDebugActionState()
     }
     ui->stepAction->setEnabled(ChainIDE::getInstance()->getDebugManager()->getDebuggerState() != DebugDataStruct::Available);
     ui->stopAction->setEnabled(ChainIDE::getInstance()->getDebugManager()->getDebuggerState() != DebugDataStruct::Available);
+
+    QString contentFile = ui->contentWidget->getCurrentFilePath();
+    if(QFileInfo(contentFile).isFile()&&
+       (contentFile.endsWith(DataDefine::GLUA_SUFFIX)||
+       contentFile.endsWith(DataDefine::JAVA_SUFFIX)||
+       contentFile.endsWith(DataDefine::CSHARP_SUFFIX)||
+       contentFile.endsWith(DataDefine::KOTLIN_SUFFIX)))
+    {
+        ui->TabBreaPointAction->setEnabled(true);
+        ui->DeleteAllBreakpointAction->setEnabled(true);
+    }
+    else
+    {
+        ui->TabBreaPointAction->setEnabled(false);
+        ui->DeleteAllBreakpointAction->setEnabled(false);
+    }
 }
 
 void MainWindow::NewFile(const QString &suffix ,const QString &defaultPath)

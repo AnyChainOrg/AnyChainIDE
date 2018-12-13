@@ -126,6 +126,10 @@ void FileView::IndexClicked(const QModelIndex &index)
         {
             emit fileClicked(getFilePathFromIndex(index));
         }
+        else if(file.isDir())
+        {
+            emit dirClicked(getFilePathFromIndex(index));
+        }
     }
 }
 

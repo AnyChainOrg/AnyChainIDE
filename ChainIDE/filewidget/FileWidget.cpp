@@ -36,9 +36,10 @@ void FileWidget::retranslator()
 
 void FileWidget::InitWidget()
 {
-    ui->splitter->setSizes(QList<int>()<<0.66*this->height()<<0.34*this->height());
+    ui->splitter->setSizes(QList<int>()<<static_cast<int>(0.66*this->height())<<static_cast<int>(0.34*this->height()));
 
     connect(ui->fileTree,&FileView::fileClicked,this,&FileWidget::fileClicked);
+    connect(ui->fileTree,&FileView::dirClicked,this,&FileWidget::dirClicked);
     connect(ui->fileTree,&FileView::fileClicked,ui->interWidget,&InterfaceWidget::ShowInterface);
 
     connect(ui->fileTree,&FileView::compileFile,this,&FileWidget::compileFile);

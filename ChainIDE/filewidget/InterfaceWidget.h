@@ -18,10 +18,14 @@ public:
 public slots:
     void ShowInterface(const QString &filePath);
     void retranslator();
+private slots:
+    void CopyFunction();
+    void customContextMenuRequestedSlot(const QPoint &pos);
 private:
     void InitData();
 private:
     void InitWidget();
+    void InitContextMenu();
 private:
     Ui::InterfaceWidget *ui;
     class DataPrivate;

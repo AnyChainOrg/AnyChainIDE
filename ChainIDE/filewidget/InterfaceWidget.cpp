@@ -10,6 +10,8 @@
 #include <QToolButton>
 #include <QDebug>
 #include <QTabBar>
+#include <QMenu>
+#include <QClipboard>
 
 #include "IDEUtil.h"
 #include "ConvenientOp.h"
@@ -19,12 +21,22 @@ class InterfaceWidget::DataPrivate
 public:
     DataPrivate()
         :data(std::make_shared<DataDefine::ApiEvent>())
+        ,contextMenu(new QMenu())
     {
 
+    }
+    ~DataPrivate()
+    {
+        if(contextMenu)
+        {
+            delete contextMenu;
+            contextMenu = nullptr;
+        }
     }
 public:
     QString currentFilePath;
     DataDefine::ApiEventPtr data;
+    QMenu *contextMenu;//右键菜单
 };
 
 InterfaceWidget::InterfaceWidget(QWidget *parent) :
@@ -115,4 +127,37 @@ void InterfaceWidget::InitWidget()
     ui->treeWidget_function->header()->setVisible(false);
     ui->title_Label->setVisible(false);
     ui->tabWidget->setCurrentIndex(0);
+
+    InitContextMenu();
+}
+
+void InterfaceWidget::InitContextMenu()
+{
+    QAction *copyAction = new QAction(tr("复制"),this);
+    connect(copyAction,&QAction::triggered,this,&InterfaceWidget::CopyFunction);
+    _p->contextMenu->addAction(copyAction);
+
+    ui->treeWidget_function->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->treeWidget_function,&QTreeWidget::customContextMenuRequested,this,&InterfaceWidget::customContextMenuRequestedSlot);
+    ui->treeWidget_event->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->treeWidget_event,&QTreeWidget::customContextMenuRequested,this,&InterfaceWidget::customContextMenuRequestedSlot);
+}
+
+void InterfaceWidget::CopyFunction()
+{
+    QTreeWidget*tree = 0==ui->tabWidget->currentIndex()?ui->treeWidget_function:ui->treeWidget_event;
+    if(!tree) return;
+    if(QTreeWidgetItem *item = tree->currentItem())
+    {
+        QApplication::clipboard()->setText(item->text(0));
+    }
+}
+
+void InterfaceWidget::customContextMenuRequestedSlot(const QPoint &pos)
+{
+    QTreeWidget *tree = dynamic_cast<QTreeWidget*>(sender());
+    if(tree && tree->currentItem())
+    {
+        _p->contextMenu->exec(QCursor::pos());
+    }
 }

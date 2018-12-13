@@ -21,6 +21,14 @@ public:
     {
 
     }
+    ~DataPrivate()
+    {
+        if(contextMenu)
+        {
+            delete contextMenu;
+            contextMenu = nullptr;
+        }
+    }
 public:
     QMenu *contextMenu;//右键菜单
 };

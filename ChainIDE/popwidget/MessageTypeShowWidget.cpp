@@ -37,7 +37,7 @@ void MessageTypeShowWidget::ReceiveMessage(const QString &message, const QString
     QScrollBar *scrollbar = bro->verticalScrollBar();
     if(scrollbar)
     {
-        scrollbar->setSliderPosition(scrollbar->maximum());
+//        scrollbar->setSliderPosition(scrollbar->maximum());
     }
 }
 

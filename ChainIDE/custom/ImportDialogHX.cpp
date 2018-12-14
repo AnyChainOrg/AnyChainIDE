@@ -150,4 +150,13 @@ void ImportDialogHX::on_pathBtn_clicked()
 {
     QString file = QFileDialog::getOpenFileName(this, tr("Choose your private key file."),"","(*.lpk *.elpk)");
     ui->privatekey->setText(file);
+
+    KeyDataPtr data = std::make_shared<KeyDataInfo>();
+    if(KeyDataUtil::ReadaPrivateKeyFromPath(ui->privatekey->text(),data))
+    {
+        if(!data->AccountName.isEmpty())
+        {
+            ui->name->setText(data->AccountName);
+        }
+    }
 }

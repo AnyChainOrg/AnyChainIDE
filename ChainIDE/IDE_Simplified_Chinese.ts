@@ -926,12 +926,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="contractwidget/ContractWidget.cpp" line="129"/>
+        <location filename="contractwidget/ContractWidget.cpp" line="137"/>
         <source>合约描述</source>
         <translation type="unfinished">合约描述</translation>
     </message>
     <message>
-        <location filename="contractwidget/ContractWidget.cpp" line="148"/>
+        <location filename="contractwidget/ContractWidget.cpp" line="156"/>
         <source>复制地址</source>
         <translation type="unfinished">复制地址</translation>
     </message>
@@ -1103,6 +1103,11 @@ p, li { white-space: pre-wrap; }
         <location filename="contractwidget/FunctionWidget.ui" line="70"/>
         <source>离线函数</source>
         <translation type="unfinished">离线函数</translation>
+    </message>
+    <message>
+        <location filename="contractwidget/FunctionWidget.cpp" line="116"/>
+        <source>复制</source>
+        <translation type="unfinished">复制</translation>
     </message>
 </context>
 <context>
@@ -1403,6 +1408,11 @@ p, li { white-space: pre-wrap; }
         <source>事件</source>
         <translation type="unfinished">事件</translation>
     </message>
+    <message>
+        <location filename="filewidget/InterfaceWidget.cpp" line="136"/>
+        <source>复制</source>
+        <translation type="unfinished">复制</translation>
+    </message>
 </context>
 <context>
     <name>LinkBackStage</name>
@@ -1622,7 +1632,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">编辑器帮助</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="691"/>
+        <location filename="MainWindow.ui" line="693"/>
         <source>后台输出</source>
         <translation type="unfinished">后台输出</translation>
     </message>
@@ -1654,7 +1664,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="MainWindow.ui" line="510"/>
-        <location filename="MainWindow.cpp" line="824"/>
+        <location filename="MainWindow.cpp" line="842"/>
         <source>切换到正式链</source>
         <translation type="unfinished">切换到正式链</translation>
     </message>
@@ -1770,7 +1780,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="212"/>
+        <location filename="MainWindow.cpp" line="221"/>
         <source>IDE</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1799,72 +1809,72 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">IDE-HX正式链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="218"/>
+        <location filename="MainWindow.cpp" line="227"/>
         <source>IDE-UB TEST CHAIN</source>
         <translation type="unfinished">IDE-UB测试链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="222"/>
+        <location filename="MainWindow.cpp" line="231"/>
         <source>IDE-HX TEST CHAIN</source>
         <translation type="unfinished">IDE-HX测试链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="226"/>
+        <location filename="MainWindow.cpp" line="235"/>
         <source>IDE-CTC TEST CHAIN</source>
         <translation type="unfinished">IDE-CTC测试链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="233"/>
+        <location filename="MainWindow.cpp" line="242"/>
         <source>IDE-UB FORMAL CHAIN</source>
         <translation type="unfinished">IDE-UB正式链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="237"/>
+        <location filename="MainWindow.cpp" line="246"/>
         <source>IDE-HX FORMAL CHAIN</source>
         <translation type="unfinished">IDE-HX正式链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="241"/>
+        <location filename="MainWindow.cpp" line="250"/>
         <source>IDE-CTC FORMAL CHAIN</source>
         <translation type="unfinished">IDE-CTC正式链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="279"/>
+        <location filename="MainWindow.cpp" line="291"/>
         <source>请耐心等待程序自动关闭，不要关闭本窗口!</source>
         <translation type="unfinished">请耐心等待程序自动关闭，不要关闭本窗口!</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="307"/>
+        <location filename="MainWindow.cpp" line="319"/>
         <source>未找到Update更新程序包!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="343"/>
+        <location filename="MainWindow.cpp" line="356"/>
         <source>Backstage error! Please check the chain!</source>
         <translation type="unfinished">后台链错误，请检查区块链程序！</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="360"/>
+        <location filename="MainWindow.cpp" line="373"/>
         <source>Initialize done...</source>
         <translation type="unfinished">初始化完成。</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="367"/>
+        <location filename="MainWindow.cpp" line="380"/>
         <source>Initialize IDE,please wait...</source>
         <translation type="unfinished">正在初始化IDE，请稍等。。。</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="608"/>
+        <location filename="MainWindow.cpp" line="641"/>
         <source>Sure to switch to formal chain?</source>
         <translation type="unfinished">是否确认切换到正式链？</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="634"/>
+        <location filename="MainWindow.cpp" line="667"/>
         <source>文件已修改，是否保存?</source>
         <translation type="unfinished">文件已修改，是否保存？</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="655"/>
+        <location filename="MainWindow.cpp" line="688"/>
         <source>Debug function is in progress!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1873,7 +1883,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">单步调试功能正在紧急开发中，敬请期待！</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="824"/>
+        <location filename="MainWindow.cpp" line="842"/>
         <source>切换到测试链</source>
         <translation type="unfinished">切换到测试链</translation>
     </message>

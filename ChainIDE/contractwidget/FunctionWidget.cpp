@@ -41,6 +41,8 @@ FunctionWidget::FunctionWidget(QWidget *parent) :
 
 FunctionWidget::~FunctionWidget()
 {
+    delete _p;
+    _p = nullptr;
     delete ui;
 }
 

@@ -81,7 +81,7 @@ public:
     }
 public:
     bool updateNeeded;//是否需要更新文件---启动copy
-    MessageTypeShowWidget *backstageMessageShow;
+    MessageTypeShowWidget *backstageMessageShow;//后台输出显示窗口
 };
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -766,8 +766,17 @@ void MainWindow::on_accountListAction_triggered()
 
 void MainWindow::on_consoleAction_triggered()
 {
-    ConsoleDialog consoleDialog;
-    consoleDialog.exec();
+    static ConsoleDialog *consoleDialog = nullptr;
+    if(!consoleDialog)
+    {
+        consoleDialog = new ConsoleDialog();
+        connect(this,&MainWindow::windowClose,consoleDialog,&ConsoleDialog::close);
+    }
+    if(consoleDialog)
+    {
+        consoleDialog->show();
+    }
+
 }
 
 void MainWindow::on_transferToAccountAction_triggered()

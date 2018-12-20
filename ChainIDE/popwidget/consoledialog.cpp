@@ -1,6 +1,7 @@
 #include "consoledialog.h"
 #include "ui_consoledialog.h"
 
+#include <QScrollBar>
 #include <QKeyEvent>
 #include <QDebug>
 #include <QJsonArray>
@@ -19,7 +20,7 @@ ConsoleDialog::ConsoleDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    setWindowFlags(Qt::FramelessWindowHint | windowFlags());
+    setWindowFlags(Qt::FramelessWindowHint | windowFlags() | Qt::WindowStaysOnTopHint);
     ui->consoleLineEdit->installEventFilter(this);
 
     ui->consoleLineEdit->setFocus();
@@ -110,7 +111,13 @@ void ConsoleDialog::on_consoleLineEdit_returnPressed()
 void ConsoleDialog::jsonDataUpdated(const QString &id,const QString &data)
 {
     if( id.startsWith("console-"))
-    {
+    {//先跳转到最后
+        QScrollBar *scrollbar = ui->consoleBrowser->verticalScrollBar();
+        if(scrollbar)
+        {
+            scrollbar->setSliderPosition(scrollbar->maximum());
+        }
+        //显示内容
         ui->consoleBrowser->append(">>>" + id.mid(8));
         QJsonParseError json_error;
         QJsonDocument parse_doucment = QJsonDocument::fromJson(data.toUtf8(),&json_error);

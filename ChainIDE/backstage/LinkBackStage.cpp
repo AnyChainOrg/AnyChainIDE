@@ -10,7 +10,7 @@
 
 #include "DataDefine.h"
 #include "IDEUtil.h"
-#include "popwidget/commondialog.h"
+//#include "popwidget/commondialog.h"
 
 #include "datarequire/DataRequireManager.h"
 
@@ -201,7 +201,6 @@ void LinkBackStage::startNodeProc()
     }
     else if(2 == _p->chaintype)
     {//正式链
-        strList<<"--rewind-on-close";//正式链启动回退策略
         qDebug() << "start hx_node " << strList;
         _p->nodeProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_NODE_EXE,strList);
     }
@@ -306,9 +305,9 @@ void LinkBackStage::onNodeExeStateChanged()
     else if(_p->nodeProc->state() == QProcess::NotRunning)
     {
         qDebug()<<QString("hx_node %1 is notrunning :%2").arg(_p->chaintype).arg(_p->nodeProc->errorString());
-        CommonDialog commonDialog(CommonDialog::OkOnly);
-        commonDialog.setText(tr("Fail to launch hx_node !"));
-        commonDialog.pop();
+//        CommonDialog commonDialog(CommonDialog::OkOnly);
+//        commonDialog.setText(tr("Fail to launch hx_node !"));
+//        commonDialog.pop();
         emit exeNotRunning();
     }
 }
@@ -326,9 +325,9 @@ void LinkBackStage::onClientExeStateChanged()
     else if(_p->clientProc->state() == QProcess::NotRunning)
     {
         qDebug() << QString("hx_client %1 not running :%2").arg(_p->chaintype).arg(_p->clientProc->errorString());
-        CommonDialog commonDialog(CommonDialog::OkOnly);
-        commonDialog.setText(tr("Fail to launch %1 !").arg("hx_client"));
-        commonDialog.pop();
+//        CommonDialog commonDialog(CommonDialog::OkOnly);
+//        commonDialog.setText(tr("Fail to launch %1 !").arg("hx_client"));
+//        commonDialog.pop();
         emit exeNotRunning();
     }
 }
@@ -336,6 +335,7 @@ void LinkBackStage::onClientExeStateChanged()
 void LinkBackStage::initSocketManager()
 {
     connect(_p->dataRequire,&DataRequireManager::requireResponse,this,&LinkBackStage::rpcReceivedSlot);
+    connect(_p->dataRequire,&DataRequireManager::requireOvertime,this,&BackStageBase::rpcOvertime);
     connect(_p->dataRequire,&DataRequireManager::connectFinish,this,&BackStageBase::exeStarted);
 
     qDebug()<<"start dateRequire";

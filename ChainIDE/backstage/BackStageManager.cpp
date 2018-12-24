@@ -197,13 +197,14 @@ void BackStageManager::InitBackStage(DataDefine::BlockChainClass chainClass, Dat
     {
         connect(this,&BackStageManager::rpcPosted,_p->testBackStage,&BackStageBase::rpcPostedSlot);
         connect(_p->testBackStage,&BackStageBase::rpcReceived,this,&BackStageManager::jsonDataUpdated);
-
+        connect(_p->testBackStage,&BackStageBase::rpcOvertime,this,&BackStageManager::requireOvertime);
         connect(_p->testBackStage,&BackStageBase::AdditionalOutputMessage,this,&BackStageManager::OutputMessage);
     }
     if(_p->formalBackStage)
     {
         connect(this,&BackStageManager::rpcPostedFormal,_p->formalBackStage,&BackStageBase::rpcPostedSlot);
         connect(_p->formalBackStage,&BackStageBase::rpcReceived,this,&BackStageManager::jsonDataUpdated);
+        connect(_p->formalBackStage,&BackStageBase::rpcOvertime,this,&BackStageManager::requireOvertime);
         connect(_p->formalBackStage,&BackStageBase::AdditionalOutputMessage,this,&BackStageManager::OutputMessage);
     }
 }

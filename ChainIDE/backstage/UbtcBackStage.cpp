@@ -10,13 +10,12 @@
 
 #include "DataDefine.h"
 #include "IDEUtil.h"
-#include "popwidget/commondialog.h"
-
+//#include "popwidget/commondialog.h"
 
 #include "datarequire/DataRequireManager.h"
 
-static const int NODE_RPC_PORT = 55555;//node端口  test    formal = test+10
-static const int CLIENT_RPC_PORT = 55556;//client端口  test    formal = test+10
+static const int NODE_RPC_PORT = 60320;//node端口  test    formal = test+10
+static const int CLIENT_RPC_PORT = 60321;//client端口  test    formal = test+10
 
 static const QString RPC_USER = "a";
 static const QString RPC_PASSWORD = "b";
@@ -198,9 +197,9 @@ void UbtcBackStage::onNodeExeStateChanged()
     else if(_p->nodeProc->state() == QProcess::NotRunning)
     {
         qDebug()<<QString("ubcd %1 is notrunning :%2").arg(_p->chaintype).arg(_p->nodeProc->errorString());
-        CommonDialog commonDialog(CommonDialog::OkOnly);
-        commonDialog.setText(tr("Fail to launch ubcd %1 !").arg(_p->chaintype));
-        commonDialog.pop();
+//        CommonDialog commonDialog(CommonDialog::OkOnly);
+//        commonDialog.setText(tr("Fail to launch ubcd %1 !").arg(_p->chaintype));
+//        commonDialog.pop();
         emit exeNotRunning();
     }
 }
@@ -223,6 +222,7 @@ void UbtcBackStage::testStartReceiveSlot(const QString &id, const QString &messa
         _p->timerForStartExe.stop();
         disconnect(_p->dataRequire,&DataRequireManager::requireResponse,this,&UbtcBackStage::testStartReceiveSlot);
         connect(_p->dataRequire,&DataRequireManager::requireResponse,this,&UbtcBackStage::rpcReceivedSlot);
+        connect(_p->dataRequire,&DataRequireManager::requireOvertime,this,&BackStageBase::rpcOvertime);
         emit exeStarted();
 
     }

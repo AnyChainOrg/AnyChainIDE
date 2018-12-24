@@ -8,13 +8,12 @@
 
 #include "DataDefine.h"
 #include "IDEUtil.h"
-#include "popwidget/commondialog.h"
-
+//#include "popwidget/commondialog.h"
 
 #include "datarequire/DataRequireManager.h"
 
-static const int NODE_RPC_PORT = 47774;//node端口  test    formal = test+10
-static const int CLIENT_RPC_PORT = 47775;//client端口  test    formal = test+10
+static const int NODE_RPC_PORT = 60320;//node端口  test    formal = test+10
+static const int CLIENT_RPC_PORT = 60321;//client端口  test    formal = test+10
 
 static const QString RPC_USER = "a";
 static const QString RPC_PASSWORD = "b";
@@ -176,9 +175,9 @@ void CTCBackStage::onNodeExeStateChanged()
     else if(_p->nodeProc->state() == QProcess::NotRunning)
     {
         qDebug()<<QString("ctc %1 is notrunning :%2").arg(_p->chaintype).arg(_p->nodeProc->errorString());
-        CommonDialog commonDialog(CommonDialog::OkOnly);
-        commonDialog.setText(tr("Fail to launch ctc %1 !").arg(_p->chaintype));
-        commonDialog.pop();
+//        CommonDialog commonDialog(CommonDialog::OkOnly);
+//        commonDialog.setText(tr("Fail to launch ctc %1 !").arg(_p->chaintype));
+//        commonDialog.pop();
         emit exeNotRunning();
     }
 }
@@ -199,6 +198,7 @@ void CTCBackStage::testStartReceiveSlot(const QString &id, const QString &messag
         _p->timerForStartExe.stop();
         disconnect(_p->dataRequire,&DataRequireManager::requireResponse,this,&CTCBackStage::testStartReceiveSlot);
         connect(_p->dataRequire,&DataRequireManager::requireResponse,this,&CTCBackStage::rpcReceivedSlot);
+        connect(_p->dataRequire,&DataRequireManager::requireOvertime,this,&BackStageBase::rpcOvertime);
         emit exeStarted();
     }
 }

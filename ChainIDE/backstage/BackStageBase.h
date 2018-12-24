@@ -20,6 +20,7 @@ signals:
     void exeClosed();
     void exeNotRunning();
     void rpcReceived(const QString &,const QString &);
+    void rpcOvertime(const QString &id,const QString &cmd);
 
     void AdditionalOutputMessage(const QString &message,int messageType);
 public slots:

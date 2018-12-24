@@ -12,6 +12,7 @@ public:
     ~BackStageManager();
 signals:
     void jsonDataUpdated(const QString &id,const QString &data);//接收到返回
+    void requireOvertime(const QString &id,const QString &cmd);//rpc请求超时
     void rpcPosted(const QString & rpcId, const QString & rpcCmd);//测试链发出请求
     void rpcPostedFormal(const QString & rpcId, const QString & rpcCmd);//正式链发出请求
     void startBackStageFinish();//后台启动完成

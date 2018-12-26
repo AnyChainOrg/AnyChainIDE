@@ -155,7 +155,6 @@ void DebugManager::ReadyClose()
     {
         stopDebug();
     }
-    _p->uvmProcess->close();
 }
 
 const QString &DebugManager::getCurrentDebugFile() const
@@ -282,20 +281,17 @@ void DebugManager::ModifyBreakPoint(const std::vector<int> &data,std::vector<int
     result.clear();
     std::vector<int> temp = data;
     std::for_each(temp.begin(),temp.end(),[this,&result](int li){
-        if(this->_p->commentLines.end() != std::find(this->_p->commentLines.begin(),this->_p->commentLines.end(),li))
-        {
+        if(this->_p->commentLines.end() != std::find(this->_p->commentLines.begin(),this->_p->commentLines.end(),li)){
             //如果断点在注释行中，就删除，并且顺移到下一个非注释行
             emit removeBreakPoint(this->_p->filePath,li);
             int line = li;
-            while(this->_p->commentLines.end() != std::find(this->_p->commentLines.begin(),this->_p->commentLines.end(),line))
-            {
+            while(this->_p->commentLines.end() != std::find(this->_p->commentLines.begin(),this->_p->commentLines.end(),line)){
                 ++line;
             }
             result.emplace_back(line);
             emit addBreakPoint(this->_p->filePath,line);
         }
-        else
-        {
+        else{
             result.emplace_back(li);
         }
     });

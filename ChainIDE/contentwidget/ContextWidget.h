@@ -47,7 +47,7 @@ signals:
 
     void contentStateChange();
 
-    void GetBreakPointFinish(const std::vector<int> &data);
+    void GetBreakPointFinish(const QString &filePath,const std::vector<int> &data);
 public slots:
     void showFile(QString path);
 

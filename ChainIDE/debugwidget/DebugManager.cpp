@@ -16,8 +16,7 @@ class DebugManager::DataPrivate
 {
 public:
     DataPrivate()
-        :currentBreakLine(-1)
-        ,uvmProcess(new QProcess())
+        :uvmProcess(new QProcess())
         ,debuggerState(DebugDataStruct::Available)
     {
 
@@ -28,10 +27,10 @@ public:
         uvmProcess = nullptr;
     }
 public:
-    QString filePath;
-    QString outFilePath;
-    int currentBreakLine;
-    std::vector<int> commentLines;
+    QString filePath;//当前调试文件
+    QString outFilePath;//。out字节码文件
+    std::vector<int> commentLines;//当前文件的注释行
+    std::vector<int> breakPointLines;//当前文件的断点行
     std::mutex breakMutex;
 
     QProcess *uvmProcess;
@@ -75,6 +74,9 @@ void DebugManager::startDebug(const QString &sourceFilePath,const QString &byteF
         return ;
     }
 
+    //计算当前文件的注释行，用于调整断点
+    DebugUtil::getCommentLine(_p->filePath,_p->commentLines);
+
     //启动单步调试器
     QStringList params;
     params<<"-x"<<"-luvmdebug"<<"-k"<<_p->outFilePath<<api<<param;
@@ -87,13 +89,13 @@ void DebugManager::startDebug(const QString &sourceFilePath,const QString &byteF
 void DebugManager::debugNextStep()
 {
     setDebuggerState(DebugDataStruct::StepDebug);
-    fetchBreakPoints(_p->filePath);
+    emit fetchBreakPoints(_p->filePath);
 }
 
 void DebugManager::debugContinue()
 {
     setDebuggerState(DebugDataStruct::ContinueDebug);
-    fetchBreakPoints(_p->filePath);
+    emit fetchBreakPoints(_p->filePath);
 }
 
 void DebugManager::stopDebug()
@@ -112,35 +114,27 @@ void DebugManager::getVariantInfo()
     _p->uvmProcess->write("info locals\n");
 }
 
-void DebugManager::fetchBreakPointsFinish(const std::vector<int> &data)
+void DebugManager::fetchBreakPointsFinish(const QString &filePath,const std::vector<int> &data)
 {
-    ModifyBreakPoint(data);
-    //获取到文件的断点信息
-    if(getDebuggerState() == DebugDataStruct::StartDebug)
-    {
-        //计算当前文件的注释行
-        DebugUtil::getCommentLine(_p->filePath,_p->commentLines);
-
-        ModifyBreakPoint(data);
-
+    switch (getDebuggerState()) {
+    case DebugDataStruct::StartDebug:
+        //获取到文件的断点信息
         emit debugStarted();
         //直接进行调试，因为默认会停在第一行
         debugContinue();
-
-    }
-    else if(getDebuggerState() == DebugDataStruct::StepDebug)
-    {
+        break;
+    case DebugDataStruct::StepDebug:
         _p->uvmProcess->write("step\n");
-    }
-    else if(getDebuggerState() == DebugDataStruct::ContinueDebug)
-    {
-        int breakLine = getNextBreakPoint(GetCurrentBreakLine(),data);
-        if(0 < breakLine)
-        {
-            SetBreakPoint(_p->filePath,breakLine);
-        }
+        break;
+    case DebugDataStruct::ContinueDebug:
+        //调整一下当前文件的断点，主要先防止注释行之类的断点
+        UpdateFileDebugBreak(data);
         _p->uvmProcess->write("continue\n");
+        break;
+    default:
+        break;
     }
+
 }
 
 DebugDataStruct::DebuggerState DebugManager::getDebuggerState() const
@@ -159,8 +153,7 @@ void DebugManager::ReadyClose()
 {
     if(_p->uvmProcess->state() == QProcess::Running)
     {
-        _p->uvmProcess->write("continue\n");
-        _p->uvmProcess->waitForReadyRead();
+        stopDebug();
     }
     _p->uvmProcess->close();
 }
@@ -172,40 +165,39 @@ const QString &DebugManager::getCurrentDebugFile() const
 
 void DebugManager::OnProcessStateChanged()
 {
-    if(_p->uvmProcess->state() == QProcess::Starting)
-    {
-
-    }
-    else if(_p->uvmProcess->state() == QProcess::Running)
-    {
+    switch (_p->uvmProcess->state()) {
+    case QProcess::Starting:
+        break;
+    case QProcess::Running:
         //设置调试器状态
         setDebuggerState(DebugDataStruct::StartDebug);
-
         //获取当前文件所有断点
-        fetchBreakPoints(_p->filePath);
-
-    }
-    else if(_p->uvmProcess->state() == QProcess::NotRunning)
-    {
+        emit fetchBreakPoints(_p->filePath);
+        break;
+    case QProcess::NotRunning:
         qDebug()<<"debugger not running";
         ResetDebugger();
         emit debugFinish();
+        break;
+    default:
+        break;
     }
 }
 
 void DebugManager::readyReadStandardOutputSlot()
 {
     QString outPut = QString::fromLocal8Bit( _p->uvmProcess->readAllStandardOutput());
-    if(getDebuggerState() == DebugDataStruct::QueryInfo)
-    {
-        ParseQueryInfo(outPut);
-//        emit debugOutput(outPut);
-    }
-    else
-    {
-        ParseBreakPoint(outPut);
 
+    switch(getDebuggerState()){
+    case DebugDataStruct::QueryInfo:
+        ParseQueryInfo(outPut);
+        break;
+    case DebugDataStruct::QueryStack:
+        break;
+    default:
+        ParseBreakPoint(outPut);
         emit debugOutput(outPut);
+        break;
     }
 }
 
@@ -227,10 +219,11 @@ void DebugManager::InitDebugger()
 
 void DebugManager::ResetDebugger()
 {
-    //设置uvm工作目录为当前exe所在目录
+    //设置uvm工作目录为当前uvm_single.exe所在目录
     _p->uvmProcess->setWorkingDirectory(QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR);
     setDebuggerState(DebugDataStruct::Available);
-    SetCurrentBreakLine(-1);
+    _p->breakPointLines.clear();
+    _p->commentLines.clear();
 }
 
 void DebugManager::ParseQueryInfo(const QString &info)
@@ -248,9 +241,7 @@ void DebugManager::ParseBreakPoint(const QString &info)
     QRegExp rx("hit breakpoint at (.*):(\\d+)",Qt::CaseInsensitive);
     rx.indexIn(data);
     if(rx.indexIn(data) < 0 || rx.cap(1).isEmpty() || rx.cap(2).isEmpty()) return;
-    SetCurrentBreakLine(rx.cap(2).toInt()-1);
     emit debugBreakAt(_p->filePath,rx.cap(2).toInt()-1);
-
     getVariantInfo();
 
 }
@@ -259,45 +250,38 @@ void DebugManager::SetBreakPoint(const QString &file, int lineNumber)
 {
     setDebuggerState(DebugDataStruct::SetBreakPoint);
     _p->uvmProcess->write(QString("break ? %1\n").arg(QString::number(lineNumber+1)).toStdString().c_str());
-    _p->uvmProcess->waitForReadyRead();
+    _p->uvmProcess->waitForBytesWritten();
+}
+
+void DebugManager::DelBreakPoint(const QString &file, int lineNumber)
+{
+    setDebuggerState(DebugDataStruct::DeleteBreakPoint);
+    _p->uvmProcess->write(QString("delete ? %1\n").arg(QString::number(lineNumber+1)).toStdString().c_str());
+    _p->uvmProcess->waitForBytesWritten();
 }
 
 void DebugManager::CancelBreakPoint()
 {
-    setDebuggerState(DebugDataStruct::DeleteBreakPoint);
-    _p->uvmProcess->write("delete\n");
-//    _p->uvmProcess->waitForFinished();
+    std::for_each(_p->breakPointLines.begin(),_p->breakPointLines.end(),std::bind(&DebugManager::DelBreakPoint,this,_p->filePath,std::placeholders::_1));
 }
 
-void DebugManager::SetCurrentBreakLine(int li)
+void DebugManager::UpdateFileDebugBreak(const std::vector<int> &data)
 {
-    std::lock_guard<std::mutex> loc(_p->breakMutex);
-    _p->currentBreakLine = li;
+    //获取并调整真正的断点
+    std::vector<int> modifyBreakpoints;
+    ModifyBreakPoint(data,modifyBreakpoints);
+    //向调试器发送调整断点命令
+    UpdateDebuggerBreakCMD(_p->breakPointLines,modifyBreakpoints);
+    //修改缓存断点信息
+    _p->breakPointLines = modifyBreakpoints;
 }
 
-int DebugManager::GetCurrentBreakLine() const
-{
-    std::lock_guard<std::mutex> loc(_p->breakMutex);
-    return _p->currentBreakLine;
-}
-
-int DebugManager::getNextBreakPoint(int currentBreak, const std::vector<int> &lineVec)
-{
-    auto it = std::find_if(lineVec.begin(),lineVec.end(),[currentBreak,this](int li){
-        return (li>currentBreak && this->_p->commentLines.end() == std::find(this->_p->commentLines.begin(),this->_p->commentLines.end(),li));
-    });
-    if(lineVec.end()!= it)
-    {
-        return *it;
-    }
-    return -1;
-}
-
-void DebugManager::ModifyBreakPoint(const std::vector<int> &data)
+void DebugManager::ModifyBreakPoint(const std::vector<int> &data,std::vector<int> &result)
 {
     //调整断点情况
+    result.clear();
     std::vector<int> temp = data;
-    std::for_each(temp.begin(),temp.end(),[this](int li){
+    std::for_each(temp.begin(),temp.end(),[this,&result](int li){
         if(this->_p->commentLines.end() != std::find(this->_p->commentLines.begin(),this->_p->commentLines.end(),li))
         {
             //如果断点在注释行中，就删除，并且顺移到下一个非注释行
@@ -307,7 +291,25 @@ void DebugManager::ModifyBreakPoint(const std::vector<int> &data)
             {
                 ++line;
             }
+            result.emplace_back(line);
             emit addBreakPoint(this->_p->filePath,line);
         }
+        else
+        {
+            result.emplace_back(li);
+        }
     });
+}
+
+void DebugManager::UpdateDebuggerBreakCMD(const std::vector<int> &oldBreak, const std::vector<int> &newBreak)
+{
+    std::vector<int> deleteVec;
+    std::set_difference(oldBreak.begin(),oldBreak.end(),newBreak.begin(),newBreak.end(),std::inserter(deleteVec,deleteVec.begin()));
+
+    std::vector<int> addVec;
+    std::set_difference(newBreak.begin(),newBreak.end(),oldBreak.begin(),oldBreak.end(),std::inserter(addVec,addVec.begin()));
+
+    //删除已经没有的断点，添加新的断点
+    std::for_each(deleteVec.begin(),deleteVec.end(),std::bind(&DebugManager::DelBreakPoint,this,_p->filePath,std::placeholders::_1));
+    std::for_each(addVec.begin(),addVec.end(),std::bind(&DebugManager::SetBreakPoint,this,_p->filePath,std::placeholders::_1));
 }

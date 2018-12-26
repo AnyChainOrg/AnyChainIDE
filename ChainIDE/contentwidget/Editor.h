@@ -28,7 +28,7 @@ public:
     virtual void RemoveBreakPoint(int lint);//强制删除某一行断点
     virtual void TabBreakPoint();//自动切换当前行断点方式
     virtual void ClearBreakPoint();
-    const std::vector<int> &getBreakPoints()const;
+    const std::vector<int> &getBreakPoints()const;//已升序排序
     void setBeakPoint(int line,bool isAdd);
 
     virtual void SetDebuggerLine(int lineNumber);

@@ -168,12 +168,11 @@ void ContextWidget::GetBreakPointSlots(const QString &filePath)
 {
     if(Editor * edi = getEditor(filePath))
     {
-        emit GetBreakPointFinish( edi->getBreakPoints());
+        emit GetBreakPointFinish( filePath,edi->getBreakPoints());
     }
     else
     {
-        std::vector<int> temp;
-        emit GetBreakPointFinish(temp);
+        emit GetBreakPointFinish(filePath,std::vector<int>());
     }
 }
 

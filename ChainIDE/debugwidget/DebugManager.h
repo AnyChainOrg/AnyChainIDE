@@ -11,57 +11,59 @@ public:
     explicit DebugManager(QObject *parent = nullptr);
     ~DebugManager();
 public:
+    //开始调试，源码文件，out文件，函数名，参数
     void startDebug(const QString &sourceFilePath,const QString &byteFilePath,const QString &api,const QStringList &param);
 
     void debugNextStep();//调试到下一行
     void debugContinue();//调试到下一个断点
     void stopDebug();//停止调试
-    void getVariantInfo();//获取变量信息
 
-    void fetchBreakPointsFinish(const std::vector<int> &data);
-
-    DebugDataStruct::DebuggerState getDebuggerState()const;
-    void setDebuggerState(DebugDataStruct::DebuggerState state);
+    DebugDataStruct::DebuggerState getDebuggerState()const;//获取调试器状态
 
     void ReadyClose();//准备关闭
 
-    const QString &getCurrentDebugFile()const;
+    const QString &getCurrentDebugFile()const;//获取当前调试文件
+
+public slots:
+    void fetchBreakPointsFinish(const QString &filePath,const std::vector<int> &data);
+
 private slots:
     void OnProcessStateChanged();
 
     void readyReadStandardOutputSlot();
     void readyReadStandardErrorSlot();
 private:
-    void InitDebugger();
-    void ResetDebugger();
+    void InitDebugger();//初始化调试器
+    void ResetDebugger();//重置调试器，主要重置调试器状态以及一些变量等
 
-    //解析查询变量返回情况
-    void ParseQueryInfo(const QString &info);
+    void setDebuggerState(DebugDataStruct::DebuggerState state);//设置调试器状态
+
+    void getVariantInfo();//获取变量信息
+    void ParseQueryInfo(const QString &info);//解析查询变量返回情况
+
     //解析断点停顿信息
     void ParseBreakPoint(const QString &info);
 
-    //下一次断点
+    //设置一次断点
     void SetBreakPoint(const QString &file,int lineNumber);
+    //删除一个断点
+    void DelBreakPoint(const QString &file,int lineNumber);
     //取消断点
     void CancelBreakPoint();
 
-    //当前断点行
-    void SetCurrentBreakLine(int li);
-    int GetCurrentBreakLine()const;
-    //获取下一个断点
-    int getNextBreakPoint(int currentBreak,const std::vector<int> &lineVec);
-
     //调整断点位置，取消注释行的断点
-    void ModifyBreakPoint(const std::vector<int> &data);
+    void UpdateFileDebugBreak(const std::vector<int> &data);
+    void ModifyBreakPoint(const std::vector<int> &data,std::vector<int> &result);
+    void UpdateDebuggerBreakCMD(const std::vector<int> &oldBreak,const std::vector<int> &newBreak);
 signals:
-    void fetchBreakPoints(const QString &filePath);
-    void debugOutput(const QString &message);
-    void debugStarted();
-    void debugFinish();
-    void debugBreakAt(const QString &file,int lineNumber);
-    void debugError();
+    void fetchBreakPoints(const QString &filePath);//请求查询断点信息
+    void debugOutput(const QString &message);//输出
+    void debugStarted();//调试器开始进入调试状态
+    void debugFinish();//调试完成
+    void debugBreakAt(const QString &file,int lineNumber);//断点停顿，用于告诉外界，刷新断点显示
+    void debugError();//调试出错
 
-    void showVariant(BaseItemDataPtr data);
+    void showVariant(BaseItemDataPtr data);//告诉外界可以显示变量内容
 
     void removeBreakPoint(const QString &file,int linenumber);//强制删除断点--注释行
     void addBreakPoint(const QString &file,int linenumber);//强制添加断点--注释行断点的下一个非注释行

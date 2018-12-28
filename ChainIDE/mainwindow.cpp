@@ -171,6 +171,7 @@ void MainWindow::startWidget()
     connect(ChainIDE::getInstance()->getCompileManager(),&CompileManager::finishCompile,std::bind(&QAction::setEnabled,ui->compileAction,true));
     connect(ChainIDE::getInstance()->getCompileManager(),&CompileManager::errorCompile,std::bind(&QAction::setEnabled,ui->compileAction,true));
 
+    //设置左侧文件树的一些槽
     connect(ui->fileWidget,&FileWidget::fileClicked,ui->contentWidget,&ContextWidget::showFile);
     connect(ui->fileWidget,&FileWidget::compileFile,this,&MainWindow::on_compileAction_triggered);
     connect(ui->fileWidget,&FileWidget::deleteFile,ui->contentWidget,&ContextWidget::CheckDeleteFile);
@@ -178,6 +179,7 @@ void MainWindow::startWidget()
     connect(ui->fileWidget,&FileWidget::fileClicked,this,&MainWindow::ModifyActionState);
     connect(ui->fileWidget,&FileWidget::dirClicked,this,&MainWindow::ModifyActionState);
 
+    //设置中间代码编辑框的一些槽
     connect(ui->contentWidget,&ContextWidget::fileSelected,ui->fileWidget,&FileWidget::SelectFile);
     connect(ui->contentWidget,&ContextWidget::contentStateChange,this,&MainWindow::ModifyActionState);
     connect(ui->contentWidget,&ContextWidget::GetBreakPointFinish,ChainIDE::getInstance()->getDebugManager(),&DebugManager::fetchBreakPointsFinish);
@@ -185,31 +187,48 @@ void MainWindow::startWidget()
     //已注册合约
     connect(ui->tabWidget,&QTabWidget::currentChanged,this,&MainWindow::tabWidget_currentChanged);
 
-    //调试器槽
+    //调试器调试开始通知、完成、出错
+    connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::debugStarted,[this](){
+        this->ui->outputWidget->clearOutputMessage();
+        this->ModifyDebugActionState();
+    });
+    connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::debugFinish,[this](){
+        this->ui->contentWidget->ClearDebuggerLine(ChainIDE::getInstance()->getDebugManager()->getCurrentDebugFile());
+        this->ui->debugWidget->setVisible(false);
+        this->ModifyActionState();
+
+    });
+    connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::debugError,[this](){
+        this->ui->contentWidget->ClearDebuggerLine(ChainIDE::getInstance()->getDebugManager()->getCurrentDebugFile());
+        this->ui->debugWidget->setVisible(false);
+        this->ModifyActionState();
+    });
+
+    //调获取断点信息、断点停顿通知
     connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::fetchBreakPoints,ui->contentWidget,&ContextWidget::GetBreakPointSlots);
     connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::debugBreakAt,ui->contentWidget,&ContextWidget::SetDebuggerLine);
-    connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::debugFinish,[this](){this->ui->contentWidget->ClearDebuggerLine(ChainIDE::getInstance()->getDebugManager()->getCurrentDebugFile());});
-    connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::debugError,[this](){this->ui->contentWidget->ClearDebuggerLine(ChainIDE::getInstance()->getDebugManager()->getCurrentDebugFile());});
 
+    //调试后台输出通知
     connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::debugOutput,ui->outputWidget,&OutputWidget::receiveOutputMessage);
 
-    connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::showVariant,ui->debugWidget,&DebugWidget::ResetData);
+    //调试变量、堆栈更新通知
+    connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::variantUpdated,ui->debugWidget,&DebugWidget::UpdateInfoData);
+    connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::backTraceUpdated,ui->debugWidget,&DebugWidget::UpdateBackTrace);
 
-    connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::debugStarted,this,&MainWindow::ModifyDebugActionState);
-    connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::debugFinish,this,&MainWindow::ModifyDebugActionState);
-    connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::debugError,this,&MainWindow::ModifyDebugActionState);
-
-    connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::debugStarted,ui->outputWidget,&OutputWidget::clearOutputMessage);
-    connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::debugError,std::bind(&DebugWidget::setVisible,ui->debugWidget,false));
-    connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::debugFinish,std::bind(&DebugWidget::setVisible,ui->debugWidget,false));
-
+    //调试器调整断点位置通知
     connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::addBreakPoint,ui->contentWidget,&ContextWidget::AddBreakPoint);
     connect(ChainIDE::getInstance()->getDebugManager(),&DebugManager::removeBreakPoint,ui->contentWidget,&ContextWidget::RemoveBreakPoint);
 
+    //设置调试窗口双击堆栈跳转到编辑器对应行
+    connect(ui->debugWidget,&DebugWidget::JumpToLine,std::bind(&ContextWidget::JumpToLine,ui->contentWidget,
+                std::ref(ChainIDE::getInstance()->getDebugManager()->getCurrentDebugFile()),std::placeholders::_1,0));
+
     //初始化后台消息展示框
     initMessageWidget();
+
     //调整按钮状态
     ModifyActionState();
+
     //状态栏开始更新
     ui->statusBar->startStatus();
 }

@@ -34,8 +34,10 @@ public:
     void TabBreakPoint()override final;
     void ClearBreakPoint()override final;
 
-    void SetDebuggerLine(int linenumber)override final;
-    void ClearDebuggerLine()override final;
+    void SetDebuggerLine(int linenumber)override final;//更改某行的断点样式，并更新其他行样式
+    void ClearDebuggerLine()override final;//恢复所有断点的样式
+
+    void JumpToLine(int line,int ch)override final;//跳转到某行
 public slots:
     void undo()override final;
     void redo()override final;

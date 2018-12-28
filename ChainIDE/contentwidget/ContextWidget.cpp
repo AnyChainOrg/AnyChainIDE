@@ -149,7 +149,14 @@ void ContextWidget::ClearBreakPoint()
 
 void ContextWidget::SetDebuggerLine(const QString &path, int linenumber)
 {
-    if(Editor * edi = getEditor(path))
+    if(path.isEmpty() || !QFileInfo(path).isFile()) return;
+    Editor * edi = getEditor(path);
+    if(!edi)
+    {
+        showFile(path);
+        edi = getEditor(path);
+    }
+    if(edi)
     {
         ui->tabWidget->setCurrentWidget(edi);
         edi->SetDebuggerLine(linenumber);
@@ -161,6 +168,22 @@ void ContextWidget::ClearDebuggerLine(const QString &path)
     if(Editor * edi = getEditor(path))
     {
         edi->ClearDebuggerLine();
+    }
+}
+
+void ContextWidget::JumpToLine(const QString &path, int linenumber,int ch)
+{
+    if(path.isEmpty() || !QFileInfo(path).isFile()) return;
+    Editor * edi = getEditor(path);
+    if(!edi)
+    {
+        showFile(path);
+        edi = getEditor(path);
+    }
+    if(edi)
+    {
+        ui->tabWidget->setCurrentWidget(edi);
+        edi->JumpToLine(linenumber,ch);
     }
 }
 

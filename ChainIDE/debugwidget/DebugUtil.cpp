@@ -95,7 +95,7 @@ bool DebugUtil::isCommentLine(const QString &lineInfo, bool &isCommentStart,
 }
 
 
-void DebugUtil::ParseDebugData(const QString &info, BaseItemDataPtr &root)
+void DebugUtil::ParseDebugInfoData(const QString &info, BaseItemDataPtr &root)
 {
     if(nullptr == root)
     {
@@ -108,10 +108,31 @@ void DebugUtil::ParseDebugData(const QString &info, BaseItemDataPtr &root)
 
     QJsonArray arr = parse_doucment.object().value("locals").toArray();
 
-    ParseArrayData(arr,root);
+    ParseInfoArrayData(arr,root);
 }
 
-void DebugUtil::ParseArrayData(const QJsonArray &arr, BaseItemDataPtr parent)
+void DebugUtil::ParseStackTraceData(const QString &info, ListItemVec &data)
+{
+//    QJsonParseError json_error;
+//    QJsonDocument parse_doucment = QJsonDocument::fromJson(info.toUtf8(), &json_error);
+
+//    if(json_error.error != QJsonParseError::NoError || !parse_doucment.isObject()) return ;
+
+    data.clear();
+    //todo ...test
+    QStringList splitResult = info.split("\r\n");
+    foreach (QString res, splitResult) {
+        if(res.isEmpty()) continue;
+        QRegExp rx("^#(\\d+)\\t([\\d\\D]+)\t([\\d\\D]+):([-]*\\d+)$",Qt::CaseInsensitive);
+        if(rx.indexIn(res) >= 0 && !rx.cap(1).isEmpty() && !rx.cap(2).isEmpty() &&
+           !rx.cap(3).isEmpty() && !rx.cap(4).isEmpty())
+        {
+            data.emplace_back(std::make_shared<ListItemData>(rx.cap(1).toInt(),rx.cap(2),rx.cap(3),rx.cap(4).toInt()));
+        }
+    }
+}
+
+void DebugUtil::ParseInfoArrayData(const QJsonArray &arr, BaseItemDataPtr parent)
 {
     if(!parent) return;
     foreach (QJsonValue val, arr) {
@@ -135,16 +156,16 @@ void DebugUtil::ParseArrayData(const QJsonArray &arr, BaseItemDataPtr parent)
         }
         else if(typeVal.isObject())
         {
-            ParseObjectData(typeVal.toObject(),data);
+            ParseInfoObjectData(typeVal.toObject(),data);
         }
         else if(typeVal.isArray())
         {
-            ParseArrayData(typeVal.toArray(),data);
+            ParseInfoArrayData(typeVal.toArray(),data);
         }
     }
 }
 
-void DebugUtil::ParseObjectData(const QJsonObject &obj, BaseItemDataPtr parent)
+void DebugUtil::ParseInfoObjectData(const QJsonObject &obj, BaseItemDataPtr parent)
 {
     if(!parent) return;
     QJsonObject::Iterator it;
@@ -170,12 +191,12 @@ void DebugUtil::ParseObjectData(const QJsonObject &obj, BaseItemDataPtr parent)
         }
         else if(val.isArray())
         {
-            ParseArrayData(val.toArray(),data);
+            ParseInfoArrayData(val.toArray(),data);
             data->setType("array");
         }
         else if(val.isObject())
         {
-            ParseObjectData(val.toObject(),data);
+            ParseInfoObjectData(val.toObject(),data);
             data->setType("object");
         }
     }

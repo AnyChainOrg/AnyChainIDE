@@ -29,13 +29,13 @@ public:
     virtual void TabBreakPoint();//自动切换当前行断点方式
     virtual void ClearBreakPoint();
     const std::vector<int> &getBreakPoints()const;//已升序排序
-    void setBeakPoint(int line,bool isAdd);
+    void setBeakPoint(int line,bool isAdd);//断点变量自动更新
 
-    virtual void SetDebuggerLine(int lineNumber);
-    virtual void ClearDebuggerLine();
+    virtual void SetDebuggerLine(int lineNumber);//设置并自动更新其他断点样式、跳转到该行
+    virtual void ClearDebuggerLine();//清空所有编辑器的断点样式
 
-    bool isUndoAvailable();
-    bool isRedoAvailable();
+    bool isUndoAvailable();//判断当前是否可撤销
+    bool isRedoAvailable();//判断当前是否可重写
 
     bool isEditable()const;
     virtual void setEditable(bool);
@@ -43,9 +43,10 @@ public:
     void setSaved(bool isSaved) ;
     bool isSaved()const;
 
-    bool saveFile() ;
-    const QString &getFilePath()const;
+    bool saveFile() ;//保存文件
+    const QString &getFilePath()const;//获取文件路径
 
+    virtual void JumpToLine(int line,int ch);//跳转到某行某个位置
 protected:
     void setUndoAvaliable(bool);
     void setRedoAvaliable(bool);

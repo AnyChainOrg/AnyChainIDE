@@ -281,6 +281,7 @@ QHeaderView{
 }
 QHeaderView:section{
     border:none;
+    border-right: 1px solid rgb(70,70,70);
     background-color:rgb(50,50,50);
 }
 
@@ -357,7 +358,21 @@ QCheckBox::indicator:checked{
     image:url(:/pic/checkBox2_checked.png);
 }
 
-
+QTableWidget{
+    background-color:rgb(46,46,46);
+    border:none;
+    color:white;
+    font:65 14px \"Microsoft YaHei UI\";
+    outline:0px;
+}
+QTableWidget::item{
+    height:32px;
+}
+QTableWidget::item::selected{
+    background:rgb(38,38,38);
+    border:none;
+    color:#44D9C7;
+}
 
 
 

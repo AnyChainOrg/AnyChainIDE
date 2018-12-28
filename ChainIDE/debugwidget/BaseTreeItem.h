@@ -10,7 +10,7 @@
 class BaseTreeItem
 {
 public:
-    BaseTreeItem(QVariant data = QVariant(), BaseTreeItem *parent = nullptr);
+    explicit BaseTreeItem(QVariant data = QVariant(), BaseTreeItem *parent = nullptr);
 	virtual ~BaseTreeItem(void);
 public:
 	//////////////////////////////////////////////////////////////////////////

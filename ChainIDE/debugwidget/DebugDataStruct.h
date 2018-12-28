@@ -21,7 +21,7 @@ class BaseItemData;
 typedef std::shared_ptr<BaseItemData> BaseItemDataPtr;
 class BaseItemData:std::enable_shared_from_this<BaseItemData>{
 public:
-    BaseItemData(const QString &k="",const QString &v="",const QString &t="",BaseItemDataPtr p = nullptr)
+    explicit BaseItemData(const QString &k="",const QString &v="",const QString &t="",BaseItemDataPtr p = nullptr)
         :Key(k),Val(v),Type(t),parent(p){
     }
     const QString &getKey()const{return Key;}
@@ -44,5 +44,33 @@ private:
     std::vector<BaseItemDataPtr> children;
     BaseItemDataPtr parent;
 };
+//列表基本数据
+class ListItemData:std::enable_shared_from_this<ListItemData>{
+public:
+    explicit ListItemData(int level=0,const QString &function = "",
+                          const QString &file = "",int line=0)
+        :Level(level),Function(function),File(file),Line(line)
+    {
 
+    }
+public:
+    void SetLevel(int va){Level = va;}
+    int GetLevel()const{return Level;}
+
+    void SetFunction(const QString &va){Function = va;}
+    const QString &GetFunction()const{return Function;}
+
+    void SetFile(const QString &va){File = va;}
+    const QString &GetFile()const{return File;}
+
+    void SetLine(int va){Line = va;}
+    int GetLine()const{return Line;}
+private:
+    int Level;
+    QString Function;
+    QString File;
+    int Line;
+};
+typedef std::shared_ptr<ListItemData> ListItemDataPtr;
+typedef std::vector<ListItemDataPtr> ListItemVec;
 #endif // DEBUGDATASTRUCT_H

@@ -267,6 +267,7 @@ QHeaderView{
 }
 QHeaderView:section{
     border:none;
+    border-right: 1px solid rgb(200,200,200);
     background-color:rgb(255,255,255);
 }
 
@@ -353,6 +354,14 @@ QLabel{
 
 QLabel:disable{
     color:gray;
+}
+
+QTableWidget{
+    background-color:rgb(255,255,255);
+    border:none;
+    color:white;
+    font:65 14px \"Microsoft YaHei UI\";
+    outline:0px;
 }
 
 /*具体按钮的定制*/

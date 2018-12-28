@@ -32,14 +32,15 @@ public:
 
     const QString &getCurrentFilePath()const;
 
-    void TabBreakPoint();
-    void AddBreakPoint(const QString &path,int linenumber);
-    void RemoveBreakPoint(const QString &path,int linenumber);
+    void TabBreakPoint();//调整断点，有则删，无则加
+    void AddBreakPoint(const QString &path,int linenumber);//强行添加断点
+    void RemoveBreakPoint(const QString &path,int linenumber);//强行删除断点
+    void ClearBreakPoint();//清空断点
 
-    void ClearBreakPoint();
+    void SetDebuggerLine(const QString &path,int linenumber);//设置调试期断点样式
+    void ClearDebuggerLine(const QString &path);//清空所有断点样式
 
-    void SetDebuggerLine(const QString &path,int linenumber);
-    void ClearDebuggerLine(const QString &path);
+    void JumpToLine(const QString &path,int linenumber,int ch);//文件名，行号，字符定位数
 signals:
     void textChanged();
 

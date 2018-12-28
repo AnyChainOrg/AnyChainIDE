@@ -136,6 +136,11 @@ const QString &Editor::getFilePath() const
     return _p->filePath;
 }
 
+void Editor::JumpToLine(int line, int ch)
+{
+    //todo
+}
+
 const std::vector<int> &Editor::getBreakPoints()const
 {
     return _p->breakPoints;

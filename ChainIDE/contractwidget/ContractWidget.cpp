@@ -94,7 +94,7 @@ void ContractWidget::InitWidget()
     ui->treeWidget->header()->setVisible(false);
     ui->treeWidget->header()->setStretchLastSection(true);
     ui->treeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-    ui->splitter->setSizes(QList<int>()<<0.66*this->height()<<0.34*this->height());
+    ui->splitter->setSizes(QList<int>()<<static_cast<int>(0.66*this->height())<<static_cast<int>(0.34*this->height()));
 
     connect(ui->treeWidget,&QTreeWidget::currentItemChanged,this,&ContractWidget::ContractClicked);
 

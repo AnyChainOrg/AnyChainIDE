@@ -126,6 +126,11 @@ void codeeditor::ClearDebuggerLine()
     RunJavaScript(QString("RecoverBreakState()"));
 }
 
+void codeeditor::JumpToLine(int line, int ch)
+{
+    RunJavaScript(QString("editor.setCursor(%1,%2)").arg(QString::number(line)).arg(QString::number(ch)));
+}
+
 void codeeditor::undo()
 {
     RunJavaScript("editor.undo()");

@@ -41,15 +41,14 @@ private:
     void getVariantInfo();//获取变量信息
     void ParseQueryInfo(const QString &info);//解析查询变量返回情况
 
-    //解析断点停顿信息
-    void ParseBreakPoint(const QString &info);
+    void getBackTraceInfo();//获取堆栈信息
+    void ParseBackTrace(const QString &info);//解析查询堆栈返回情况
 
-    //设置一次断点
-    void SetBreakPoint(const QString &file,int lineNumber);
-    //删除一个断点
-    void DelBreakPoint(const QString &file,int lineNumber);
-    //取消断点
-    void CancelBreakPoint();
+    void ParseBreakPoint(const QString &info);//解析断点停顿信息
+
+    void SetBreakPoint(const QString &file,int lineNumber);//设置一次断点--调试器
+    void DelBreakPoint(const QString &file,int lineNumber);//删除一个断点--调试器
+    void CancelBreakPoint();//清除断点--调试器
 
     //调整断点位置，取消注释行的断点
     void UpdateFileDebugBreak(const std::vector<int> &data);
@@ -63,7 +62,8 @@ signals:
     void debugBreakAt(const QString &file,int lineNumber);//断点停顿，用于告诉外界，刷新断点显示
     void debugError();//调试出错
 
-    void showVariant(BaseItemDataPtr data);//告诉外界可以显示变量内容
+    void variantUpdated(BaseItemDataPtr data);//变量内容更新
+    void backTraceUpdated(const ListItemVec &data);//堆栈内容更新
 
     void removeBreakPoint(const QString &file,int linenumber);//强制删除断点--注释行
     void addBreakPoint(const QString &file,int linenumber);//强制添加断点--注释行断点的下一个非注释行

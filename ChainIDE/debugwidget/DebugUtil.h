@@ -14,7 +14,7 @@ public:
 
     static void ParseDebugInfoData(const QString &info,BaseItemDataPtr &root);//解析查询调试器变量返回内容
 
-    static void ParseStackTraceData(const QString &info,ListItemVec &data);//解析堆栈信息返回内容
+    static void ParseStackTraceData(const QString &info,ListItemVec &data,const QString &defaultFile="");//解析堆栈信息返回内容
 private:
     static bool isCommentLine(const QString &lineInfo,bool &isCommentStart,
                               const QString &lineComment,const QString &phaseCommentStart,const QString &phaseCommentEnd);//辅助判断注释行问题

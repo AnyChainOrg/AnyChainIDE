@@ -243,7 +243,7 @@ void DebugManager::ParseQueryInfo(const QString &info)
 void DebugManager::ParseBackTrace(const QString &info)
 {
     ListItemVec data;
-    DebugUtil::ParseStackTraceData(info,data);
+    DebugUtil::ParseStackTraceData(info,data,QFileInfo(_p->filePath).fileName());
     emit backTraceUpdated(data);
 }
 

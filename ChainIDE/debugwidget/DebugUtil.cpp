@@ -111,7 +111,7 @@ void DebugUtil::ParseDebugInfoData(const QString &info, BaseItemDataPtr &root)
     ParseInfoArrayData(arr,root);
 }
 
-void DebugUtil::ParseStackTraceData(const QString &info, ListItemVec &data)
+void DebugUtil::ParseStackTraceData(const QString &info, ListItemVec &data,const QString &defaultFile)
 {
 //    QJsonParseError json_error;
 //    QJsonDocument parse_doucment = QJsonDocument::fromJson(info.toUtf8(), &json_error);
@@ -127,7 +127,15 @@ void DebugUtil::ParseStackTraceData(const QString &info, ListItemVec &data)
         if(rx.indexIn(res) >= 0 && !rx.cap(1).isEmpty() && !rx.cap(2).isEmpty() &&
            !rx.cap(3).isEmpty() && !rx.cap(4).isEmpty())
         {
-            data.emplace_back(std::make_shared<ListItemData>(rx.cap(1).toInt(),rx.cap(2),rx.cap(3),rx.cap(4).toInt()));
+            QString debugFile = rx.cap(3);
+            if(!defaultFile.isEmpty() && "?" == debugFile)
+            {
+                data.emplace_back(std::make_shared<ListItemData>(rx.cap(1).toInt(),rx.cap(2),defaultFile,rx.cap(4).toInt()));
+            }
+            else
+            {
+                data.emplace_back(std::make_shared<ListItemData>(rx.cap(1).toInt(),rx.cap(2),debugFile,rx.cap(4).toInt()));
+            }
         }
     }
 }

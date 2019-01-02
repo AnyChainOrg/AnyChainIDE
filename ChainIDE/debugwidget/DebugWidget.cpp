@@ -84,7 +84,7 @@ void DebugWidget::TableDoubleClickSlots(QTableWidgetItem *item)
     if(item && item->data(Qt::UserRole).value<ListItemDataPtr>())
     {
         int line =  item->data(Qt::UserRole).value<ListItemDataPtr>()->GetLine();
-        if(line >= 0)
+        if(line > 0)
         {
             emit JumpToLine(line - 1);
         }

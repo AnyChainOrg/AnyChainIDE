@@ -129,31 +129,47 @@ void DebugUtil::ParseDebugInfoUpvalData(const QString &info, BaseItemDataPtr &ro
 
 void DebugUtil::ParseStackTraceData(const QString &info, ListItemVec &data,const QString &defaultFile)
 {
-//    QJsonParseError json_error;
-//    QJsonDocument parse_doucment = QJsonDocument::fromJson(info.toUtf8(), &json_error);
+    QJsonParseError json_error;
+    QJsonDocument parse_doucment = QJsonDocument::fromJson(info.toUtf8(), &json_error);
 
-//    if(json_error.error != QJsonParseError::NoError || !parse_doucment.isObject()) return ;
+    if(json_error.error != QJsonParseError::NoError || !parse_doucment.isObject()) return ;
 
     data.clear();
-    //todo ...test
-    QStringList splitResult = info.split("\r\n");
-    foreach (QString res, splitResult) {
-        if(res.isEmpty()) continue;
-        QRegExp rx("^#(\\d+)\\t([\\d\\D]+)\t([\\d\\D]+):([-]*\\d+)$",Qt::CaseInsensitive);
-        if(rx.indexIn(res) >= 0 && !rx.cap(1).isEmpty() && !rx.cap(2).isEmpty() &&
-           !rx.cap(3).isEmpty() && !rx.cap(4).isEmpty())
+
+    QJsonArray arr = parse_doucment.object().value("backtrace").toArray();
+    foreach (QJsonValue val, arr) {
+        if(!val.isObject()) continue;
+        QJsonObject obj = val.toObject();
+        int level = obj.value("FrameId").toInt();
+        QJsonObject detail = obj.value("Detail").toObject();
+        int line = detail.value("currline").toInt();
+        QString function = detail.value("name").isNull()?"null":detail.value("name").toString();
+        QString debugFile = detail.value("short_src").toString();
+        if(!defaultFile.isEmpty() && "?" == debugFile)
         {
-            QString debugFile = rx.cap(3);
-            if(!defaultFile.isEmpty() && "?" == debugFile)
-            {
-                data.emplace_back(std::make_shared<ListItemData>(rx.cap(1).toInt(),rx.cap(2),defaultFile,rx.cap(4).toInt()));
-            }
-            else
-            {
-                data.emplace_back(std::make_shared<ListItemData>(rx.cap(1).toInt(),rx.cap(2),debugFile,rx.cap(4).toInt()));
-            }
+            debugFile = defaultFile;
         }
+        data.emplace_back(std::make_shared<ListItemData>(level,function,debugFile,line));
     }
+    //todo ...test
+//    QStringList splitResult = info.split("\r\n");
+//    foreach (QString res, splitResult) {
+//        if(res.isEmpty()) continue;
+//        QRegExp rx("^#(\\d+)\\t([\\d\\D]+)\t([\\d\\D]+):([-]*\\d+)$",Qt::CaseInsensitive);
+//        if(rx.indexIn(res) >= 0 && !rx.cap(1).isEmpty() && !rx.cap(2).isEmpty() &&
+//           !rx.cap(3).isEmpty() && !rx.cap(4).isEmpty())
+//        {
+//            QString debugFile = rx.cap(3);
+//            if(!defaultFile.isEmpty() && "?" == debugFile)
+//            {
+//                data.emplace_back(std::make_shared<ListItemData>(rx.cap(1).toInt(),rx.cap(2),defaultFile,rx.cap(4).toInt()));
+//            }
+//            else
+//            {
+//                data.emplace_back(std::make_shared<ListItemData>(rx.cap(1).toInt(),rx.cap(2),debugFile,rx.cap(4).toInt()));
+//            }
+//        }
+//    }
 }
 
 void DebugUtil::ParseInfoArrayData(const QJsonArray &arr, BaseItemDataPtr parent)

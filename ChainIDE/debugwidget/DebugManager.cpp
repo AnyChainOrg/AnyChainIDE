@@ -186,11 +186,12 @@ void DebugManager::readyReadStandardOutputSlot()
     switch(getDebuggerState()){
     case DebugDataStruct::QueryInfo:
         ParseInfoLocals(outPut);
-        getBackTraceInfo();
+        getUpValueVariantInfo();
+//        getBackTraceInfo();
         break;
     case DebugDataStruct::QueryUpInfo:
-//        ParseInfoUpValue(outPut);
-//        getBackTraceInfo();
+        ParseInfoUpValue(outPut);
+        getBackTraceInfo();
         break;
     case DebugDataStruct::QueryStack:
         ParseBackTrace(outPut);

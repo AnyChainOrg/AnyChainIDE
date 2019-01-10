@@ -15,6 +15,14 @@ public:
     {
 
     }
+    ~DataPrivate()
+    {
+        if(treeModel)
+        {
+            delete treeModel;
+            treeModel = nullptr;
+        }
+    }
     DataTreeItemModel *treeModel ;
 };
 

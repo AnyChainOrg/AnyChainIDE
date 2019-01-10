@@ -4,6 +4,7 @@
 #include "LocalPeer.h"
 #include "ChainIDE.h"
 #include "mainwindow.h"
+#include "VisualLeakDetector/include/vld.h"
 
 #include <QDebug>
 

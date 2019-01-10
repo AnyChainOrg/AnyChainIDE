@@ -24,11 +24,11 @@ BaseTreeItem::BaseTreeItem(QVariant data, BaseTreeItem *parent)
 	_p->_ItemData = data;
 }
 
-
 BaseTreeItem::~BaseTreeItem(void)
 {
 	qDeleteAll(_p->_ChildItems);
 	delete _p;
+    _p = nullptr;
 }
 
 void BaseTreeItem::appendChild(BaseTreeItem *child)

@@ -19,7 +19,21 @@ public:
     }
     ~DataPrivate()
     {
-
+        if(perLabel)
+        {
+            delete perLabel;
+            perLabel = nullptr;
+        }
+        if(norLabel)
+        {
+            delete norLabel;
+            norLabel = nullptr;
+        }
+        if(timer)
+        {
+            delete timer;
+            timer = nullptr;
+        }
     }
 public:
     QLabel *perLabel;
@@ -37,6 +51,7 @@ StatusBar::StatusBar(QWidget *parent)
 StatusBar::~StatusBar()
 {
     delete _p;
+    _p = nullptr;
 }
 
 void StatusBar::startStatus()

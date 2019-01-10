@@ -406,14 +406,14 @@ void MainWindow::initMessageWidget()
     if(_p->backstageMessageShow) return;
     _p->backstageMessageShow = new MessageTypeShowWidget();
     //消息匹配框
-    std::map<DataDefine::BackStageMessageType,QString> messTypeMap = {
+    static const std::map<DataDefine::BackStageMessageType,QString> &messTypeMap = {
         {DataDefine::NONE_TYPE,""},
         {DataDefine::NODE_ERROR_TEST_TYPE,"node_test"} ,{DataDefine::NODE_OUT_TEST_TYPE,"node_test"} ,
         {DataDefine::NODE_ERROR_FORMAL_TYPE,"node_formal"} ,{DataDefine::NODE_OUT_FORMAL_TYPE,"node_formal"} ,
         {DataDefine::CLIENT_ERROR_TEST_TYPE,"client_test"} ,{DataDefine::CLIENT_OUT_TEST_TYPE,"client_test"} ,
         {DataDefine::CLIENT_ERROR_FORMAL_TYPE,"client_formal"} ,{DataDefine::CLIENT_OUT_FORMAL_TYPE,"client_formal"}
     };
-    connect(ChainIDE::getInstance()->getBackStageManager(),&BackStageManager::OutputMessage,[this,messTypeMap](const QString &message,int messageType){
+    connect(ChainIDE::getInstance()->getBackStageManager(),&BackStageManager::OutputMessage,[this](const QString &message,int messageType){
         this->_p->backstageMessageShow->ReceiveMessage(message,messTypeMap.at(static_cast<DataDefine::BackStageMessageType>(messageType)));
     });
     connect(this,&MainWindow::windowClose,_p->backstageMessageShow,&MessageTypeShowWidget::close);

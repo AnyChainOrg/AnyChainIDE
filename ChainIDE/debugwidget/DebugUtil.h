@@ -12,7 +12,9 @@ class DebugUtil
 public:
     static void getCommentLine(const QString &filePath,std::vector<int> &data);//获取某个文件的注释行、空行
 
-    static void ParseDebugInfoData(const QString &info,BaseItemDataPtr &root);//解析查询调试器变量返回内容
+    static void ParseDebugInfoLocalData(const QString &info,BaseItemDataPtr &root);//解析查询调试器变量返回内容
+
+    static void ParseDebugInfoUpvalData(const QString &info,BaseItemDataPtr &root);//解析查询调试器返回全局变量内容
 
     static void ParseStackTraceData(const QString &info,ListItemVec &data,const QString &defaultFile="");//解析堆栈信息返回内容
 private:

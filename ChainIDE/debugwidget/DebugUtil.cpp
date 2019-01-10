@@ -95,7 +95,7 @@ bool DebugUtil::isCommentLine(const QString &lineInfo, bool &isCommentStart,
 }
 
 
-void DebugUtil::ParseDebugInfoData(const QString &info, BaseItemDataPtr &root)
+void DebugUtil::ParseDebugInfoLocalData(const QString &info, BaseItemDataPtr &root)
 {
     if(nullptr == root)
     {
@@ -107,6 +107,22 @@ void DebugUtil::ParseDebugInfoData(const QString &info, BaseItemDataPtr &root)
     if(json_error.error != QJsonParseError::NoError || !parse_doucment.isObject()) return ;
 
     QJsonArray arr = parse_doucment.object().value("locals").toArray();
+
+    ParseInfoArrayData(arr,root);
+}
+
+void DebugUtil::ParseDebugInfoUpvalData(const QString &info, BaseItemDataPtr &root)
+{
+    if(nullptr == root)
+    {
+        root = std::make_shared<BaseItemData>();
+    }
+    QJsonParseError json_error;
+    QJsonDocument parse_doucment = QJsonDocument::fromJson(info.toUtf8(), &json_error);
+
+    if(json_error.error != QJsonParseError::NoError || !parse_doucment.isObject()) return ;
+
+    QJsonArray arr = parse_doucment.object().value("upvalues").toArray();
 
     ParseInfoArrayData(arr,root);
 }

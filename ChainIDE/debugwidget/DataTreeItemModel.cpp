@@ -21,6 +21,14 @@ public:
 	{
 
 	}
+    ~DataTreeItemModelPrivate()
+    {
+        if(rootItem)
+        {
+            delete rootItem;
+            rootItem = nullptr;
+        }
+    }
 public:
 	BaseTreeItem *rootItem;
 	QModelIndexList dragedIndexList;//被拖动的index
@@ -35,6 +43,7 @@ DataTreeItemModel::DataTreeItemModel(QObject *parent)
 DataTreeItemModel::~DataTreeItemModel()
 {
 	delete _p;
+    _p = nullptr;
 }
 
 QVariant DataTreeItemModel::data(const QModelIndex &index, int role) const

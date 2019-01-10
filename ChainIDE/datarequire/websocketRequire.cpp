@@ -10,6 +10,14 @@ public:
     {
 
     }
+    ~DataPrivate()
+    {
+        if(m_webSocket)
+        {
+            delete m_webSocket;
+            m_webSocket = nullptr;
+        }
+    }
 public:
     QWebSocket *m_webSocket;
     QString m_buff;

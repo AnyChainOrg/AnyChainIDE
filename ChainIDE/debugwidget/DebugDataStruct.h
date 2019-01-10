@@ -11,7 +11,7 @@ namespace DebugDataStruct{
 //调试器状态
 enum DebuggerState{Available, StartDebug,
                    StepDebug, StepInDebug, ContinueDebug,
-                   QueryInfo, QueryStack,
+                   QueryInfo, QueryUpInfo, QueryStack,
                    SetBreakPoint, DeleteBreakPoint};
 
 }
@@ -37,6 +37,8 @@ public:
 
     void setParent(BaseItemDataPtr pa){parent = pa;}
     BaseItemDataPtr getParent()const{return parent;}
+
+    void clearData(){children.clear();setKey("");setVal("");setType("");}
 private:
     QString Key;
     QString Val;

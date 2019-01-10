@@ -32,8 +32,8 @@ void MessageTypeShowWidget::ReceiveMessage(const QString &message, const QString
     if(nullptr == bro)
     {
         bro = new QTextBrowser(ui->tabWidget);
+//        ui->tabWidget->tabBar()->setStyleSheet(QString("QTabBar::tab {width: %1px; }").arg(QString::number((ui->tabWidget->width()-20)/(ui->tabWidget->count()+1))));
         ui->tabWidget->addTab(bro,messageLabel);
-        ui->tabWidget->tabBar()->setStyleSheet(QString("QTabBar::tab {width: %1px; }").arg(QString::number((ui->tabWidget->width()-10)/ui->tabWidget->count())));
     }
 
     bro->append(message);

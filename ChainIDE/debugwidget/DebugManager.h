@@ -39,7 +39,10 @@ private:
     void setDebuggerState(DebugDataStruct::DebuggerState state);//设置调试器状态
 
     void getVariantInfo();//获取变量信息
-    void ParseQueryInfo(const QString &info);//解析查询变量返回情况
+    void ParseInfoLocals(const QString &info);//解析查询变量返回情况
+
+    void getUpValueVariantInfo();//获取全局变量信息
+    void ParseInfoUpValue(const QString &info);//解析查询全局变量返回情况
 
     void getBackTraceInfo();//获取堆栈信息
     void ParseBackTrace(const QString &info);//解析查询堆栈返回情况

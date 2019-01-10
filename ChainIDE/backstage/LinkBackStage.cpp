@@ -274,7 +274,7 @@ void LinkBackStage::readClientStandOutput()
 void LinkBackStage::checkNodeMessage(const QString &message)
 {
     if(_p->startNode) return;
-    if(message.contains("Chain ID") || message.contains("Chain ") || message.contains("ain ID "))
+    if(message.contains("Chain ID") || message.contains("Chain ") || message.contains("ID is") || message.contains("D is"))
     {
         qDebug()<<"find chain id is:"<<message;
         _p->startNode = true;

@@ -313,11 +313,11 @@ void ChainIDE::refreshStyleSheet()
 
 void ChainIDE::refreshTranslator()
 {
-    QTranslator*  translator = new QTranslator();
+    QTranslator*  translator = new QTranslator(this);
     translator->load(getCurrentLanguage() == DataDefine::English ? ":/IDE_English.qm" : ":/IDE_Simplified_Chinese.qm");
     QApplication::installTranslator(translator);
 
-    QTranslator*  widgetTranslator = new QTranslator();
+    QTranslator*  widgetTranslator = new QTranslator(this);
     widgetTranslator->load(getCurrentLanguage() == DataDefine::English ? ":/widgets_English.qm" : ":/widgets_Chinese.qm");
     QApplication::installTranslator(widgetTranslator);
 

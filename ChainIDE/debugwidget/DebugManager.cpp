@@ -18,6 +18,7 @@ public:
     DataPrivate()
         :uvmProcess(new QProcess())
         ,debuggerState(DebugDataStruct::Available)
+        ,infoRootData(std::make_shared<BaseItemData>())
     {
 
     }
@@ -34,8 +35,10 @@ public:
 
     QProcess *uvmProcess;//调试器
     DebugDataStruct::DebuggerState debuggerState;//调试器当前状态
+    std::mutex dataMutex;//用于修改调试器状态的锁
 
-    std::mutex dataMutex;
+    BaseItemDataPtr infoRootData;//变量查询数据
+
 };
 
 DebugManager::DebugManager(QObject *parent)
@@ -105,18 +108,6 @@ void DebugManager::stopDebug()
     _p->uvmProcess->close();
     ResetDebugger();
     emit debugFinish();
-}
-
-void DebugManager::getVariantInfo()
-{
-    setDebuggerState(DebugDataStruct::QueryInfo);
-    _p->uvmProcess->write("info locals\n");
-}
-
-void DebugManager::getBackTraceInfo()
-{
-    setDebuggerState(DebugDataStruct::QueryStack);
-    _p->uvmProcess->write("backtrace\n");
 }
 
 void DebugManager::fetchBreakPointsFinish(const QString &filePath,const std::vector<int> &data)
@@ -194,8 +185,12 @@ void DebugManager::readyReadStandardOutputSlot()
 
     switch(getDebuggerState()){
     case DebugDataStruct::QueryInfo:
-        ParseQueryInfo(outPut);
+        ParseInfoLocals(outPut);
         getBackTraceInfo();
+        break;
+    case DebugDataStruct::QueryUpInfo:
+//        ParseInfoUpValue(outPut);
+//        getBackTraceInfo();
         break;
     case DebugDataStruct::QueryStack:
         ParseBackTrace(outPut);
@@ -233,11 +228,36 @@ void DebugManager::ResetDebugger()
     _p->commentLines.clear();
 }
 
-void DebugManager::ParseQueryInfo(const QString &info)
+void DebugManager::getVariantInfo()
 {
-    BaseItemDataPtr root = std::make_shared<BaseItemData>();
-    DebugUtil::ParseDebugInfoData(info,root);
-    emit variantUpdated(root);
+    setDebuggerState(DebugDataStruct::QueryInfo);
+    _p->uvmProcess->write("info locals\n");
+}
+
+void DebugManager::getUpValueVariantInfo()
+{
+    setDebuggerState(DebugDataStruct::QueryUpInfo);
+    _p->uvmProcess->write("info upvalues\n");
+}
+
+void DebugManager::getBackTraceInfo()
+{
+    setDebuggerState(DebugDataStruct::QueryStack);
+    _p->uvmProcess->write("backtrace\n");
+}
+
+void DebugManager::ParseInfoLocals(const QString &info)
+{
+//    BaseItemDataPtr root = std::make_shared<BaseItemData>();
+    _p->infoRootData->clearData();
+    DebugUtil::ParseDebugInfoLocalData(info,_p->infoRootData);
+    emit variantUpdated(_p->infoRootData);
+}
+
+void DebugManager::ParseInfoUpValue(const QString &info)
+{
+    DebugUtil::ParseDebugInfoUpvalData(info,_p->infoRootData);
+    emit variantUpdated(_p->infoRootData);
 }
 
 void DebugManager::ParseBackTrace(const QString &info)

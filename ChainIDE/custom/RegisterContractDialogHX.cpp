@@ -97,7 +97,7 @@ void RegisterContractDialogHX::InitWidget()
     ui->gaslimit->setSingleStep(1);
     ui->gasprice->setRange(10,std::numeric_limits<int>::max());
 
-    QStyledItemDelegate* itemDelegate = new QStyledItemDelegate();
+    QStyledItemDelegate* itemDelegate = new QStyledItemDelegate(this);
     ui->contractFile->setItemDelegate(itemDelegate);
 
     setWindowFlags(Qt::FramelessWindowHint);

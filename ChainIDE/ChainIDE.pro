@@ -242,6 +242,10 @@ RESOURCES += \
 
 TRANSLATIONS +=   IDE_Simplified_Chinese.ts  IDE_English.ts
 
+CONFIG(release,debug|release){
+    QMAKE_CXXFLAGS_RELEASE = $$QMAKE_CFLAGS_RELEASE_WITH_DEBUGINFO
+    QMAKE_LFLAGS_RELEASE = $$QMAKE_LFLAGS_RELEASE_WITH_DEBUGINFO
+}
 
 win32{
 RC_FILE += logo.rc
@@ -259,10 +263,6 @@ HEADERS +=    compile/gluaCompile.h \
 CONFIG(debug, debug|release) {
     INCLUDEPATH += VisualLeakDetector/include
     LIBS += -L$$PWD/VisualLeakDetector/lib/Win64 -lvld
-}
-CONFIG(release,debug|release){
-    QMAKE_CXXFLAGS_RELEASE = $$QMAKE_CFLAGS_RELEASE_WITH_DEBUGINFO
-    QMAKE_LFLAGS_RELEASE = $$QMAKE_LFLAGS_RELEASE_WITH_DEBUGINFO
 }
 }
 

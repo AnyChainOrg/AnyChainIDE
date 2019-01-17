@@ -217,16 +217,7 @@ void IDEUtil::msecSleep(int msec)
 
 void IDEUtil::myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    // 加锁
-    static QMutex mutex;
-
-    static const QString  LOG_PATH = QApplication::applicationDirPath()+"/log.txt";
-//    if(!LOG_PATH) return;
-
-    mutex.lock();
-
     QByteArray localMsg = msg.toLocal8Bit();
-
     QString strMsg("");
     switch(type)
     {
@@ -243,26 +234,36 @@ void IDEUtil::myMessageOutput(QtMsgType type, const QMessageLogContext &context,
         strMsg = QString("[Fatal]");
         break;
     }
-
     // 设置输出信息格式
     QString strDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
     QString strMessage = QString("%1 DateTime:%2 Message:%3").arg(strMsg).arg(strDateTime).arg(localMsg.constData());
 
-    // 输出信息至文件中（读写、追加形式），超过50M删除日志
-    QFileInfo info(LOG_PATH);
-    if(info.exists())
-    {
-        if(info.size() > 1024*1024*50) QFile::remove(LOG_PATH);
-    }
+    // 加锁
+    static QMutex mutex;
+    static const QString *LOG_PATH = new QString(QApplication::applicationDirPath()+"/log.txt");
+    try {
+        if(!LOG_PATH) return;
+        mutex.lock();
+        QString logPath(*LOG_PATH);
+        // 输出信息至文件中（读写、追加形式），超过50M删除日志
+        QFileInfo info(logPath);
+        if(info.exists())
+        {
+            if(info.size() > 1024*1024*50) QFile::remove(logPath);
+        }
 
-    QFile file(LOG_PATH);
-    file.open(QIODevice::ReadWrite | QIODevice::Append);
-    QTextStream stream(&file);
-    stream << strMessage << "\r\n";
-    file.flush();
-    file.close();
-    // 解锁
-    mutex.unlock();
+        QFile file(logPath);
+        file.open(QIODevice::ReadWrite | QIODevice::Append);
+        QTextStream stream(&file);
+        stream << strMessage << "\r\n";
+        file.flush();
+        file.close();
+        // 解锁
+        mutex.unlock();
+    } catch (...) {
+        // 解锁
+        mutex.unlock();
+    }
 }
 
 void IDEUtil::showInExplorer(const QString &filePath)

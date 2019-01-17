@@ -1,12 +1,16 @@
+#ifdef WIN32
+#ifdef _DEBUG
+#include "VisualLeakDetector/include/vld.h"
+#endif
+#endif
+
 #include <QApplication>
 
 #include "IDEUtil.h"
 #include "LocalPeer.h"
 #include "ChainIDE.h"
 #include "mainwindow.h"
-#ifdef _DEBUG
-#include <vld.h>
-#endif
+
 
 int main(int argc, char *argv[])
 {

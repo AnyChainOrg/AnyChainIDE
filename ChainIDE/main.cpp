@@ -20,8 +20,10 @@ int main(int argc, char *argv[])
         LocalPeer loc;
         if(!loc.IsAlreadyRunning())
         {
+#ifdef WIN32
             //安装debug导出函数
             qInstallMessageHandler(IDEUtil::myMessageOutput);
+#endif
             //初始化单例配置等
             ChainIDE::getInstance();
             //主窗口

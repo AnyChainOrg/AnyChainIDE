@@ -60,7 +60,9 @@
 #include "ConvenientOp.h"
 #include "IDEUtil.h"
 
-//#define DEBUG_FUNC_OFF
+#ifndef WIN32//目前没有mac版本的调试器
+#define DEBUG_FUNC_OFF
+#endif
 
 class MainWindow::DataPrivate
 {
@@ -96,7 +98,9 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     qDebug()<<"delete mainwindow";
+#ifdef WIN32
     qInstallMessageHandler(nullptr);
+#endif
     delete _p;
     _p = nullptr;
     delete ui;

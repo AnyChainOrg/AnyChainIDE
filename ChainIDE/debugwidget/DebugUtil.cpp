@@ -1,5 +1,6 @@
 #include "DebugUtil.h"
 
+#include <atomic>
 #include <QFile>
 #include <QDebug>
 #include <QJsonDocument>
@@ -169,7 +170,7 @@ void DebugUtil::ParseStackTraceData(const QString &info, ListItemVec &data,const
 //                data.emplace_back(std::make_shared<ListItemData>(rx.cap(1).toInt(),rx.cap(2),debugFile,rx.cap(4).toInt()));
 //            }
 //        }
-//    }
+    //    }
 }
 
 void DebugUtil::ParseInfoArrayData(const QJsonArray &arr, BaseItemDataPtr parent)
@@ -240,6 +241,20 @@ void DebugUtil::ParseInfoObjectData(const QJsonObject &obj, BaseItemDataPtr pare
             data->setType("object");
         }
     }
+}
+
+int DebugUtil::MakeNamedJsonRPC(const QString &method, const QVariantMap &parameters, QString &result)
+{
+    static std::atomic<int> initID(1);
+    int postID = initID.fetch_add(1);
+
+    QJsonObject object;
+    object.insert("jsonrpc","2.0");
+    object.insert("id",postID);
+    object.insert("method",method);
+    object.insert("params",QJsonObject::fromVariantMap(parameters));
+    result = QJsonDocument(object).toJson();
+    return  postID;
 }
 
 DebugUtil::DebugUtil()

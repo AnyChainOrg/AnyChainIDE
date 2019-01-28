@@ -28,8 +28,8 @@ public slots:
     void fetchBreakPointsFinish(const QString &filePath,const std::vector<int> &data);
 
 private slots:
+    //调试器的一些槽、状态变化、对外输出、对外错误
     void OnProcessStateChanged();
-
     void readyReadStandardOutputSlot();
     void readyReadStandardErrorSlot();
 private:
@@ -70,6 +70,10 @@ signals:
 
     void removeBreakPoint(const QString &file,int linenumber);//强制删除断点--注释行
     void addBreakPoint(const QString &file,int linenumber);//强制添加断点--注释行断点的下一个非注释行
+private:
+    //统一管理发送给调试器的命令
+    QString getCommandStr(DebugDataStruct::DebuggerState state)const;//用于获取调试命令模板
+    void postCommandToDebugger(const QString &command);//发送调试指令到调试器。所有的指令都由此发送
 private:
     class DataPrivate;
     DataPrivate *_p;

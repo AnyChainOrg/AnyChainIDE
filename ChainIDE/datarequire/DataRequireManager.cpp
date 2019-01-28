@@ -158,7 +158,7 @@ void DataRequireManager::processRequire()
         }
         if(_p->loopNumber >= MAXLOOPNUMBER)
         {
-            //请求超时，清楚请求
+            //请求超时，清除请求
             if(!_p->pendingRpcs.empty())
             {
                 qDebug()<<"require outtime "<<_p->pendingRpcs.front();
@@ -167,12 +167,6 @@ void DataRequireManager::processRequire()
                 requireClear();
                 return;
             }
-//            {
-//                std::lock_guard<std::mutex> loc(_p->dataMutex);
-//                _p->loopNumber = 0;
-//                _p->pendingRpcs.removeFirst();
-//                _p->isBusy = false;
-//            }
         }
     }
 

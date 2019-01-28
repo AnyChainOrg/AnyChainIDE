@@ -103,7 +103,7 @@ void DebugManager::debugContinue()
 void DebugManager::stopDebug()
 {
     CancelBreakPoint();
-    _p->uvmProcess->write("continue\n");
+    postCommandToDebugger(getCommandStr(DebugDataStruct::ContinueDebug));
     _p->uvmProcess->waitForFinished();
     _p->uvmProcess->close();
     ResetDebugger();
@@ -120,12 +120,12 @@ void DebugManager::fetchBreakPointsFinish(const QString &filePath,const std::vec
         debugContinue();
         break;
     case DebugDataStruct::StepDebug:
-        _p->uvmProcess->write("step\n");
+        postCommandToDebugger(getCommandStr(DebugDataStruct::StepDebug));
         break;
     case DebugDataStruct::ContinueDebug:
         //调整一下当前文件的断点，主要先防止注释行之类的断点
         UpdateFileDebugBreak(data);
-        _p->uvmProcess->write("continue\n");
+        postCommandToDebugger(getCommandStr(DebugDataStruct::ContinueDebug));
         break;
     default:
         break;
@@ -185,11 +185,12 @@ void DebugManager::readyReadStandardOutputSlot()
 
     switch(getDebuggerState()){
     case DebugDataStruct::QueryInfo:
+        //获取info栈变量之后，立马获取全局堆变量
         ParseInfoLocals(outPut);
         getUpValueVariantInfo();
-//        getBackTraceInfo();
         break;
     case DebugDataStruct::QueryUpInfo:
+        //获取全局变量之后，立马获取堆栈回溯状态
         ParseInfoUpValue(outPut);
         getBackTraceInfo();
         break;
@@ -198,6 +199,7 @@ void DebugManager::readyReadStandardOutputSlot()
 //        emit debugOutput(outPut);
         break;
     default:
+        //默认情况尝试解析断点停顿，并且输出到前台
         ParseBreakPoint(outPut);
         emit debugOutput(outPut);
         break;
@@ -232,24 +234,23 @@ void DebugManager::ResetDebugger()
 void DebugManager::getVariantInfo()
 {
     setDebuggerState(DebugDataStruct::QueryInfo);
-    _p->uvmProcess->write("info locals\n");
+    postCommandToDebugger(getCommandStr(DebugDataStruct::QueryInfo));
 }
 
 void DebugManager::getUpValueVariantInfo()
 {
     setDebuggerState(DebugDataStruct::QueryUpInfo);
-    _p->uvmProcess->write("info upvalues\n");
+    postCommandToDebugger(getCommandStr(DebugDataStruct::QueryUpInfo));
 }
 
 void DebugManager::getBackTraceInfo()
 {
     setDebuggerState(DebugDataStruct::QueryStack);
-    _p->uvmProcess->write("backtrace\n");
+    postCommandToDebugger(getCommandStr(DebugDataStruct::QueryStack));
 }
 
 void DebugManager::ParseInfoLocals(const QString &info)
 {
-//    BaseItemDataPtr root = std::make_shared<BaseItemData>();
     _p->infoRootData->clearData();
     DebugUtil::ParseDebugInfoLocalData(info,_p->infoRootData);
     emit variantUpdated(_p->infoRootData);
@@ -283,19 +284,18 @@ void DebugManager::ParseBreakPoint(const QString &info)
 void DebugManager::SetBreakPoint(const QString &file, int lineNumber)
 {
     setDebuggerState(DebugDataStruct::SetBreakPoint);
-    _p->uvmProcess->write(QString("break ? %1\n").arg(QString::number(lineNumber+1)).toStdString().c_str());
-    _p->uvmProcess->waitForBytesWritten();
+    postCommandToDebugger(getCommandStr(DebugDataStruct::SetBreakPoint).arg(QString::number(lineNumber+1)));
 }
 
 void DebugManager::DelBreakPoint(const QString &file, int lineNumber)
 {
     setDebuggerState(DebugDataStruct::DeleteBreakPoint);
-    _p->uvmProcess->write(QString("delete ? %1\n").arg(QString::number(lineNumber+1)).toStdString().c_str());
-    _p->uvmProcess->waitForBytesWritten();
+    postCommandToDebugger(getCommandStr(DebugDataStruct::DeleteBreakPoint).arg(QString::number(lineNumber+1)));
 }
 
 void DebugManager::CancelBreakPoint()
 {
+    //重复调用删除断点函数即可
     std::for_each(_p->breakPointLines.begin(),_p->breakPointLines.end(),std::bind(&DebugManager::DelBreakPoint,this,std::ref(_p->filePath),std::placeholders::_1));
 }
 
@@ -312,7 +312,7 @@ void DebugManager::UpdateFileDebugBreak(const std::vector<int> &data)
 
 void DebugManager::ModifyBreakPoint(const std::vector<int> &data,std::vector<int> &result)
 {
-    //调整断点情况
+    //调整断点情况，主要判断是否在注释行打了断点，，其实可不必，因为调试器会忽略这些断点
     result.clear();
     std::vector<int> temp = data;
     std::for_each(temp.begin(),temp.end(),[this,&result](int li){
@@ -343,4 +343,41 @@ void DebugManager::UpdateDebuggerBreakCMD(const std::vector<int> &oldBreak, cons
     //删除已经没有的断点，添加新的断点
     std::for_each(deleteVec.begin(),deleteVec.end(),std::bind(&DebugManager::DelBreakPoint,this,std::ref(_p->filePath),std::placeholders::_1));
     std::for_each(addVec.begin(),addVec.end(),std::bind(&DebugManager::SetBreakPoint,this,std::ref(_p->filePath),std::placeholders::_1));
+}
+
+QString DebugManager::getCommandStr(DebugDataStruct::DebuggerState state) const
+{
+    QString command("");
+    switch (state) {
+    case DebugDataStruct::ContinueDebug:
+           command = "continue\n";
+        break;
+    case DebugDataStruct::StepDebug:
+        command = "step\n";
+        break;
+    case DebugDataStruct::QueryInfo:
+        command = "info locals\n";
+        break;
+    case DebugDataStruct::QueryUpInfo:
+        command = "info upvalues\n";
+            break;
+    case DebugDataStruct::QueryStack:
+        command = "backtrace\n";
+        break;
+    case DebugDataStruct::SetBreakPoint:
+        command = "break ? %1\n";
+        break;
+    case DebugDataStruct::DeleteBreakPoint:
+        command = "delete ? %1\n";
+        break;
+    default:
+        break;
+    }
+    return command;
+}
+
+void DebugManager::postCommandToDebugger(const QString &command)
+{
+    _p->uvmProcess->write(command.toStdString().c_str());
+    _p->uvmProcess->waitForBytesWritten();
 }

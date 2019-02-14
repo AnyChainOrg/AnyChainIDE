@@ -18,7 +18,10 @@ public:
 
     static void ParseStackTraceData(const QString &info,ListItemVec &data,const QString &defaultFile="");//解析堆栈信息返回内容
 
-    static int MakeNamedJsonRPC(const QString &method, const QVariantMap &parameters, QString &result);//生成jsonrpc2.0带名请求格式，id自增
+    static void ParseBreakPointData(const QString &info,std::tuple<QString,int> &result);
+
+    static int MakeDebuggerJsonRPC(const QString &method, const QVariantMap &parameters, QString &result);//生成jsonrpc2.0带名请求格式，id自增
+    static int MakeDebuggerJsonRPC(const QString &method, const QJsonArray &papameters, QString &result);//生成jsonrpc2.0数组参数的请求格式，id自增
 private:
     static bool isCommentLine(const QString &lineInfo,bool &isCommentStart,
                               const QString &lineComment,const QString &phaseCommentStart,const QString &phaseCommentEnd);//辅助判断注释行问题

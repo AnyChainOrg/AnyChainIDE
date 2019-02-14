@@ -10,7 +10,6 @@
 
 #include "DataDefine.h"
 #include "IDEUtil.h"
-//#include "popwidget/commondialog.h"
 
 #include "datarequire/DataRequireManager.h"
 
@@ -197,9 +196,6 @@ void UbtcBackStage::onNodeExeStateChanged()
     else if(_p->nodeProc->state() == QProcess::NotRunning)
     {
         qDebug()<<QString("ubcd %1 is notrunning :%2").arg(_p->chaintype).arg(_p->nodeProc->errorString());
-//        CommonDialog commonDialog(CommonDialog::OkOnly);
-//        commonDialog.setText(tr("Fail to launch ubcd %1 !").arg(_p->chaintype));
-//        commonDialog.pop();
         emit exeNotRunning();
     }
 }

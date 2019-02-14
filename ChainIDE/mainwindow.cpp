@@ -412,10 +412,10 @@ void MainWindow::initMessageWidget()
     //消息匹配框
     static const std::map<DataDefine::BackStageMessageType,QString> &messTypeMap = {
         {DataDefine::NONE_TYPE,""},
-        {DataDefine::NODE_ERROR_TEST_TYPE,"node_test"} ,{DataDefine::NODE_OUT_TEST_TYPE,"node_test"} ,
-        {DataDefine::NODE_ERROR_FORMAL_TYPE,"node_formal"} ,{DataDefine::NODE_OUT_FORMAL_TYPE,"node_formal"} ,
-        {DataDefine::CLIENT_ERROR_TEST_TYPE,"client_test"} ,{DataDefine::CLIENT_OUT_TEST_TYPE,"client_test"} ,
-        {DataDefine::CLIENT_ERROR_FORMAL_TYPE,"client_formal"} ,{DataDefine::CLIENT_OUT_FORMAL_TYPE,"client_formal"}
+        {DataDefine::NODE_ERROR_TEST_TYPE,"node_1"} ,{DataDefine::NODE_OUT_TEST_TYPE,"node_1"} ,
+        {DataDefine::NODE_ERROR_FORMAL_TYPE,"node_2"} ,{DataDefine::NODE_OUT_FORMAL_TYPE,"node_2"} ,
+        {DataDefine::CLIENT_ERROR_TEST_TYPE,"cli_1"} ,{DataDefine::CLIENT_OUT_TEST_TYPE,"cli_1"} ,
+        {DataDefine::CLIENT_ERROR_FORMAL_TYPE,"cli_2"} ,{DataDefine::CLIENT_OUT_FORMAL_TYPE,"cli_2"}
     };
     connect(ChainIDE::getInstance()->getBackStageManager(),&BackStageManager::OutputMessage,[this](const QString &message,int messageType){
         this->_p->backstageMessageShow->ReceiveMessage(message,messTypeMap.at(static_cast<DataDefine::BackStageMessageType>(messageType)));

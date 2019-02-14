@@ -264,6 +264,9 @@ CONFIG(debug, debug|release) {
     INCLUDEPATH += VisualLeakDetector/include
     LIBS += -L$$PWD/VisualLeakDetector/lib/Win64 -lvld
 }
+CONFIG(release, debug|release) {
+    LIBS += -lDbgHelp
+}
 }
 
 unix{

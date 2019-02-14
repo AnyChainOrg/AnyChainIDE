@@ -170,14 +170,10 @@ void CTCBackStage::onNodeExeStateChanged()
         qDebug() << QString("ctc %1 is running").arg(_p->chaintype);
 
         initSocketManager();
-        //emit exeStarted();
     }
     else if(_p->nodeProc->state() == QProcess::NotRunning)
     {
         qDebug()<<QString("ctc %1 is notrunning :%2").arg(_p->chaintype).arg(_p->nodeProc->errorString());
-//        CommonDialog commonDialog(CommonDialog::OkOnly);
-//        commonDialog.setText(tr("Fail to launch ctc %1 !").arg(_p->chaintype));
-//        commonDialog.pop();
         emit exeNotRunning();
     }
 }

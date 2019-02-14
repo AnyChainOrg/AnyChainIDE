@@ -196,19 +196,21 @@ void DebugManager::readyReadStandardOutputSlot()
         break;
     case DebugDataStruct::QueryStack:
         ParseBackTrace(outPut);
-//        emit debugOutput(outPut);
         break;
     default:
-        //默认情况尝试解析断点停顿，并且输出到前台
+        //可能是主动推送，默认情况尝试解析断点停顿，并且输出到前台
         ParseBreakPoint(outPut);
-        emit debugOutput(outPut);
         break;
     }
+    emit debugOutput(outPut);
+    qDebug()<<"standard output:"<<outPut;
 }
 
 void DebugManager::readyReadStandardErrorSlot()
 {
-    emit debugOutput(_p->uvmProcess->readAllStandardError());
+    QString errPut = QString::fromLocal8Bit(_p->uvmProcess->readAllStandardError());
+    emit debugOutput(errPut);
+    qDebug()<<"error output:"<<errPut;
 }
 
 void DebugManager::InitDebugger()
@@ -271,26 +273,26 @@ void DebugManager::ParseBackTrace(const QString &info)
 
 void DebugManager::ParseBreakPoint(const QString &info)
 {
-    QString data = info.simplified();
-    QRegExp rx("hit breakpoint at (.*):(\\d+)",Qt::CaseInsensitive);
-    rx.indexIn(data);
-    if(rx.indexIn(data) < 0 || rx.cap(1).isEmpty() || rx.cap(2).isEmpty()) return;
-    emit debugBreakAt(_p->filePath,rx.cap(2).toInt()-1);
-    //如果判断为断点停顿，，发送停顿消息，发送查询变量消息
-    getVariantInfo();
-
+    std::tuple<QString,int> data = std::make_tuple("",-1);
+    DebugUtil::ParseBreakPointData(info,data);
+    if(std::get<1>(data) != -1)
+    {
+        //如果判断为断点停顿，，发送停顿消息，发送查询变量消息
+        emit debugBreakAt(_p->filePath,std::get<1>(data)-1);
+        getVariantInfo();
+    }
 }
 
 void DebugManager::SetBreakPoint(const QString &file, int lineNumber)
 {
     setDebuggerState(DebugDataStruct::SetBreakPoint);
-    postCommandToDebugger(getCommandStr(DebugDataStruct::SetBreakPoint).arg(QString::number(lineNumber+1)));
+    postCommandToDebugger(getCommandStr(DebugDataStruct::SetBreakPoint).arg("?").arg(QString::number(lineNumber+1)));
 }
 
 void DebugManager::DelBreakPoint(const QString &file, int lineNumber)
 {
     setDebuggerState(DebugDataStruct::DeleteBreakPoint);
-    postCommandToDebugger(getCommandStr(DebugDataStruct::DeleteBreakPoint).arg(QString::number(lineNumber+1)));
+    postCommandToDebugger(getCommandStr(DebugDataStruct::DeleteBreakPoint).arg("?").arg(QString::number(lineNumber+1)));
 }
 
 void DebugManager::CancelBreakPoint()
@@ -350,25 +352,25 @@ QString DebugManager::getCommandStr(DebugDataStruct::DebuggerState state) const
     QString command("");
     switch (state) {
     case DebugDataStruct::ContinueDebug:
-           command = "continue\n";
+        DebugUtil::MakeDebuggerJsonRPC("continue",QJsonArray(),command);
         break;
     case DebugDataStruct::StepDebug:
-        command = "step\n";
+        DebugUtil::MakeDebuggerJsonRPC("step",QJsonArray(),command);
         break;
     case DebugDataStruct::QueryInfo:
-        command = "info locals\n";
+        DebugUtil::MakeDebuggerJsonRPC("info",QJsonArray()<<"locals",command);
         break;
     case DebugDataStruct::QueryUpInfo:
-        command = "info upvalues\n";
+        DebugUtil::MakeDebuggerJsonRPC("info",QJsonArray()<<"upvalues",command);
             break;
     case DebugDataStruct::QueryStack:
-        command = "backtrace\n";
+        DebugUtil::MakeDebuggerJsonRPC("backtrace",QJsonArray(),command);
         break;
     case DebugDataStruct::SetBreakPoint:
-        command = "break ? %1\n";
+        DebugUtil::MakeDebuggerJsonRPC("break",QJsonArray()<<"%1"<<"%2",command);
         break;
     case DebugDataStruct::DeleteBreakPoint:
-        command = "delete ? %1\n";
+        DebugUtil::MakeDebuggerJsonRPC("delete",QJsonArray()<<"%1"<<"%2",command);
         break;
     default:
         break;
@@ -378,6 +380,7 @@ QString DebugManager::getCommandStr(DebugDataStruct::DebuggerState state) const
 
 void DebugManager::postCommandToDebugger(const QString &command)
 {
+    qDebug()<<"send to debugger:"<<command;
     _p->uvmProcess->write(command.toStdString().c_str());
     _p->uvmProcess->waitForBytesWritten();
 }

@@ -163,6 +163,9 @@ void DataUtil::myMessageOutput(QtMsgType type, const QMessageLogContext &context
     case QtDebugMsg:
         strMsg = QString("Debug:");
         break;
+    case QtInfoMsg:
+        strMsg = QString("[Info]");
+        break;
     case QtWarningMsg:
         strMsg = QString("Warning:");
         break;
@@ -171,6 +174,8 @@ void DataUtil::myMessageOutput(QtMsgType type, const QMessageLogContext &context
         break;
     case QtFatalMsg:
         strMsg = QString("Fatal:");
+        break;
+    default:
         break;
     }
 

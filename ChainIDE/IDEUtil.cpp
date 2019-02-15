@@ -1,5 +1,6 @@
 #include "IDEUtil.h"
 
+#include <atomic>
 #include <mutex>
 #include <QString>
 #include <QApplication>
@@ -19,22 +20,24 @@
 #include <QUrl>
 #include <QProcess>
 
+static std::atomic<int> initID(1);
 QString IDEUtil::toJsonFormat(const QString &instruction, const QJsonArray & parameters)
 {
+    int postID = initID.fetch_add(1);
     QJsonObject object;
     object.insert("jsonrpc", "2.0");
-    object.insert("id", 32800);
+    object.insert("id", postID);
     object.insert("method", instruction);
     object.insert("params",parameters);
-
     return QJsonDocument(object).toJson();
 }
 
-QString IDEUtil::toHttpJsonFormat(const QString &instruction, const QVariantMap &parameters)
+QString IDEUtil::toJsonFormat(const QString &instruction, const QVariantMap &parameters)
 {
+    int postID = initID.fetch_add(1);
     QJsonObject object;
     object.insert("jsonrpc","2.0");
-    object.insert("id",45);
+    object.insert("id",postID);
     object.insert("method",instruction);
     object.insert("params",QJsonObject::fromVariantMap(parameters));
     return QJsonDocument(object).toJson();
@@ -224,6 +227,9 @@ void IDEUtil::myMessageOutput(QtMsgType type, const QMessageLogContext &context,
     case QtDebugMsg:
         strMsg = QString("[Debug]");
         break;
+    case QtInfoMsg:
+        strMsg = QString("[Info]");
+        break;
     case QtWarningMsg:
         strMsg = QString("[Warning]");
         break;
@@ -232,6 +238,8 @@ void IDEUtil::myMessageOutput(QtMsgType type, const QMessageLogContext &context,
         break;
     case QtFatalMsg:
         strMsg = QString("[Fatal]");
+        break;
+    default:
         break;
     }
     // 设置输出信息格式

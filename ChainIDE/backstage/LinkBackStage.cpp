@@ -342,9 +342,9 @@ void LinkBackStage::rpcPostedSlot(const QString & id, const QString & cmd)
 
 void LinkBackStage::rpcReceivedSlot(const QString &id, const QString &message)
 {
-    QString result = message.mid( QString("{\"id\":32800,\"jsonrpc\":\"2.0\",").size());
-    result = result.left( result.size() - 1);
-    result.prepend("{");
-    result.append("}");
-    emit rpcReceived(id,result);
+//    QString result = message.mid( QString("{\"id\":32800,\"jsonrpc\":\"2.0\",").size());
+//    result = result.left( result.size() - 1);
+//    result.prepend("{");
+//    result.append("}");
+    emit rpcReceived(id,message);
 }

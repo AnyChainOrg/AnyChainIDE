@@ -182,17 +182,29 @@ void DebugManager::OnProcessStateChanged()
 void DebugManager::readyReadStandardOutputSlot()
 {
     QString outPut = QString::fromLocal8Bit( _p->uvmProcess->readAllStandardOutput());
-
+    if(outPut.trimmed().isEmpty())
+    {
+        return;
+    }
+    qDebug()<<"standard output:"<<outPut<<getDebuggerState();
+    if(DebugUtil::isPromptFlag(outPut))
+    {
+        return;
+    }
     switch(getDebuggerState()){
     case DebugDataStruct::QueryInfo:
         //获取info栈变量之后，立马获取全局堆变量
-        ParseInfoLocals(outPut);
-        getUpValueVariantInfo();
+        if(ParseInfoLocals(outPut))
+        {
+            getUpValueVariantInfo();
+        }
         break;
     case DebugDataStruct::QueryUpInfo:
         //获取全局变量之后，立马获取堆栈回溯状态
-        ParseInfoUpValue(outPut);
-        getBackTraceInfo();
+        if(ParseInfoUpValue(outPut))
+        {
+            getBackTraceInfo();
+        }
         break;
     case DebugDataStruct::QueryStack:
         ParseBackTrace(outPut);
@@ -203,7 +215,6 @@ void DebugManager::readyReadStandardOutputSlot()
         break;
     }
     emit debugOutput(outPut);
-    qDebug()<<"standard output:"<<outPut;
 }
 
 void DebugManager::readyReadStandardErrorSlot()
@@ -251,24 +262,37 @@ void DebugManager::getBackTraceInfo()
     postCommandToDebugger(getCommandStr(DebugDataStruct::QueryStack));
 }
 
-void DebugManager::ParseInfoLocals(const QString &info)
+bool DebugManager::ParseInfoLocals(const QString &info)
 {
     _p->infoRootData->clearData();
-    DebugUtil::ParseDebugInfoLocalData(info,_p->infoRootData);
-    emit variantUpdated(_p->infoRootData);
+    if(DebugUtil::ParseDebugInfoLocalData(info,_p->infoRootData))
+    {
+        emit variantUpdated(_p->infoRootData);
+        return true;
+    }
+    return false;
 }
 
-void DebugManager::ParseInfoUpValue(const QString &info)
+bool DebugManager::ParseInfoUpValue(const QString &info)
 {
-    DebugUtil::ParseDebugInfoUpvalData(info,_p->infoRootData);
-    emit variantUpdated(_p->infoRootData);
+    if(DebugUtil::ParseDebugInfoUpvalData(info,_p->infoRootData))
+    {
+        emit variantUpdated(_p->infoRootData);
+        return true;
+    }
+    return false;
 }
 
-void DebugManager::ParseBackTrace(const QString &info)
+bool DebugManager::ParseBackTrace(const QString &info)
 {
     ListItemVec data;
-    DebugUtil::ParseStackTraceData(info,data,QFileInfo(_p->filePath).fileName());
-    emit backTraceUpdated(data);
+    if(DebugUtil::ParseStackTraceData(info,data,QFileInfo(_p->filePath).fileName()))
+    {
+        emit backTraceUpdated(data);
+        return true;
+    }
+    return false;
+
 }
 
 void DebugManager::ParseBreakPoint(const QString &info)

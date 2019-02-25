@@ -152,11 +152,11 @@ void CTCBackStage::rpcPostedSlot(const QString &cmd, const QString &param)
 
 void CTCBackStage::rpcReceivedSlot(const QString &id, const QString &message)
 {
-    QString result = message.mid( QString("{\"id\":32800,").size());
-    result = result.left( result.size() - 1);
-    result.prepend("{");
-    result.append("}");
-    emit rpcReceived(id,result);
+//    QString result = message.mid( QString("{\"id\":32800,").size());
+//    result = result.left( result.size() - 1);
+//    result.prepend("{");
+//    result.append("}");
+    emit rpcReceived(id,message);
 }
 
 void CTCBackStage::onNodeExeStateChanged()

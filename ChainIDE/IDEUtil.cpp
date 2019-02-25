@@ -23,6 +23,7 @@
 static std::atomic<int> initID(1);
 QString IDEUtil::toJsonFormat(const QString &instruction, const QJsonArray & parameters)
 {
+    if(initID==std::numeric_limits<int>::max()){initID.fetch_and(0);}
     int postID = initID.fetch_add(1);
     QJsonObject object;
     object.insert("jsonrpc", "2.0");
@@ -34,6 +35,7 @@ QString IDEUtil::toJsonFormat(const QString &instruction, const QJsonArray & par
 
 QString IDEUtil::toJsonFormat(const QString &instruction, const QVariantMap &parameters)
 {
+    if(initID==std::numeric_limits<int>::max()){initID.fetch_and(0);}
     int postID = initID.fetch_add(1);
     QJsonObject object;
     object.insert("jsonrpc","2.0");

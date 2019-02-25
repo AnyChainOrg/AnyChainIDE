@@ -175,8 +175,8 @@ void UbtcBackStage::rpcPostedSlot(const QString &cmd, const QString & param)
 
 void UbtcBackStage::rpcReceivedSlot(const QString &id, const QString &message)
 {
-    int index = message.indexOf(",\"error\":");
-    QString result = message.mid(0,index) + "}";
+//    int index = message.indexOf(",\"error\":");
+//    QString result = message.mid(0,index) + "}";
     emit rpcReceived(id,message);
 }
 

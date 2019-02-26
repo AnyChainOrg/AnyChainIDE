@@ -107,12 +107,12 @@ bool DebugUtil::ParseDebugInfoLocalData(const QString &info, BaseItemDataPtr &ro
 
     if(json_error.error != QJsonParseError::NoError || !parse_doucment.isObject()) return false;
 
-    if(!parse_doucment.object().value("result").toObject().keys().contains("locals"))
+    if(!parse_doucment.object()./*value("result").toObject().*/keys().contains("locals"))
     {
        return false;
     }
 
-    QJsonArray arr = parse_doucment.object().value("result").toObject().value("locals").toArray();
+    QJsonArray arr = parse_doucment.object()./*value("result").toObject().*/value("locals").toArray();
 
     qDebug()<<"infolocallocal"<<arr;
 
@@ -131,11 +131,11 @@ bool DebugUtil::ParseDebugInfoUpvalData(const QString &info, BaseItemDataPtr &ro
 
     if(json_error.error != QJsonParseError::NoError || !parse_doucment.isObject()) return false;
 
-    if(!parse_doucment.object().value("result").toObject().keys().contains("upvalues"))
+    if(!parse_doucment.object()./*value("result").toObject().*/keys().contains("upvalues"))
     {
         return false;
     }
-    QJsonArray arr = parse_doucment.object().value("result").toObject().value("upvalues").toArray();
+    QJsonArray arr = parse_doucment.object()./*value("result").toObject().*/value("upvalues").toArray();
 
     ParseInfoArrayData(arr,root);
     return true;
@@ -148,14 +148,14 @@ bool DebugUtil::ParseStackTraceData(const QString &info, ListItemVec &data,const
 
     if(json_error.error != QJsonParseError::NoError || !parse_doucment.isObject()) return false;
 
-    if(!parse_doucment.object().value("result").toObject().keys().contains("backtrace"))
+    if(!parse_doucment.object()./*value("result").toObject().*/keys().contains("backtrace"))
     {
         return false;
     }
 
     data.clear();
 
-    QJsonArray arr = parse_doucment.object().value("result").toObject().value("backtrace").toArray();
+    QJsonArray arr = parse_doucment.object()./*value("result").toObject().*/value("backtrace").toArray();
     foreach (QJsonValue val, arr) {
         if(!val.isObject()) continue;
         QJsonObject obj = val.toObject();
@@ -170,6 +170,7 @@ bool DebugUtil::ParseStackTraceData(const QString &info, ListItemVec &data,const
         }
         data.emplace_back(std::make_shared<ListItemData>(level,function,debugFile,line));
     }
+    return true;
 }
 
 void DebugUtil::ParseInfoArrayData(const QJsonArray &arr, BaseItemDataPtr parent)
@@ -244,25 +245,25 @@ void DebugUtil::ParseInfoObjectData(const QJsonObject &obj, BaseItemDataPtr pare
 
 void DebugUtil::ParseBreakPointData(const QString &info,std::tuple<QString,int> &result)
 {
-    QJsonParseError json_error;
-    QJsonDocument parse_doucment = QJsonDocument::fromJson(info.toUtf8(), &json_error);
+//    QJsonParseError json_error;
+//    QJsonDocument parse_doucment = QJsonDocument::fromJson(info.toUtf8(), &json_error);
 
-    if(json_error.error != QJsonParseError::NoError || !parse_doucment.isObject()) return ;
-    if("Notify" == parse_doucment.object().value("method").toString())
-    {
-        QJsonObject obj = parse_doucment.object().value("params").toObject();
-        if("breakpoint hit" == obj.value("Event").toString() )
-        {
-            result =  std::make_tuple(obj.value("File").toString(),obj.value("LineNo").toInt());
-        }
-    }
+//    if(json_error.error != QJsonParseError::NoError || !parse_doucment.isObject()) return ;
+//    if("Notify" == parse_doucment.object().value("method").toString())
+//    {
+//        QJsonObject obj = parse_doucment.object().value("params").toObject();
+//        if("breakpoint hit" == obj.value("Event").toString() )
+//        {
+//            result =  std::make_tuple(obj.value("File").toString(),obj.value("LineNo").toInt());
+//        }
+//    }
 
-//    //  非jsonrpc版本
-//    QString data = info.simplified();
-//    QRegExp rx("hit breakpoint at (.*):(\\d+)",Qt::CaseInsensitive);
-//    rx.indexIn(data);
-//    if(rx.indexIn(data) < 0 || rx.cap(1).isEmpty() || rx.cap(2).isEmpty()) return;
-    //    result =  std::make_tuple("",rx.cap(2).toInt());
+    //  非jsonrpc版本
+    QString data = info.simplified();
+    QRegExp rx("hit breakpoint at (.*):(\\d+)",Qt::CaseInsensitive);
+    rx.indexIn(data);
+    if(rx.indexIn(data) < 0 || rx.cap(1).isEmpty() || rx.cap(2).isEmpty()) return;
+        result =  std::make_tuple("",rx.cap(2).toInt());
 }
 
 bool DebugUtil::isPromptFlag(const QString &info)
@@ -295,23 +296,23 @@ int DebugUtil::MakeDebuggerJsonRPC(const QString &method, const QVariantMap &par
 
 int DebugUtil::MakeDebuggerJsonRPC(const QString &method, const QJsonArray &parameters, QString &result)
 {
-    int postID = initID.fetch_add(1);
+//    int postID = initID.fetch_add(1);
 
-    QJsonObject object;
-    object.insert("jsonrpc","2.0");
-    object.insert("id",postID);
-    object.insert("method",method);
-    object.insert("params",parameters);
-    result = QString(QJsonDocument(object).toJson()).simplified().append("\n");
-    return  postID;
+//    QJsonObject object;
+//    object.insert("jsonrpc","2.0");
+//    object.insert("id",postID);
+//    object.insert("method",method);
+//    object.insert("params",parameters);
+//    result = QString(QJsonDocument(object).toJson()).simplified().append("\n");
+//    return  postID;
 
-//    //非jsonrpc版本
-//    result = method;
-//    foreach (QJsonValue va, parameters) {
-//        result += " " + va.toString();
-//    }
-//    result +="\n";
-//    return 0;
+    //非jsonrpc版本
+    result = method;
+    foreach (QJsonValue va, parameters) {
+        result += " " + va.toString();
+    }
+    result +="\n";
+    return 0;
 }
 
 DebugUtil::DebugUtil()

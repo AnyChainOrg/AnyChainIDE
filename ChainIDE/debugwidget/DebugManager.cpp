@@ -186,7 +186,7 @@ void DebugManager::readyReadStandardOutputSlot()
     {
         return;
     }
-    qDebug()<<"standard output:"<<outPut<<getDebuggerState();
+//    qDebug()<<"standard output:"<<outPut<<getDebuggerState();
     if(DebugUtil::isPromptFlag(outPut))
     {
         return;
@@ -212,9 +212,9 @@ void DebugManager::readyReadStandardOutputSlot()
     default:
         //可能是主动推送，默认情况尝试解析断点停顿，并且输出到前台
         ParseBreakPoint(outPut);
+        emit debugOutput(outPut);
         break;
     }
-    emit debugOutput(outPut);
 }
 
 void DebugManager::readyReadStandardErrorSlot()

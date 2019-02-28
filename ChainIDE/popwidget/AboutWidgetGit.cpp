@@ -7,7 +7,7 @@
 #include <QDesktopServices>
 #include "update/UpdateProgressUtil.h"
 
-static const QString IDE_VERSION = "1.0.15";
+static const QString IDE_VERSION = "1.0.16";
 static const QString UPDATE_SERVER_URL = "https://github.com/AnyChainOrg/AnyChainIDE/releases";
 #ifdef WIN32
 static const QString VERSION_DOWNLOAD_PATTERN = "/AnyChainOrg/AnyChainIDE/releases/download/v(\\d+\\.\\d+\\.\\d+)/([0-9a-zA-Z_]+\\.zip)";

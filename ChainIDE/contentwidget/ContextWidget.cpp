@@ -391,6 +391,8 @@ bool ContextWidget::closeFile(int i)
 
     //关闭当前页面
     ui->tabWidget->removeTab(i);
+    delete w;
+    w=nullptr;
     contextUpdate();
     return true;
 }

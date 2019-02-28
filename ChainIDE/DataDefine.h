@@ -94,8 +94,8 @@ namespace DataDefine
 #ifdef WIN32
     static const QString GLUA_COMPILE_PATH = "compile/glua/glua_compiler.exe";
 
-    static const QString JAVA_CORE_PATH = "compile/java/gjavac-core-1.0.1-dev.jar";
-    static const QString JAVA_COMPILE_PATH = "compile/java/gjavac-compiler-1.0.1-dev-jar-with-dependencies.jar";
+    static const QString JAVA_CORE_PATH = "compile/java/gjavac-core-1.0.2-dev.jar";
+    static const QString JAVA_COMPILE_PATH = "compile/java/gjavac-compiler-1.0.2-dev-jar-with-dependencies.jar";
     static const QString JAVA_UVM_ASS_PATH = "compile/java/uvm_ass.exe";
     static const QString JAVA_PACKAGE_GPC_PATH = "compile/java/package_gpc.exe";
 
@@ -109,8 +109,8 @@ namespace DataDefine
 #else
     static const QString GLUA_COMPILE_PATH = "compile/glua/glua_compiler";
 
-    static const QString JAVA_CORE_PATH = "compile/java/gjavac-core-1.0.1-dev.jar";
-    static const QString JAVA_COMPILE_PATH = "compile/java/gjavac-compiler-1.0.1-dev-jar-with-dependencies.jar";
+    static const QString JAVA_CORE_PATH = "compile/java/gjavac-core-1.0.2-dev.jar";
+    static const QString JAVA_COMPILE_PATH = "compile/java/gjavac-compiler-1.0.2-dev-jar-with-dependencies.jar";
     static const QString JAVA_UVM_ASS_PATH = "compile/java/uvm_ass";
     static const QString JAVA_PACKAGE_GPC_PATH = "compile/java/package_gpc";
 

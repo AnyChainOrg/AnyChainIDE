@@ -1,4 +1,4 @@
-package uvm.java.contracts
+package gjavac.test.kotlin
 
 
 import gjavac.lib.*
@@ -7,16 +7,16 @@ import gjavac.lib.UvmCoreLibs.*
 // TODO: 用fast_map_get/fast_map_set重构
 
 class Storage {
-    var name: String = ""
-    var symbol: String = ""
-    var supply: Long = 0L
+    var name: String? = ""
+    var symbol: String? = ""
+    var supply: String = "0" //big int str
     var precision: Long = 0L
-    var users: UvmMap<Long> = UvmMap.create()
-    var allowed: UvmMap<String> = UvmMap.create() // authorizer => {userAddress=>amount int}
-    var lockedAmounts: UvmMap<String> = UvmMap.create() // userAddress => "lockedAmount,unlockBlockNumber"
-    var state: String = ""
-    var allowLock: Boolean = false
-    var admin: String = ""
+    var users: UvmMap<String>? = UvmMap.create()
+    var allowed: UvmMap<String>? = UvmMap.create() // authorizer => {userAddress=>amount int}
+    var lockedAmounts: UvmMap<String>? = UvmMap.create() // userAddress => "lockedAmount,unlockBlockNumber"
+    var state: String? = ""
+    var allowLock: String? = "false"
+    var admin: String? = ""
 }
 
 interface MultiOwnedContractSimpleInterface {
@@ -41,7 +41,7 @@ class Utils {
 
     fun checkAdmin(self: UvmContract<*>) {
         val storage = (self.storage ?: return) as Storage
-        if(storage.admin != caller_address()) {
+        if(storage.admin != getFromAddress()) { // use from_address(), not caller_address
             error("you are not admin, can't call this function")
         }
     }
@@ -49,13 +49,17 @@ class Utils {
     fun checkCallerFrameValid(self: UvmContract<*>) {
         val prev_contract_id =  get_prev_call_frame_contract_address()
         val prev_api_name = get_prev_call_frame_api_name()
-        if (prev_contract_id == null || prev_contract_id!!.length < 1) {
+        if (prev_contract_id == null || prev_contract_id== "") {
             return
-        } else if (prev_api_name == "vote" || prev_api_name == "voteFunc") {
+        }/* else if ( prev_api_name == "vote" || prev_api_name == "voteFunc") {
+            return
+        }*/
+        else if ( prev_contract_id == get_current_contract_address()) {
             return
         } else {
-            error("this api can't called by invalid contract")
+            error("this api can't called by invalid contract:"+prev_contract_id)
         }
+        return
     }
 
     // parse a,b,c format string to [a,b,c]
@@ -87,8 +91,8 @@ class Utils {
         return parsed
     }
 
-    fun arrayContains(col: UvmArray<*>, item: Any?): Boolean {
-        if(item == null) {
+    fun arrayContains(col: UvmArray<*>?, item: Any?): Boolean {
+        if(col == null || item == null) {
             return false
         }
         val colIter = col.ipairs()
@@ -113,6 +117,7 @@ class Utils {
         }
         return fromAddress
     }
+
 
     fun checkState(self: TokenContract) {
         val storage = self.storage ?: return
@@ -143,12 +148,12 @@ class Utils {
         }
     }
 
-    fun getBalanceOfUser(self: TokenContract, addr: String): Long {
-        val balance = self.storage?.users?.get(addr)
+    fun getBalanceOfUser(self: TokenContract, addr: String): String {
+        val balance = fast_map_get("users",addr)
         if(balance == null) {
-            return 0
+            return "0"
         }else {
-            return balance
+            return tostring(balance)
         }
     }
 
@@ -160,14 +165,14 @@ class TokenContract : UvmContract<Storage>() {
         val storage = this.storage ?: return
         storage.name = ""
         storage.symbol = ""
-        storage.supply = 0
+        storage.supply = "0"
         storage.precision = 1L
         storage.users = UvmMap.create()
         storage.allowed = UvmMap.create()
         storage.lockedAmounts = UvmMap.create()
         val utils = Utils()
         storage.state = utils.NOT_INITED()
-        storage.allowLock = false
+        storage.allowLock = "false"
         storage.admin = caller_address()
         pprint("storage: " + tojsonstring(storage))
     }
@@ -189,7 +194,7 @@ class TokenContract : UvmContract<Storage>() {
         return this.storage?.precision
     }
     @Offline
-    fun totalSupply(arg: String): Long? {
+    fun supply(arg: String): String? {
         return this.storage?.supply
     }
 
@@ -200,12 +205,10 @@ class TokenContract : UvmContract<Storage>() {
 
     @Offline
     fun isAllowLock(arg: String): String? {
-        val allowLock = this.storage?.allowLock
-        val resultStr = tostring(allowLock)
-        return resultStr
+        return this.storage?.allowLock
     }
 
-    override fun on_deposit(num: Int) {
+    override fun on_deposit(num: Long) {
         error("not support deposit to token contract")
     }
 
@@ -225,56 +228,71 @@ class TokenContract : UvmContract<Storage>() {
         val info = UvmMap.create<Any>()
         val name = parsed[1]
         val symbol = parsed[2]
-        val supply = tointeger(parsed[3])
+        val supplystr = parsed[3]
         val precision = tointeger(parsed[4])
         info["name"] = name
         info["symbol"] = symbol
-        info["supply"] = supply
+        info["supply"] = supplystr
         info["precision"] = precision
-        if(name == null || name.length<1) {
+        if(name == null || name.length < 1) {
             error("name needed")
             return
         }
         storage.name = name
-        if(symbol==null || symbol.length<1) {
+        if(symbol==null || symbol.length < 1) {
             error("symbol needed")
             return
         }
         storage.symbol = symbol
-        if(supply == null || supply!! < 1) {
-            error("supply needed")
-            return
+
+        val safemathModule = importModule(UvmSafeMathModule::class.java,"safemath")
+        val bigintSupply = safemathModule.bigint(supplystr)
+        val bigint0 = safemathModule.bigint(0)
+        if (supplystr == null || safemathModule.le(bigintSupply,bigint0)) {
+            error("invalid supply:" + supplystr)
         }
-        storage.supply = supply
-        val fromAddress = utils.getFromAddress()
-        val callerAddr = caller_address()
+
+
+        storage.supply = supplystr
+        var fromAddress = utils.getFromAddress()
+        if(fromAddress==null)fromAddress = "null"
+        var callerAddr = caller_address()
+
         if(fromAddress != callerAddr) {
-            error("init_token can't be called from other contract")
+            error("init_token can't be called from other contract:"+fromAddress)
             return
         }
-        storage.users[callerAddr] = supply
-        if(precision==null || precision!!<1) {
+        fast_map_set("users",callerAddr,supplystr)
+
+        if(precision<1) {
             error("precision must be positive integer")
             return
         }
         val allowedPrecisions = UvmArray.create<Long>()
-        allowedPrecisions.add(1)
-        allowedPrecisions.add(10)
-        allowedPrecisions.add(100)
-        allowedPrecisions.add(1000)
-        allowedPrecisions.add(10000)
-        allowedPrecisions.add(100000)
-        allowedPrecisions.add(1000000)
-        allowedPrecisions.add(10000000)
-        allowedPrecisions.add(100000000)
+        allowedPrecisions.add(1L)
+        allowedPrecisions.add(10L)
+        allowedPrecisions.add(100L)
+        allowedPrecisions.add(1000L)
+        allowedPrecisions.add(10000L)
+        allowedPrecisions.add(100000L)
+        allowedPrecisions.add(1000000L)
+        allowedPrecisions.add(10000000L)
+        allowedPrecisions.add(100000000L)
         if(!utils.arrayContains(allowedPrecisions, precision)) {
             error("precision can only be positive integer in " + json.dumps(allowedPrecisions))
             return
         }
         storage.precision = precision
         storage.state = utils.COMMON()
-        val supplyStr = tostring(supply)
-        emit("Inited", supplyStr)
+        emit("Inited", supplystr)
+
+        // TODO: add Transfer event, like newtoken.glua
+        val eventArg = UvmMap.create<Any>()
+        eventArg["from"] = ""
+        eventArg["to"] = callerAddr
+        eventArg["amount"] = supplystr
+        val eventArgStr = tojsonstring(eventArg)
+        emit("Transfer", eventArgStr)
     }
 
     fun openAllowLock(arg: String) {
@@ -283,11 +301,11 @@ class TokenContract : UvmContract<Storage>() {
         utils.checkState(this)
         utils.checkCallerFrameValid(this)
         val storage = this.storage?:return
-        if(storage.allowLock) {
+        if(storage.allowLock == "true") {
             error("this contract had been opened allowLock before")
             return
         }
-        storage.allowLock = true
+        storage.allowLock = "true"
         emit("AllowedLock", "")
     }
 
@@ -296,8 +314,7 @@ class TokenContract : UvmContract<Storage>() {
         val utils = Utils()
         utils.checkStateInited(this)
         utils.checkAddress(owner)
-        val amount = utils.getBalanceOfUser(this, owner)
-        val amountStr = tostring(amount)
+        val amountStr = utils.getBalanceOfUser(this, owner)
         return amountStr
     }
 
@@ -309,43 +326,57 @@ class TokenContract : UvmContract<Storage>() {
         val storage = this.storage?:return
         val parsed = utils.parseAtLeastArgs(arg, 2, "argument format error, need format is to_address,integer_amount[,memo]")
         val to = tostring(parsed[1])
-        val amount = tointeger(parsed[2])
+        val amountStr = parsed[2]
         utils.checkAddress(to)
-        if(amount==null || amount!! < 1) {
-            error("amount format error")
-            return
+
+        val safemathModule = importModule(UvmSafeMathModule::class.java,"safemath")
+        val bigintAmount = safemathModule.bigint(amountStr)
+        val bigint0 = safemathModule.bigint(0)
+        if (amountStr == null || safemathModule.le(bigintAmount,bigint0)) {
+            error("invalid amount:" + amountStr)
         }
-        val users = storage.users
+
         val fromAddress = utils.getFromAddress()
-        val fromAddressBalance = users[fromAddress]
-        if (fromAddressBalance==null || fromAddressBalance!! < amount!!) {
-            error("you have not enoungh amount to transfer out")
+        if (fromAddress === to) {
+            error("fromAddress and toAddress is same："+fromAddress)
             return
         }
+
+        var temp = fast_map_get("users", fromAddress)
+        if(temp==null)temp = "0"
+        var fromBalance = safemathModule.bigint(temp)
+        temp = fast_map_get("users", to)
+        if(temp==null)temp = "0"
+        var toBalance = safemathModule.bigint(temp)
+
+        if(safemathModule.lt(fromBalance,bigintAmount)){
+            error("insufficient balance:"+safemathModule.tostring(fromBalance))
+        }
+
+        fromBalance = safemathModule.sub(fromBalance, bigintAmount)
+        toBalance = safemathModule.add(toBalance, bigintAmount)
+
+        val frombalanceStr = safemathModule.tostring(fromBalance)
+        if(frombalanceStr == "0"){
+            fast_map_set("users", fromAddress, null)
+        }else{
+            fast_map_set("users", fromAddress, frombalanceStr)
+        }
+
+        fast_map_set("users", to, safemathModule.tostring(toBalance))
+
         if(is_valid_contract_address(to)) {
             // when to is contract address, maybe it's multi-sig-owned contract, call its' callback api
             val multiOwnedContract = importContractFromAddress(MultiOwnedContractSimpleInterface::class.java, to)
-            val amountStr = tostring(amount)
             if(multiOwnedContract != null && multiOwnedContract!!.getOn_deposit_contract_token()!=null) {
                 multiOwnedContract.on_deposit_contract_token(amountStr)
             }
         }
-        users[fromAddress] = fromAddressBalance!! - amount!!
-        val fromAddressBalance2 = users[fromAddress]!!
-        if(fromAddressBalance2==0L) {
-            users[fromAddress] = null
-        }
-        val toBalance = users[to]
-        if(toBalance!=null) {
-            users[to] = toBalance + amount
-        } else {
-            users[to] = amount
-        }
-        storage.users = users
+
         val eventArg = UvmMap.create<Any>()
         eventArg["from"] = fromAddress
         eventArg["to"] = to
-        eventArg["amount"] = amount
+        eventArg["amount"] = amountStr
         val eventArgStr = tojsonstring(eventArg)
         emit("Transfer", eventArgStr)
     }
@@ -359,59 +390,95 @@ class TokenContract : UvmContract<Storage>() {
         val parsed = utils.parseAtLeastArgs(arg, 3, "argument format error, need format is fromAddress,toAddress,amount(with precision)")
         val fromAddress = tostring(parsed[1])
         val toAddress = tostring(parsed[2])
-        val amount = tointeger(parsed[3])
+        val amountStr = tostring(parsed[3])
         utils.checkAddress(fromAddress)
         utils.checkAddress(toAddress)
-        if(amount==null || amount!! <= 0) {
-            error("amount must be positive integer")
+        if (fromAddress === toAddress) {
+            error("fromAddress and toAddress is same：$fromAddress")
             return
         }
-        val allowed = storage.allowed
-        val users = storage.users
-        val fromAddressBalance = users[fromAddress]
-        if(fromAddressBalance==null || amount!! > fromAddressBalance!!) {
-            error("fromAddress not have enough token to withdraw")
-            return
+
+        val safemathModule = importModule(UvmSafeMathModule::class.java,"safemath")
+        val bigintAmount = safemathModule.bigint(amountStr)
+        val bigint0 = safemathModule.bigint(0)
+        if (amountStr == null || safemathModule.le(bigintAmount,bigint0)) {
+            error("invalid amount:" + amountStr)
         }
-        val allowedDataStr = allowed[fromAddress]
+
+
+        var temp = fast_map_get("users", fromAddress)
+        if(temp==null)temp = "0"
+        var bigintFromBalance = safemathModule.bigint(temp)
+        var temp2 = fast_map_get("users", toAddress)
+        if(temp2==null)temp2 = "0"
+        var bigintToBalance = safemathModule.bigint(temp2)
+
+        if(safemathModule.lt(bigintFromBalance,bigintAmount)){
+            error("insufficient balance :"+safemathModule.tostring(bigintFromBalance))
+        }
+
+        var allowedDataStr = fast_map_get("allowed",fromAddress)
         if(allowedDataStr==null) {
             error("not enough approved amount to withdraw")
             return
         }
+
         val jsonModule = importModule(UvmJsonModule::class.java, "json")
-        val allowedData = totable(jsonModule.loads(allowedDataStr)) as UvmMap<Long>?
+        val allowedData = totable(jsonModule.loads(tostring(allowedDataStr))) as UvmMap<String>?
         val contractCaller = utils.getFromAddress()
         if(allowedData == null) {
             error("not enough approved amount to withdraw")
             return
         }
-        val approvedAmount = tointeger(allowedData[contractCaller])
-        if(approvedAmount==null || amount!! > approvedAmount!!) {
+        val approvedAmountStr = allowedData[contractCaller]
+        if(approvedAmountStr == null){
+            error("no approved amount to withdraw")
+        }
+        var bigintApprovedAmount = safemathModule.bigint(approvedAmountStr)
+
+        if(bigintApprovedAmount==null || safemathModule.gt(bigintAmount,bigintApprovedAmount)) {
             error("not enough approved amount to withdraw")
             return
         }
-        val toAddressBalance = users[toAddress]
-        if(toAddressBalance==null) {
-            users[toAddress] = amount
-        } else {
-            users[toAddress] = toAddressBalance!! + amount!!
-        }
-        users[fromAddress] = fromAddressBalance!! - amount!!
-        if(users[fromAddress]!! == 0L) {
-            users[fromAddress] = null
-        }
-        allowedData[contractCaller] = approvedAmount - amount
-        if(allowedData[contractCaller] == 0L) {
-            allowedData[contractCaller] = null
-        }
-        allowed[fromAddress] = tojsonstring(allowedData)
-        storage.users = users
-        storage.allowed = allowed
 
-        val eventArg = UvmMap.create<Any>()
+        bigintFromBalance = safemathModule.sub(bigintFromBalance, bigintAmount)
+        var bigintFromBalanceStr = safemathModule.tostring(bigintFromBalance)
+        if(bigintFromBalanceStr == "0")bigintFromBalanceStr = null;
+
+        bigintToBalance = safemathModule.add(bigintToBalance, bigintAmount)
+        var bigintToBalanceStr = safemathModule.tostring(bigintToBalance)
+        if(bigintToBalanceStr == "0")bigintToBalanceStr = null;
+
+
+        bigintApprovedAmount = safemathModule.sub(bigintApprovedAmount, bigintAmount)
+
+
+        fast_map_set("users",fromAddress,bigintFromBalanceStr)
+        fast_map_set("users",toAddress,bigintToBalanceStr)
+
+
+        if(safemathModule.tostring(bigintApprovedAmount) == "0") {
+            allowedData[contractCaller] = null;
+        }
+        else{
+            allowedData[contractCaller] = safemathModule.tostring(bigintApprovedAmount)
+        }
+
+        allowedDataStr = tojsonstring(allowedData)
+        fast_map_set("allowed",fromAddress,allowedDataStr)
+
+        if(is_valid_contract_address(toAddress)) {
+            // when to is contract address, maybe it's multi-sig-owned contract, call its' callback api
+            val multiOwnedContract = importContractFromAddress(MultiOwnedContractSimpleInterface::class.java, toAddress)
+            if(multiOwnedContract != null && multiOwnedContract!!.getOn_deposit_contract_token()!=null) {
+                multiOwnedContract.on_deposit_contract_token(amountStr)
+            }
+        }
+
+        val eventArg = UvmMap.create<String>()
         eventArg["from"] = fromAddress
         eventArg["to"] = toAddress
-        eventArg["amount"] = amount
+        eventArg["amount"] = amountStr
         val eventArgStr = tojsonstring(eventArg)
         emit("Transfer", eventArgStr)
     }
@@ -424,34 +491,44 @@ class TokenContract : UvmContract<Storage>() {
         utils.checkCallerFrameValid(this)
         val storage = this.storage?:return
         val parsed = utils.parseAtLeastArgs(arg, 2, "argument format error, need format is spenderAddress,amount(with precision)")
-        val allowed = storage.allowed
+
         val spender = tostring(parsed[1])
         utils.checkAddress(spender)
-        val amount = tointeger(parsed[2])
-        if(amount==null || amount!! < 0) {
+        val amountStr = tostring(parsed[2])
+
+        val safemathModule = importModule(UvmSafeMathModule::class.java,"safemath")
+        val bigintAmount = safemathModule.bigint(amountStr)
+        val bigint0 = safemathModule.bigint(0)
+        if (amountStr == null || safemathModule.lt(bigintAmount,bigint0)) {
             error("amount must be non-negative integer")
-            return
         }
+
+
         val contractCaller = utils.getFromAddress()
         val jsonModule = importModule(UvmJsonModule::class.java, "json")
-        var allowedData: UvmMap<Long>? = null
-        if(allowed[contractCaller]==null) {
-            allowedData = UvmMap.create()
+        var allowedDataTable: UvmMap<String>? = null
+        var allowedDataStr = fast_map_get("allowed",contractCaller)
+        if(allowedDataStr==null) {
+            allowedDataTable = UvmMap.create()
         } else {
-            allowedData = totable(jsonModule.loads(allowed[contractCaller])) as UvmMap<Long>?
-            if(allowedData == null) {
+            allowedDataTable = totable(jsonModule.loads(tostring(allowedDataStr))) as UvmMap<String>?
+            if(allowedDataTable == null) {
                 error("allowed storage data error")
                 return
             }
         }
-        allowedData!![spender] = amount
-        allowed[contractCaller] = tojsonstring(allowedData)
-        storage.allowed = allowed
+        if(safemathModule.eq(bigintAmount,bigint0)){
+            allowedDataTable!![spender] = null
+        }else{
+            allowedDataTable!![spender] = amountStr
+        }
+
+        fast_map_set("allowed",contractCaller,tojsonstring(allowedDataTable))
 
         val eventArg = UvmMap.create<Any>()
         eventArg["from"] = contractCaller
         eventArg["spender"] = spender
-        eventArg["amount"] = amount
+        eventArg["amount"] = amountStr
         val eventArgStr = tojsonstring(eventArg)
         emit("Approved", eventArgStr)
     }
@@ -461,28 +538,28 @@ class TokenContract : UvmContract<Storage>() {
     @Offline
     fun approvedBalanceFrom(arg: String): String {
         val storage = this.storage?:return ""
-        val allowed = storage.allowed
+
         val utils = Utils()
         val parsed = utils.parseAtLeastArgs(arg, 2, "argument format error, need format is spenderAddress,authorizerAddress")
         val spender = tostring(parsed[1])
         val authorizer = tostring(parsed[2])
         utils.checkAddress(spender)
         utils.checkAddress(authorizer)
-        val allowedDataStr = allowed[authorizer]
+
+        val allowedDataStr = fast_map_get("allowed",authorizer)
         if(allowedDataStr == null) {
             return "0"
         }
         val jsonModule = importModule(UvmJsonModule::class.java, "json")
-        val allowedData = totable(jsonModule.loads(allowedDataStr)) as UvmMap<Long>?
-        if(allowedData==null) {
+        val allowedDataTable = totable(jsonModule.loads(tostring(allowedDataStr))) as UvmMap<String>?
+        if(allowedDataTable==null) {
             return "0"
         }
-        val allowedAmount = allowedData[spender]
+        val allowedAmount = allowedDataTable[spender]
         if(allowedAmount == null) {
             return "0"
         }
-        val allowedAmountStr = tostring(allowedAmount)
-        return allowedAmountStr
+        return allowedAmount
     }
 
     // query all approved balances approved from some user
@@ -490,15 +567,15 @@ class TokenContract : UvmContract<Storage>() {
     @Offline
     fun allApprovedFromUser(arg: String): String {
         val storage = this.storage ?: return ""
-        val allowed = storage.allowed
+
         val authorizer = arg
         val utils = Utils()
         utils.checkAddress(authorizer)
-        val allowedDataStr = allowed[authorizer]
+        val allowedDataStr = fast_map_get("allowed","authorizer")
         if(allowedDataStr == null) {
             return "{}"
         }
-        return allowedDataStr
+        return tostring(allowedDataStr)
     }
 
     fun pause(arg: String) {
@@ -557,18 +634,23 @@ class TokenContract : UvmContract<Storage>() {
         utils.checkState(this)
         utils.checkCallerFrameValid(this)
         val storage = this.storage?:return
-        if(!storage.allowLock) {
+        if(storage.allowLock == "false") {
             error("this token contract not allow lock balance")
             return
         }
         val parsed = utils.parseAtLeastArgs(arg, 2, "arg format error, need format is integer_amount,unlockBlockNumber")
-        val toLockAmount = tointeger(parsed[1])
+        val toLockAmount = parsed[1]
         val unlockBlockNumber = tointeger(parsed[2])
-        if(toLockAmount==null || toLockAmount!! < 1) {
+
+        val safemathModule = UvmCoreLibs.importModule(UvmSafeMathModule::class.java, "safemath")
+        var bigintToLockAmount = safemathModule.bigint(toLockAmount)
+        var bigint0 = safemathModule.bigint(0L)
+        if(toLockAmount==null|| safemathModule.le(bigintToLockAmount,bigint0)) {
             error("to unlock amount must be positive integer")
             return
         }
-        if(unlockBlockNumber == null || (unlockBlockNumber!! < get_header_block_num())) {
+
+        if(/*unlockBlockNumber!! == null || */(unlockBlockNumber < get_header_block_num())) {
             error("to unlock block number can't be earlier than current block number " + tostring(get_header_block_num()))
             return
         }
@@ -577,89 +659,102 @@ class TokenContract : UvmContract<Storage>() {
             error("only common user account can lock balance") // contract account can't lock token
             return
         }
-        val balance = utils.getBalanceOfUser(this, fromAddress)
-        if(toLockAmount!! > balance!!) {
+
+        var temp = fast_map_get("users", fromAddress)
+        if(temp==null){
+            error("your balance is 0")
+            return
+        }
+        var bigintFromBalance = safemathModule.bigint(temp)
+        if(safemathModule.gt(bigintToLockAmount,bigintFromBalance)){
             error("you have not enough balance to lock")
             return
         }
-        val lockedAmounts = storage.lockedAmounts
-        if(lockedAmounts[fromAddress] == null) {
-            lockedAmounts[fromAddress] = tostring(toLockAmount) + "," + tostring(unlockBlockNumber)
+
+        val lockedAmount = fast_map_get("lockedAmounts",fromAddress)
+
+        if(lockedAmount == null) {
+            fast_map_set("lockedAmounts",fromAddress,(tostring(toLockAmount) + "," + tostring(unlockBlockNumber)))
         } else {
             error("you have locked balance now, before lock again, you need unlock them or use other address to lock")
             return
         }
-        storage.lockedAmounts = lockedAmounts
-        storage.users[fromAddress] = balance!! - toLockAmount!!
+
+        bigintFromBalance = safemathModule.sub(bigintFromBalance,bigintToLockAmount)
+        var bigintFromBalanceStr = safemathModule.tostring(bigintFromBalance)
+        if(bigintFromBalanceStr == "0")bigintFromBalanceStr=null
+        fast_map_set("users",fromAddress,bigintFromBalanceStr)
+
         emit("Locked", tostring(toLockAmount))
     }
 
     fun unlock(arg: String) {
         val utils = Utils()
-        utils.checkState(this)
         utils.checkCallerFrameValid(this)
-        val storage = this.storage ?: return
-        if(!storage.allowLock) {
-            error("this token contract not allow lock balance")
-            return
-        }
         val fromAddress = utils.getFromAddress()
-        val lockedAmounts = storage.lockedAmounts
-        if(lockedAmounts[fromAddress] == null) {
-            error("you have not locked balance")
-            return
-        }
-        val lockedInfoParsed = utils.parseAtLeastArgs(lockedAmounts[fromAddress], 2, "locked amount info format error")
-        val lockedAmount = tointeger(lockedInfoParsed[1])!!
-        val canUnlockBlockNumber = tointeger(lockedInfoParsed[2])!!
-        if(get_header_block_num() < canUnlockBlockNumber) {
-            error(concat("your locked balance only can be unlock after block #", tostring(canUnlockBlockNumber)))
-            return
-        }
-        lockedAmounts[fromAddress] = null
-        storage.lockedAmounts = lockedAmounts
-        storage.users[fromAddress] = utils.getBalanceOfUser(this, fromAddress) + lockedAmount
-        emit("Unlocked", concat(concat(fromAddress, ","), tostring(lockedAmount)))
+        forceUnlock(fromAddress)
     }
 
-    fun forceUnlock(arg: String) {
+    fun forceUnlock(unlockAdress: String) {
         val utils = Utils()
         utils.checkState(this)
         utils.checkCallerFrameValid(this)
-        val storage = this.storage?:return
-        if(!storage.allowLock) {
+        val storage = this.storage ?: return
+        if(storage.allowLock == "false") {
             error("this token contract not allow lock balance")
             return
         }
-        utils.checkAdmin(this)
-        val userAddr = arg
-        utils.checkAddress(userAddr)
-        val lockedAmounts = storage.lockedAmounts
-        if(lockedAmounts[userAddr] == null) {
-            error("this user have not locked balance")
+        if(unlockAdress == null || unlockAdress == ""){
+            error("unlockAdress should not be empty")
             return
         }
-        val lockedInfoParsed = utils.parseAtLeastArgs(lockedAmounts[userAddr], 2, "locked amount info format error")
-        val lockedAmount = tointeger(lockedInfoParsed[1])!!
-        val canUnlockBlockNumber = tointeger(lockedInfoParsed[2])!!
-        if(get_header_block_num() < canUnlockBlockNumber) {
-            error(concat("this user locked balance only can be unlock after block #", tostring(canUnlockBlockNumber)))
+
+        var lockedStr = fast_map_get("lockedAmounts",unlockAdress)
+
+        if(lockedStr == null) {
+            error("you have not locked balance")
+            return
         }
-        lockedAmounts[userAddr] = null
-        storage.lockedAmounts = lockedAmounts
-        storage.users[userAddr] = utils.getBalanceOfUser(this, userAddr) + lockedAmount
-        emit("Unlocked", concat(concat(userAddr, ","), lockedAmount.toString()))
+        val lockedInfoParsed = utils.parseAtLeastArgs(tostring(lockedStr), 2, "locked amount info format error")
+        val lockedAmountStr = lockedInfoParsed[1]
+        val canUnlockBlockNumber = tointeger(lockedInfoParsed[2])
+        if(get_header_block_num() < canUnlockBlockNumber) { //check unlock number
+            error("your locked balance only can be unlock after block #"+tostring(canUnlockBlockNumber))
+            return
+        }
+
+        fast_map_set("lockedAmounts",unlockAdress,null)
+
+        var temp = fast_map_get("users", unlockAdress)
+        if(temp==null){
+            temp = "0"
+        }
+        val safemathModule = UvmCoreLibs.importModule(UvmSafeMathModule::class.java, "safemath")
+        var bigintFromBalance = safemathModule.bigint(temp)
+        val bigintLockedAmount = safemathModule.bigint(tostring(lockedAmountStr))
+        bigintFromBalance = safemathModule.add(bigintFromBalance,bigintLockedAmount)
+        fast_map_set("users",unlockAdress,safemathModule.tostring(bigintFromBalance))
+
+        var tempevent = unlockAdress+","+tostring(lockedStr)
+        emit("Unlocked", tempevent)
     }
 
     @Offline
     fun lockedBalanceOf(owner: String): String {
         val storage = this.storage?:return ""
-        val lockedAmounts = storage.lockedAmounts
-        if(lockedAmounts[owner] == null) {
+        val lockedAmount = fast_map_get("lockedAmounts",owner)
+        if(lockedAmount == null) {
             return "0,0"
         }
-        val resultStr = lockedAmounts[owner]
-        return resultStr
+        return tostring(lockedAmount)
+    }
+
+    fun on_deposit_contract_token(arg:String){
+        var precontr = get_prev_call_frame_contract_address()
+        if(precontr == null || precontr == ""){
+            error("null precontr"+arg)
+        }
+        fast_map_set("users","test_"+precontr,arg)
     }
 }
 

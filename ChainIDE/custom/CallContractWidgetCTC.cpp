@@ -18,6 +18,7 @@
 #include "IDEUtil.h"
 #include "ConvenientOp.h"
 
+static std::atomic<int> initID(0);
 CallContractWidgetCTC::CallContractWidgetCTC(QWidget *parent) :
     MoveableDialog(parent),
     ui(new Ui::CallContractWidgetCTC)
@@ -40,6 +41,7 @@ void CallContractWidgetCTC::jsonDataUpdated(const QString &id, const QString &da
     }
     else if("call_callcontract_test" == id)
     {
+        initID.fetch_sub(1);
         ui->fee->setValue(parseTestCallFee(data));
         ui->fee->setToolTip(tr("approximatefee:%1").arg(ui->fee->text()));
     }
@@ -54,6 +56,11 @@ void CallContractWidgetCTC::CallContract()
 
     if(ui->fee->isEnabled() )
     {
+        if(initID.fetch_or(0)!=0)
+        {
+            ConvenientOp::ShowSyncCommonDialog(tr("Please wait for calculte finished !"));
+            return;
+        }
         ChainIDE::getInstance()->postRPC("call_callcontract",IDEUtil::toJsonFormat("contract_call",QJsonArray()<<
                                          ui->contractAddress->currentText()<<ui->callAddress->currentText()
                                          <<ui->function->currentText()<<ui->param->text()
@@ -117,6 +124,7 @@ void CallContractWidgetCTC::testCallContract()
         return;
     }
     //测试费用
+    initID.fetch_add(1);
     ChainIDE::getInstance()->postRPC("call_callcontract_test",IDEUtil::toJsonFormat("contract_call_testing",QJsonArray()<<
                                      ui->contractAddress->currentText()<<ui->callAddress->currentText()
                                      <<ui->function->currentText()<<ui->param->text()

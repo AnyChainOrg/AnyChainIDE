@@ -18,12 +18,14 @@
 #include "IDEUtil.h"
 #include "ConvenientOp.h"
 
+static std::atomic<int> initID(0);
 CallContractWidgetHX::CallContractWidgetHX(QWidget *parent) :
     MoveableDialog(parent),
     ui(new Ui::CallContractWidgetHX)
 {
     ui->setupUi(this);
     InitWidget();
+    initID.fetch_and(0);
 }
 
 CallContractWidgetHX::~CallContractWidgetHX()
@@ -40,6 +42,7 @@ void CallContractWidgetHX::jsonDataUpdated(const QString &id, const QString &dat
     }
     else if("call_callcontract_test" == id)
     {
+        initID.fetch_sub(1);
         double fee = parseTestCallFee(data);
         ui->gaslimit->setToolTip(tr("approximatefee:%1").arg(QString::number(fee,'f',5)));
         ui->gasprice->setToolTip(tr("approximatefee:%1").arg(QString::number(fee,'f',5)));
@@ -56,6 +59,12 @@ void CallContractWidgetHX::CallContract()
 
     if(ui->gaslimit->isEnabled() && ui->gasprice->isEnabled())
     {
+        if(initID.fetch_or(0)!=0)
+        {
+            ConvenientOp::ShowSyncCommonDialog(tr("Please wait for calculte finished !"));
+            return;
+        }
+
         QString price = QString::number(ui->gasprice->value()/pow(10,5));
         ChainIDE::getInstance()->postRPC("call_callcontract",IDEUtil::toJsonFormat("invoke_contract",QJsonArray()<<
                                          ui->callAddress->currentText()<<price<<ui->gaslimit->text()
@@ -122,6 +131,7 @@ void CallContractWidgetHX::testCallContract()
         return;
     }
     //测试费用
+    initID.fetch_add(1);
     ChainIDE::getInstance()->postRPC("call_callcontract_test",IDEUtil::toJsonFormat("invoke_contract_testing",QJsonArray()<<
                                      ui->callAddress->currentText()<<ui->contractAddress->currentText()
                                      <<ui->function->currentText()<<ui->param->text()));

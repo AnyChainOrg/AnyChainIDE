@@ -284,27 +284,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">新建账户</translation>
     </message>
     <message>
-        <location filename="custom/AccountWidgetHX.cpp" line="129"/>
+        <location filename="custom/AccountWidgetHX.cpp" line="137"/>
         <source>转账</source>
         <translation type="unfinished">转账</translation>
     </message>
     <message>
-        <location filename="custom/AccountWidgetHX.cpp" line="136"/>
+        <location filename="custom/AccountWidgetHX.cpp" line="144"/>
         <source>账户/地址</source>
         <translation type="unfinished">账户/地址</translation>
     </message>
     <message>
-        <location filename="custom/AccountWidgetHX.cpp" line="136"/>
+        <location filename="custom/AccountWidgetHX.cpp" line="144"/>
         <source>余额</source>
         <translation type="unfinished">余额</translation>
     </message>
     <message>
-        <location filename="custom/AccountWidgetHX.cpp" line="136"/>
+        <location filename="custom/AccountWidgetHX.cpp" line="144"/>
         <source>操作</source>
         <translation type="unfinished">操作</translation>
     </message>
     <message>
-        <location filename="custom/AccountWidgetHX.cpp" line="145"/>
+        <location filename="custom/AccountWidgetHX.cpp" line="153"/>
         <source>复制地址</source>
         <translation type="unfinished">复制地址</translation>
     </message>
@@ -383,21 +383,13 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="backstage/BackStageManager.cpp" line="221"/>
+        <location filename="backstage/BackStageManager.cpp" line="222"/>
         <source>test chain start finish...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="backstage/BackStageManager.cpp" line="237"/>
+        <location filename="backstage/BackStageManager.cpp" line="238"/>
         <source>formal chain start finish...</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CTCBackStage</name>
-    <message>
-        <location filename="backstage/CTCBackStage.cpp" line="180"/>
-        <source>Fail to launch ctc %1 !</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -503,12 +495,17 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">预计手续费:%1</translation>
     </message>
     <message>
-        <location filename="custom/CallContractWidgetCTC.cpp" line="44"/>
+        <location filename="custom/CallContractWidgetCTC.cpp" line="46"/>
         <source>approximatefee:%1</source>
         <translation type="unfinished">预计手续费:%1</translation>
     </message>
     <message>
-        <location filename="custom/CallContractWidgetCTC.cpp" line="116"/>
+        <location filename="custom/CallContractWidgetCTC.cpp" line="61"/>
+        <source>Please wait for calculte finished !</source>
+        <translation type="unfinished">请等待合约预估计算完成！</translation>
+    </message>
+    <message>
+        <location filename="custom/CallContractWidgetCTC.cpp" line="123"/>
         <source>离线函数无需费用</source>
         <translation type="unfinished">离线函数无需费用</translation>
     </message>
@@ -575,14 +572,19 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">预计手续费:%1</translation>
     </message>
     <message>
-        <location filename="custom/CallContractWidgetHX.cpp" line="44"/>
-        <location filename="custom/CallContractWidgetHX.cpp" line="45"/>
+        <location filename="custom/CallContractWidgetHX.cpp" line="47"/>
+        <location filename="custom/CallContractWidgetHX.cpp" line="48"/>
         <source>approximatefee:%1</source>
         <translation type="unfinished">预计手续费:%1</translation>
     </message>
     <message>
-        <location filename="custom/CallContractWidgetHX.cpp" line="120"/>
-        <location filename="custom/CallContractWidgetHX.cpp" line="121"/>
+        <location filename="custom/CallContractWidgetHX.cpp" line="64"/>
+        <source>Please wait for calculte finished !</source>
+        <translation type="unfinished">请等待合约预估计算完成！</translation>
+    </message>
+    <message>
+        <location filename="custom/CallContractWidgetHX.cpp" line="129"/>
+        <location filename="custom/CallContractWidgetHX.cpp" line="130"/>
         <source>离线函数无需费用</source>
         <translation type="unfinished">离线函数无需费用</translation>
     </message>
@@ -686,24 +688,24 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CompileManager</name>
     <message>
-        <location filename="compile/CompileManager.cpp" line="62"/>
-        <location filename="compile/CompileManager.cpp" line="91"/>
+        <location filename="compile/CompileManager.cpp" line="61"/>
+        <location filename="compile/CompileManager.cpp" line="90"/>
         <source>Please make sure you&apos;ve installed jdk8 and commond &apos;java -version&apos; is useful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="compile/CompileManager.cpp" line="63"/>
-        <location filename="compile/CompileManager.cpp" line="92"/>
+        <location filename="compile/CompileManager.cpp" line="62"/>
+        <location filename="compile/CompileManager.cpp" line="91"/>
         <source>Here is the download website: https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="compile/CompileManager.cpp" line="78"/>
+        <location filename="compile/CompileManager.cpp" line="77"/>
         <source>Please make sure you&apos;ve installed .net framework 4.6 or newer version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="compile/CompileManager.cpp" line="79"/>
+        <location filename="compile/CompileManager.cpp" line="78"/>
         <source>Here is the download website: https://www.microsoft.com/en-us/download/details.aspx?id=48130</source>
         <translation type="unfinished"></translation>
     </message>
@@ -962,17 +964,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DataTreeItemModel</name>
     <message>
-        <location filename="debugwidget/DataTreeItemModel.cpp" line="129"/>
+        <location filename="debugwidget/DataTreeItemModel.cpp" line="138"/>
         <source>name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="debugwidget/DataTreeItemModel.cpp" line="131"/>
+        <location filename="debugwidget/DataTreeItemModel.cpp" line="140"/>
         <source>value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="debugwidget/DataTreeItemModel.cpp" line="133"/>
+        <location filename="debugwidget/DataTreeItemModel.cpp" line="142"/>
         <source>type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1030,6 +1032,26 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="debugwidget/DebugWidget.ui" line="14"/>
         <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="debugwidget/DebugWidget.ui" line="84"/>
+        <source>Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="debugwidget/DebugWidget.ui" line="89"/>
+        <source>Function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="debugwidget/DebugWidget.ui" line="94"/>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="debugwidget/DebugWidget.ui" line="99"/>
+        <source>Line</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1105,7 +1127,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">离线函数</translation>
     </message>
     <message>
-        <location filename="contractwidget/FunctionWidget.cpp" line="116"/>
+        <location filename="contractwidget/FunctionWidget.cpp" line="118"/>
         <source>复制</source>
         <translation type="unfinished">复制</translation>
     </message>
@@ -1417,14 +1439,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LinkBackStage</name>
     <message>
-        <location filename="backstage/LinkBackStage.cpp" line="310"/>
-        <source>Fail to launch hx_node !</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="backstage/LinkBackStage.cpp" line="330"/>
         <source>Fail to launch %1 !</source>
-        <translation type="unfinished">加载%1失败！</translation>
+        <translation type="obsolete">加载%1失败！</translation>
     </message>
 </context>
 <context>
@@ -1664,7 +1680,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="MainWindow.ui" line="510"/>
-        <location filename="MainWindow.cpp" line="842"/>
+        <location filename="MainWindow.cpp" line="874"/>
         <source>切换到正式链</source>
         <translation type="unfinished">切换到正式链</translation>
     </message>
@@ -1780,7 +1796,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="221"/>
+        <location filename="MainWindow.cpp" line="244"/>
         <source>IDE</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1809,72 +1825,72 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">IDE-HX正式链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="227"/>
+        <location filename="MainWindow.cpp" line="250"/>
         <source>IDE-UB TEST CHAIN</source>
         <translation type="unfinished">IDE-UB测试链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="231"/>
+        <location filename="MainWindow.cpp" line="254"/>
         <source>IDE-HX TEST CHAIN</source>
         <translation type="unfinished">IDE-HX测试链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="235"/>
+        <location filename="MainWindow.cpp" line="258"/>
         <source>IDE-CTC TEST CHAIN</source>
         <translation type="unfinished">IDE-CTC测试链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="242"/>
+        <location filename="MainWindow.cpp" line="265"/>
         <source>IDE-UB FORMAL CHAIN</source>
         <translation type="unfinished">IDE-UB正式链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="246"/>
+        <location filename="MainWindow.cpp" line="269"/>
         <source>IDE-HX FORMAL CHAIN</source>
         <translation type="unfinished">IDE-HX正式链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="250"/>
+        <location filename="MainWindow.cpp" line="273"/>
         <source>IDE-CTC FORMAL CHAIN</source>
         <translation type="unfinished">IDE-CTC正式链</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="291"/>
+        <location filename="MainWindow.cpp" line="314"/>
         <source>请耐心等待程序自动关闭，不要关闭本窗口!</source>
         <translation type="unfinished">请耐心等待程序自动关闭，不要关闭本窗口!</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="319"/>
+        <location filename="MainWindow.cpp" line="342"/>
         <source>未找到Update更新程序包!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="356"/>
+        <location filename="MainWindow.cpp" line="379"/>
         <source>Backstage error! Please check the chain!</source>
         <translation type="unfinished">后台链错误，请检查区块链程序！</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="373"/>
+        <location filename="MainWindow.cpp" line="396"/>
         <source>Initialize done...</source>
         <translation type="unfinished">初始化完成。</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="380"/>
+        <location filename="MainWindow.cpp" line="403"/>
         <source>Initialize IDE,please wait...</source>
         <translation type="unfinished">正在初始化IDE，请稍等。。。</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="641"/>
+        <location filename="MainWindow.cpp" line="664"/>
         <source>Sure to switch to formal chain?</source>
         <translation type="unfinished">是否确认切换到正式链？</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="667"/>
+        <location filename="MainWindow.cpp" line="690"/>
         <source>文件已修改，是否保存?</source>
         <translation type="unfinished">文件已修改，是否保存？</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="688"/>
+        <location filename="MainWindow.cpp" line="711"/>
         <source>Debug function is in progress!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1883,7 +1899,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">单步调试功能正在紧急开发中，敬请期待！</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="842"/>
+        <location filename="MainWindow.cpp" line="874"/>
         <source>切换到测试链</source>
         <translation type="unfinished">切换到测试链</translation>
     </message>
@@ -2840,11 +2856,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Fail to launch %1 !</source>
         <translation type="obsolete">加载%1失败！</translation>
-    </message>
-    <message>
-        <location filename="backstage/UbtcBackStage.cpp" line="202"/>
-        <source>Fail to launch ubcd %1 !</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

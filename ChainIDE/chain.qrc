@@ -71,7 +71,6 @@
         <file>pic/tranferToContract_enable.png</file>
         <file>pic/withdrawContract_disable.png</file>
         <file>pic/withdrawContract_enable.png</file>
-        <file>pic/startDebug_disable.png</file>
         <file>pic/startDebug_enable.png</file>
         <file>pic/step_disable.png</file>
         <file>pic/step_enable.png</file>
@@ -96,5 +95,8 @@
         <file>pic/bg.png</file>
         <file>template/newtoken.cs</file>
         <file>template/newtoken.kt</file>
+        <file>pic/stepIn_disable.png</file>
+        <file>pic/stepIn_enable.png</file>
+        <file>pic/startDebug_disable.png</file>
     </qresource>
 </RCC>

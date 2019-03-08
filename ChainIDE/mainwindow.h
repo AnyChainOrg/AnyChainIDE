@@ -79,6 +79,8 @@ private slots:
 
     void on_stepAction_triggered();
 
+    void on_stepInAction_triggered();
+
     void on_TabBreaPointAction_triggered();
 
     void on_DeleteAllBreakpointAction_triggered();

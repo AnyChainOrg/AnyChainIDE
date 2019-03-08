@@ -207,6 +207,7 @@
     <addaction name="separator"/>
     <addaction name="debugAction"/>
     <addaction name="stepAction"/>
+    <addaction name="stepInAction"/>
     <addaction name="stopAction"/>
     <addaction name="separator"/>
     <addaction name="TabBreaPointAction"/>
@@ -259,6 +260,7 @@
    <addaction name="compileAction"/>
    <addaction name="debugAction"/>
    <addaction name="stepAction"/>
+   <addaction name="stepInAction"/>
    <addaction name="stopAction"/>
    <addaction name="separator"/>
    <addaction name="changeChainAction"/>
@@ -691,6 +693,19 @@
    </property>
    <property name="text">
     <string>后台输出</string>
+   </property>
+  </action>
+  <action name="stepInAction">
+   <property name="icon">
+    <iconset resource="chain.qrc">
+     <normaloff>:/pic/stepIn_enable.png</normaloff>
+     <disabledoff>:/pic/stepIn_disable.png</disabledoff>:/pic/stepIn_enable.png</iconset>
+   </property>
+   <property name="text">
+    <string>逐句</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
    </property>
   </action>
  </widget>

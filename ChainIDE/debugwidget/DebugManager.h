@@ -15,6 +15,7 @@ public:
     void startDebug(const QString &sourceFilePath,const QString &byteFilePath,const QString &api,const QStringList &param);
 
     void debugNextStep();//调试到下一行
+    void debugStepInto();//调试到函数内部
     void debugContinue();//调试到下一个断点
     void stopDebug();//停止调试
 

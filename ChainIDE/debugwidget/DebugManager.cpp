@@ -94,6 +94,12 @@ void DebugManager::debugNextStep()
     emit fetchBreakPoints(_p->filePath);
 }
 
+void DebugManager::debugStepInto()
+{
+    setDebuggerState(DebugDataStruct::StepInDebug);
+    emit fetchBreakPoints(_p->filePath);
+}
+
 void DebugManager::debugContinue()
 {
     setDebuggerState(DebugDataStruct::ContinueDebug);
@@ -121,6 +127,9 @@ void DebugManager::fetchBreakPointsFinish(const QString &filePath,const std::vec
         break;
     case DebugDataStruct::StepDebug:
         postCommandToDebugger(getCommandStr(DebugDataStruct::StepDebug));
+        break;
+    case DebugDataStruct::StepInDebug:
+        postCommandToDebugger(getCommandStr(DebugDataStruct::StepInDebug));
         break;
     case DebugDataStruct::ContinueDebug:
         //调整一下当前文件的断点，主要先防止注释行之类的断点
@@ -380,6 +389,9 @@ QString DebugManager::getCommandStr(DebugDataStruct::DebuggerState state) const
         break;
     case DebugDataStruct::StepDebug:
         DebugUtil::MakeDebuggerJsonRPC("step",QJsonArray(),command);
+        break;
+    case DebugDataStruct::StepInDebug:
+        DebugUtil::MakeDebuggerJsonRPC("next",QJsonArray(),command);
         break;
     case DebugDataStruct::QueryInfo:
         DebugUtil::MakeDebuggerJsonRPC("info",QJsonArray()<<"locals",command);

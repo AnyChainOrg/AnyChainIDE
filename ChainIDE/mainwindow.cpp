@@ -758,6 +758,11 @@ void MainWindow::on_stepAction_triggered()
     ChainIDE::getInstance()->getDebugManager()->debugNextStep();
 }
 
+void MainWindow::on_stepInAction_triggered()
+{
+    ChainIDE::getInstance()->getDebugManager()->debugStepInto();
+}
+
 void MainWindow::on_TabBreaPointAction_triggered()
 {//设置断点
     ui->contentWidget->TabBreakPoint();
@@ -918,6 +923,7 @@ void MainWindow::ModifyDebugActionState()
         ui->debugAction->setEnabled(ChainIDE::getInstance()->getDebugManager()->getDebuggerState() != DebugDataStruct::Available);
     }
     ui->stepAction->setEnabled(ChainIDE::getInstance()->getDebugManager()->getDebuggerState() != DebugDataStruct::Available);
+    ui->stepInAction->setEnabled(ChainIDE::getInstance()->getDebugManager()->getDebuggerState() != DebugDataStruct::Available);
     ui->stopAction->setEnabled(ChainIDE::getInstance()->getDebugManager()->getDebuggerState() != DebugDataStruct::Available);
 
     QString contentFile = ui->contentWidget->getCurrentFilePath();

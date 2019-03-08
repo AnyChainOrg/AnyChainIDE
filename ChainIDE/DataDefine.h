@@ -103,7 +103,7 @@ namespace DataDefine
     static const QString CSHARP_COMPILE_DIR = "compile/csharp/win/";
     static const QString CSHARP_JSON_DLL_PATH = "compile/csharp/win/Newtonsoft.Json.dll";
     static const QString CSHARP_CORE_DLL_PATH = "compile/csharp/win/GluaCoreLib.dll";
-    static const QString CSHARP_COMPILE_PATH = "compile/csharp/win/gsharpc.exe";
+    static const QString CSHARP_COMPILE_PATH = "compile/csharp/win/gsharpccore.exe";
 
     static const QString KOTLIN_COMPILE_PATH = "compile/kotlin/kotlinc/bin/kotlinc-jvm.bat";
 #else

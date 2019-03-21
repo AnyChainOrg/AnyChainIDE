@@ -51,7 +51,7 @@ BackStageManager::BackStageManager(DataDefine::BlockChainClass chainClass, DataD
 
 BackStageManager::~BackStageManager()
 {
-    qDebug()<<"delete backStageManager";
+    //qDebug()<<"delete backStageManager";
     delete _p;
     _p = nullptr;
 }

@@ -99,7 +99,8 @@ SOURCES += main.cpp\
     custom/TransferToContractHX.cpp \
     custom/TransferToContractCTC.cpp \
     popwidget/MoveableWidget.cpp \
-    popwidget/MessageTypeShowWidget.cpp
+    popwidget/MessageTypeShowWidget.cpp \
+    debugwidget/DebuggerDataReuqire.cpp
 
 HEADERS  += MainWindow.h \
     ChainIDE.h \
@@ -188,7 +189,8 @@ HEADERS  += MainWindow.h \
     custom/TransferToContractHX.h \
     custom/TransferToContractCTC.h \
     popwidget/MoveableWidget.h \
-    popwidget/MessageTypeShowWidget.h
+    popwidget/MessageTypeShowWidget.h \
+    debugwidget/DebuggerDataReuqire.h
 
 FORMS    += MainWindow.ui \
     popwidget/commondialog.ui \

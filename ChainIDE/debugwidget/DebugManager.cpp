@@ -11,13 +11,17 @@
 
 #include "DataDefine.h"
 #include "DebugUtil.h"
+#include "DebuggerDataReuqire.h"
 
+static const QString DebuggerIp="127.0.0.1";
+static const QString DebuggerPort="3563";
 class DebugManager::DataPrivate
 {
 public:
     DataPrivate()
         :uvmProcess(new QProcess())
         ,debuggerState(DebugDataStruct::Available)
+        ,debuggerTCP(new DebuggerDataReuqire())
         ,infoRootData(std::make_shared<BaseItemData>())
     {
 
@@ -36,6 +40,7 @@ public:
     QProcess *uvmProcess;//调试器
     DebugDataStruct::DebuggerState debuggerState;//调试器当前状态
     std::mutex dataMutex;//用于修改调试器状态的锁
+    DebuggerDataReuqire *debuggerTCP;//调试器网络接口
 
     BaseItemDataPtr infoRootData;//变量查询数据
 
@@ -173,6 +178,9 @@ void DebugManager::OnProcessStateChanged()
     case QProcess::Starting:
         break;
     case QProcess::Running:
+        //先建立socket链接
+        _p->debuggerTCP->startConnect(DebuggerIp,DebuggerPort);
+        if(!_p->debuggerTCP->isConnected()) break;
         //设置调试器状态
         setDebuggerState(DebugDataStruct::StartDebug);
         //获取当前文件所有断点
@@ -195,7 +203,57 @@ void DebugManager::readyReadStandardOutputSlot()
     {
         return;
     }
-//    qDebug()<<"standard output:"<<outPut<<getDebuggerState();
+////    qDebug()<<"standard output:"<<outPut<<getDebuggerState();
+//    if(DebugUtil::isPromptFlag(outPut))
+//    {
+//        return;
+//    }
+//    switch(getDebuggerState()){
+//    case DebugDataStruct::QueryInfo:
+//        //获取info栈变量之后，立马获取全局堆变量
+//        if(ParseInfoLocals(outPut))
+//        {
+//            getUpValueVariantInfo();
+//        }
+//        break;
+//    case DebugDataStruct::QueryUpInfo:
+//        //获取全局变量之后，立马获取堆栈回溯状态
+//        if(ParseInfoUpValue(outPut))
+//        {
+//            getBackTraceInfo();
+//        }
+//        break;
+//    case DebugDataStruct::QueryStack:
+//        ParseBackTrace(outPut);
+//        break;
+//    default:
+//        //可能是主动推送，默认情况尝试解析断点停顿，并且输出到前台
+//        ParseBreakPoint(outPut);
+//        emit debugOutput(outPut);
+//        break;
+//    }
+    emit debugOutput(outPut);
+//    qDebug()<<"standard output:"<<outPut;
+}
+
+void DebugManager::readyReadStandardErrorSlot()
+{
+    QString errPut = QString::fromLocal8Bit(_p->uvmProcess->readAllStandardError());
+    if(errPut.trimmed().isEmpty())
+    {
+        return;
+    }
+    emit debugOutput(errPut);
+    qDebug()<<"error output:"<<errPut;
+}
+
+void DebugManager::readSocketData(const QString &data)
+{
+    QString outPut(data);
+    if(outPut.trimmed().isEmpty())
+    {
+        return;
+    }
     if(DebugUtil::isPromptFlag(outPut))
     {
         return;
@@ -221,16 +279,11 @@ void DebugManager::readyReadStandardOutputSlot()
     default:
         //可能是主动推送，默认情况尝试解析断点停顿，并且输出到前台
         ParseBreakPoint(outPut);
-        emit debugOutput(outPut);
         break;
     }
-}
+//    emit debugOutput(outPut);
+//    qDebug()<<"receive from debugger:"<<outPut;
 
-void DebugManager::readyReadStandardErrorSlot()
-{
-    QString errPut = QString::fromLocal8Bit(_p->uvmProcess->readAllStandardError());
-    emit debugOutput(errPut);
-    qDebug()<<"error output:"<<errPut;
 }
 
 void DebugManager::InitDebugger()
@@ -242,6 +295,7 @@ void DebugManager::InitDebugger()
         emit debugOutput( this->_p->uvmProcess->errorString());
         emit debugError();
     });
+    connect(_p->debuggerTCP,&DebuggerDataReuqire::receiveData,this,&DebugManager::readSocketData);
 }
 
 void DebugManager::ResetDebugger()
@@ -398,7 +452,7 @@ QString DebugManager::getCommandStr(DebugDataStruct::DebuggerState state) const
         break;
     case DebugDataStruct::QueryUpInfo:
         DebugUtil::MakeDebuggerJsonRPC("info",QJsonArray()<<"upvalues",command);
-            break;
+        break;
     case DebugDataStruct::QueryStack:
         DebugUtil::MakeDebuggerJsonRPC("backtrace",QJsonArray(),command);
         break;
@@ -416,7 +470,9 @@ QString DebugManager::getCommandStr(DebugDataStruct::DebuggerState state) const
 
 void DebugManager::postCommandToDebugger(const QString &command)
 {
-    qDebug()<<"send to debugger:"<<command;
-    _p->uvmProcess->write(command.toStdString().c_str());
-    _p->uvmProcess->waitForBytesWritten();
+//    qDebug()<<"send to debugger:"<<command;
+//    _p->uvmProcess->write(command.toStdString().c_str());
+//    _p->uvmProcess->waitForBytesWritten();
+    //发送给网络端口
+    _p->debuggerTCP->postData(command);
 }

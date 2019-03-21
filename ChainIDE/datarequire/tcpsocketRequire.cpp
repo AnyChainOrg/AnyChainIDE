@@ -51,8 +51,7 @@ void tcpsocketRequire::postData(const QString &data)
 
 void tcpsocketRequire::startConnect()
 {
-    connect(_p->socket,&QTcpSocket::readyRead,this,&tcpsocketRequire::readyReadSlots);
-    _p->socket->connectToHost(QHostAddress(getConnectIP()), getConnectPort().toInt());
+    _p->socket->connectToHost(QHostAddress(getConnectIP()), static_cast<quint16>(getConnectPort().toInt()));
     if (!_p->socket->waitForConnected()) {
         qDebug() << "could not connect to server: "<< _p->socket->errorString();
         emit connectFailed();
@@ -93,4 +92,5 @@ void tcpsocketRequire::readyReadSlots()
 
 void tcpsocketRequire::Init()
 {
+    connect(_p->socket,&QTcpSocket::readyRead,this,&tcpsocketRequire::readyReadSlots);
 }

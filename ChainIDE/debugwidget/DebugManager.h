@@ -33,6 +33,8 @@ private slots:
     void OnProcessStateChanged();
     void readyReadStandardOutputSlot();
     void readyReadStandardErrorSlot();
+    //调试器网络传输数据接收
+    void readSocketData(const QString &data);
 private:
     void InitDebugger();//初始化调试器
     void ResetDebugger();//重置调试器，主要重置调试器状态以及一些变量等

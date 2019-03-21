@@ -32,3 +32,33 @@ SOURCES += $$PWD/qioapi.cpp \
            $$PWD/quazipnewinfo.cpp \
            $$PWD/unzip.c \
            $$PWD/zip.c
+unix{
+HEADERS +=\
+    $$PWD/qzlib/crc32.h \
+    $$PWD/qzlib/deflate.h \
+    $$PWD/qzlib/gzguts.h \
+    $$PWD/qzlib/inffast.h \
+    $$PWD/qzlib/inffixed.h \
+    $$PWD/qzlib/inflate.h \
+    $$PWD/qzlib/inftrees.h \
+    $$PWD/qzlib/trees.h \
+    $$PWD/qzlib/zconf.h \
+    $$PWD/qzlib/zlib.h \
+    $$PWD/qzlib/zutil.h
+SOURCES +=\
+    $$PWD/qzlib/adler32.c \
+    $$PWD/qzlib/compress.c \
+    $$PWD/qzlib/crc32.c \
+    $$PWD/qzlib/deflate.c \
+    $$PWD/qzlib/gzclose.c \
+    $$PWD/qzlib/gzlib.c \
+    $$PWD/qzlib/gzread.c \
+    $$PWD/qzlib/gzwrite.c \
+    $$PWD/qzlib/infback.c \
+    $$PWD/qzlib/inffast.c \
+    $$PWD/qzlib/inflate.c \
+    $$PWD/qzlib/inftrees.c \
+    $$PWD/qzlib/trees.c \
+    $$PWD/qzlib/uncompr.c \
+    $$PWD/qzlib/zutil.c
+}

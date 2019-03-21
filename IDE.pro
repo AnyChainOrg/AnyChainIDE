@@ -2,8 +2,5 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     ChainIDE \
-    Copy
-win32{
-SUBDIRS +=\
+    Copy\
     Copy/quazip
-}

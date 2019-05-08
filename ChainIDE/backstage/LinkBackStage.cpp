@@ -1,4 +1,4 @@
-#include "LinkBackStage.h"
+﻿#include "LinkBackStage.h"
 
 #include <QProcess>
 #include <QDebug>
@@ -172,6 +172,7 @@ void LinkBackStage::startNodeProc()
     strList << "--data-dir=" +_p->dataPath
             << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->nodePort);
 
+    _p->nodeProc->setWorkingDirectory(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::BACKSTAGE_DIR);
     if(1 == _p->chaintype)
     {//测试链
         //启动前，先判断是否需要复制config到对应目录
@@ -217,6 +218,7 @@ void LinkBackStage::startClientProc()
             << QString("--server-rpc-endpoint=ws://127.0.0.1:%1").arg(_p->nodePort)
             << QString("--rpc-endpoint=127.0.0.1:%1").arg(_p->clientPort);
     _p->clientProc->setWorkingDirectory(_p->dataPath);
+    _p->clientProc->setWorkingDirectory(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::BACKSTAGE_DIR);
     if(1 == _p->chaintype)
     {
         strList<<"--testnet";

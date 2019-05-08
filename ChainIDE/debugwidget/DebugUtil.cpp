@@ -1,4 +1,4 @@
-#include "DebugUtil.h"
+﻿#include "DebugUtil.h"
 
 #include <atomic>
 #include <QFile>
@@ -23,6 +23,7 @@ void DebugUtil::getCommentLine(const QString &filePath, std::vector<int> &data)
     QString lineComment("//"),phaseStart("/*"),phaseEnd("*/");
     if(filePath.endsWith("."+DataDefine::GLUA_SUFFIX))
     {
+        //lua语言的注释，以--或者[[开头，]]结尾
         lineComment = "--";
         phaseStart = "--[[";
         phaseEnd = "]]";

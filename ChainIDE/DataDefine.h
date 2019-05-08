@@ -1,4 +1,4 @@
-#ifndef DATADEFINE_H
+﻿#ifndef DATADEFINE_H
 #define DATADEFINE_H
 
 #include <map>
@@ -57,6 +57,7 @@ namespace DataDefine
 
     //链后台程序路径
 #ifdef  WIN32
+    static const QString BACKSTAGE_DIR = "backstage";
     static const QString UBCD_NODE_EXE = "backstage/ubcd.exe";
     static const QString UBCD_CLIENT_EXE = "backstage/ubc-cli.exe";
 

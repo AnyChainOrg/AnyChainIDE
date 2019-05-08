@@ -1,4 +1,4 @@
-#include "csharpCompile.h"
+﻿#include "csharpCompile.h"
 
 #include <QStringList>
 #include <QFileInfo>
@@ -125,9 +125,8 @@ void csharpCompile::generateContractFile()
     getCompileProcess()->setWorkingDirectory(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::CSHARP_COMPILE_DIR);
     QStringList params;
     params<<"--gpc"<<getTempDir()+QDir::separator()+"result.dll";
-
-    qDebug()<<"c#-compiler-generate-.gpc: "<<DataDefine::CSHARP_COMPILE_PATH<<params;
-    getCompileProcess()->start(DataDefine::CSHARP_COMPILE_PATH,params);
+    qDebug()<<"c#-compiler-generate-.gpc: "<<QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::CSHARP_COMPILE_PATH<<params;
+    getCompileProcess()->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::CSHARP_COMPILE_PATH,params);
 
 }
 

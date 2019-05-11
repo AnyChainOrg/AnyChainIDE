@@ -117,7 +117,7 @@ namespace DataDefine
     static const QString JAVA_UVM_ASS_PATH = COMPILE_DIR+"/java/uvm_ass";
     static const QString JAVA_PACKAGE_GPC_PATH = COMPILE_DIR+"/java/package_gpc";
 
-    static const QString CSHARP_COMPILER_EXE_PATH = COMPILE_DIR+"/usr/local/share/dotnet/dotnet";//本地csc.exe路径
+    static const QString CSHARP_COMPILER_EXE_PATH = "/usr/local/share/dotnet/dotnet";//本地csc.exe路径
     static const QString CSHARP_UVMCORE_LIB_PATH = COMPILE_DIR+"/csharp/unix/uvmcorelib.dll";
     static const QString CSHARP_PROJECT_TEMPLATE_PATH = COMPILE_DIR+"/csharp/unix/build.csproj";
     static const QString CSHARP_GSHARPCORE_DLL_PATH = COMPILE_DIR+"/csharp/unix/gsharpccore.dll";

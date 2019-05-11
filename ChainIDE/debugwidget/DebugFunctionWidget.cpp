@@ -68,6 +68,15 @@ const QStringList &DebugFunctionWidget::ApiParams() const
 
 void DebugFunctionWidget::OnOKClicked()
 {
+#ifndef WIN32
+    //mac下的uvm动态库无法加载，rpath路径总是不对，暂时用install_name_tool指定一下本地路径，后期找老费修改调试器的编译方法
+    QString UVMDir=QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR;
+    QProcess aa;
+    aa.setWorkingDirectory(UVMDir);
+//    aa.start("./uvm_path.sh");
+    QFile::copy(UVMDir+"/libuvm.dylib","/usr/local/lib/libuvm.dylib");
+//    aa.start(QString("install_name_tool -change @rpath/libuvm.dylib ./libuvm.dylib ./uvm_single"));
+#endif
     //判断是否有storage数据，如果没有或者没有对应本文件的内容，则执行init函数
     if(!QFileInfo(_p->storageFile).exists())
     {

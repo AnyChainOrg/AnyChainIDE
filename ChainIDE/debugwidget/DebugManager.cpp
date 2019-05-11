@@ -90,7 +90,7 @@ void DebugManager::startDebug(const QString &sourceFilePath,const QString &byteF
 #ifdef Win32
     params<<"-x"<<"-luvmdebug"<<"-k"<<_p->outFilePath<<api<<param;
 #else
-    params<<"-k"<<_p->outFilePath<<api<<param;
+    params<<"-x"<<"-k"<<_p->outFilePath<<api<<param;
 #endif
     qDebug()<<"start debug"<<QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR+"/"+DataDefine::DEBUGGER_UVM_NAME<<params;
     _p->uvmProcess->start(QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR+"/"+DataDefine::DEBUGGER_UVM_NAME,params);
@@ -307,11 +307,6 @@ void DebugManager::ResetDebugger()
 {
     //设置uvm工作目录为当前uvm_single.exe所在目录
     _p->uvmProcess->setWorkingDirectory(QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR);
-#ifndef WIN32
-    //mac下的uvm动态库无法加载，rpath路径总是不对，暂时用install_name_tool指定一下本地路径，后期找老费修改调试器的编译方法
-    QString UVMDir=QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR;
-    QProcess::execute(QString("install_name_tool -change @rpath/libuvm.dylib %1/libuvm.dylib %2/uvm_single").arg(UVMDir).arg(UVMDir));
-#endif
     setDebuggerState(DebugDataStruct::Available);
     _p->breakPointLines.clear();
     _p->commentLines.clear();

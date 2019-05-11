@@ -1,4 +1,4 @@
-#include "AboutWidget.h"
+﻿#include "AboutWidget.h"
 #include "ui_AboutWidget.h"
 
 #include <QPainter>
@@ -6,7 +6,7 @@
 #include "update/UpdateProcess.h"
 #include "update/UpdateProgressUtil.h"
 
-static const QString IDE_VERSION = "1.0.14";
+static const QString IDE_VERSION = "1.0.19";
 //static const QString UPDATE_SERVER_URL = "http://192.168.1.161:7484/download/";
 
 class AboutWidget::DataPrivate

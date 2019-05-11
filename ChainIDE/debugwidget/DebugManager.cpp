@@ -305,7 +305,7 @@ void DebugManager::ResetDebugger()
     _p->uvmProcess->setWorkingDirectory(QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR);
     //调用脚本(mac下的动态库加载问题)
 #ifndef WIN32
-    QProcess::execute(QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR+"/uvm_path.sh");
+    QProcess::execute("install_name_tool -change @rpath/libuvm.dylib @executable_path/libuvm.dylib ./uvm_single");
 #endif
     setDebuggerState(DebugDataStruct::Available);
     _p->breakPointLines.clear();

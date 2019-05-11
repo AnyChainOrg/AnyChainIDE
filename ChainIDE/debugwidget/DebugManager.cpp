@@ -87,8 +87,11 @@ void DebugManager::startDebug(const QString &sourceFilePath,const QString &byteF
 
     //启动单步调试器
     QStringList params;
+#ifdef Win32
     params<<"-x"<<"-luvmdebug"<<"-k"<<_p->outFilePath<<api<<param;
-
+#else
+    params<<"-k"<<_p->outFilePath<<api<<param;
+#endif
     qDebug()<<"start debug"<<QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR+"/"+DataDefine::DEBUGGER_UVM_NAME<<params;
     _p->uvmProcess->start(QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR+"/"+DataDefine::DEBUGGER_UVM_NAME,params);
 
@@ -251,6 +254,7 @@ void DebugManager::readyReadStandardErrorSlot()
 void DebugManager::readSocketData(const QString &data)
 {
     QString outPut(data);
+//    qDebug()<<data;
     if(outPut.trimmed().isEmpty())
     {
         return;

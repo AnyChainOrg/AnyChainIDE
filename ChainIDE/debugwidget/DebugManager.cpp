@@ -1,4 +1,4 @@
-#include "DebugManager.h"
+﻿#include "DebugManager.h"
 
 #include <mutex>
 #include <algorithm>
@@ -8,6 +8,7 @@
 #include <QFileInfo>
 #include <QDebug>
 #include <QTimer>
+#include <QProcess>
 
 #include "DataDefine.h"
 #include "DebugUtil.h"
@@ -302,6 +303,8 @@ void DebugManager::ResetDebugger()
 {
     //设置uvm工作目录为当前uvm_single.exe所在目录
     _p->uvmProcess->setWorkingDirectory(QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR);
+    //调用脚本(mac下的动态库加载问题)
+    QProcess::execute("./uvm_path.sh");
     setDebuggerState(DebugDataStruct::Available);
     _p->breakPointLines.clear();
     _p->commentLines.clear();

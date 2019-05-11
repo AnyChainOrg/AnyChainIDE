@@ -304,7 +304,9 @@ void DebugManager::ResetDebugger()
     //设置uvm工作目录为当前uvm_single.exe所在目录
     _p->uvmProcess->setWorkingDirectory(QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR);
     //调用脚本(mac下的动态库加载问题)
-    QProcess::execute("./uvm_path.sh");
+#ifndef WIN32
+    QProcess::execute(QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR+"/uvm_path.sh");
+#endif
     setDebuggerState(DebugDataStruct::Available);
     _p->breakPointLines.clear();
     _p->commentLines.clear();

@@ -47,42 +47,43 @@ namespace DataDefine
 
     //合约存放路径
     static const QString CONTRACT_DIR = "contracts";
-    static const QString GLUA_DIR = "contracts/uvlua";
-    static const QString JAVA_DIR = "contracts/java";
-    static const QString CSHARP_DIR = "contracts/csharp";
-    static const QString KOTLIN_DIR = "contracts/kotlin";
 
-    static const QString LOCAL_CONTRACT_TEST_PATH = "contracts/contracts_test.contract";
-    static const QString LOCAL_CONTRACT_FORMAL_PATH = "contracts/contracts_formal.contract";
+    static const QString GLUA_DIR = CONTRACT_DIR+"/uvlua";
+    static const QString JAVA_DIR = CONTRACT_DIR+"/java";
+    static const QString CSHARP_DIR = CONTRACT_DIR+"/csharp";
+    static const QString KOTLIN_DIR = CONTRACT_DIR+"/kotlin";
+
+    static const QString LOCAL_CONTRACT_TEST_PATH = CONTRACT_DIR+"/contracts_test.contract";
+    static const QString LOCAL_CONTRACT_FORMAL_PATH = CONTRACT_DIR+"/contracts_formal.contract";
 
     //链后台程序路径
-#ifdef  WIN32
     static const QString BACKSTAGE_DIR = "backstage";
-    static const QString UBCD_NODE_EXE = "backstage/ubcd.exe";
-    static const QString UBCD_CLIENT_EXE = "backstage/ubc-cli.exe";
+#ifdef  WIN32
+    static const QString UBCD_NODE_EXE = BACKSTAGE_DIR+"/ubcd.exe";
+    static const QString UBCD_CLIENT_EXE = BACKSTAGE_DIR+"/ubc-cli.exe";
 
-    static const QString LINK_NODE_EXE = "backstage/hx_node.exe";
-    static const QString LINK_CLIENT_EXE = "backstage/hx_client.exe";
-    static const QString LINK_NODE_TEST_EXE = "backstage/hx_node_test.exe";
-    static const QString LINK_CLIENT_TEST_EXE = "backstage/hx_client_test.exe";
-    static const QString LINK_TEST_CONFIG_PATH = "backstage/hx_test_config.ini";
+    static const QString LINK_NODE_EXE = BACKSTAGE_DIR+"/hx_node.exe";
+    static const QString LINK_CLIENT_EXE = BACKSTAGE_DIR+"/hx_client.exe";
+    static const QString LINK_NODE_TEST_EXE = BACKSTAGE_DIR+"/hx_node_test.exe";
+    static const QString LINK_CLIENT_TEST_EXE = BACKSTAGE_DIR+"/hx_client_test.exe";
+    static const QString LINK_TEST_CONFIG_PATH = BACKSTAGE_DIR+"/hx_test_config.ini";
 
-    static const QString CTC_NODE_TEST_EXE = "backstage/ctc_test.exe";
-    static const QString CTC_TEST_SCRIPT = "backstage/ctc_test_import_wif_keys.json";
-    static const QString CTC_NODE_FORMAL_EXE = "backstage/ctc_formal.exe";
+    static const QString CTC_NODE_TEST_EXE = BACKSTAGE_DIR+"/ctc_test.exe";
+    static const QString CTC_TEST_SCRIPT = BACKSTAGE_DIR+"/ctc_test_import_wif_keys.json";
+    static const QString CTC_NODE_FORMAL_EXE = BACKSTAGE_DIR+"/ctc_formal.exe";
 #else
-    static const QString UBCD_NODE_EXE = "backstage/ubcd";
-    static const QString UBCD_CLIENT_EXE = "backstage/ubc-cli";
+    static const QString UBCD_NODE_EXE = BACKSTAGE_DIR+"/ubcd";
+    static const QString UBCD_CLIENT_EXE = BACKSTAGE_DIR+"/ubc-cli";
 
-    static const QString LINK_NODE_EXE = "backstage/hx_node";
-    static const QString LINK_CLIENT_EXE = "backstage/hx_client";
-    static const QString LINK_NODE_TEST_EXE = "backstage/hx_node_test";
-    static const QString LINK_CLIENT_TEST_EXE = "backstage/hx_client_test";
-    static const QString LINK_TEST_CONFIG_PATH = "backstage/hx_test_config.ini";
+    static const QString LINK_NODE_EXE = BACKSTAGE_DIR+"/hx_node";
+    static const QString LINK_CLIENT_EXE = BACKSTAGE_DIR+"/hx_client";
+    static const QString LINK_NODE_TEST_EXE = BACKSTAGE_DIR+"/hx_node_test";
+    static const QString LINK_CLIENT_TEST_EXE = BACKSTAGE_DIR+"/hx_client_test";
+    static const QString LINK_TEST_CONFIG_PATH = BACKSTAGE_DIR+"/hx_test_config.ini";
 
-    static const QString CTC_NODE_TEST_EXE = "backstage/ctc_test";
-    static const QString CTC_TEST_SCRIPT = "backstage/ctc_test_import_wif_keys.json";
-    static const QString CTC_NODE_FORMAL_EXE = "backstage/ctc_formal";
+    static const QString CTC_NODE_TEST_EXE = BACKSTAGE_DIR+"/ctc_test";
+    static const QString CTC_TEST_SCRIPT = BACKSTAGE_DIR+"/ctc_test_import_wif_keys.json";
+    static const QString CTC_NODE_FORMAL_EXE = BACKSTAGE_DIR+"/ctc_formal";
 #endif
 
     //编译临时路径(文件夹)
@@ -92,37 +93,38 @@ namespace DataDefine
     static const QString KOTLIN_COMPILE_TEMP_DIR = "kotlinTemp";
 
     //编译工具路径
+    static const QString COMPILE_DIR="compile";
 #ifdef WIN32
-    static const QString GLUA_COMPILE_PATH = "compile/glua/glua_compiler.exe";
+    static const QString GLUA_COMPILE_PATH = COMPILE_DIR+"/glua/glua_compiler.exe";
 
-    static const QString JAVA_CORE_PATH = "compile/java/gjavac-core-1.0.2-dev.jar";
-    static const QString JAVA_COMPILE_PATH = "compile/java/gjavac-compiler-1.0.2-dev-jar-with-dependencies.jar";
-    static const QString JAVA_UVM_ASS_PATH = "compile/java/uvm_ass.exe";
-    static const QString JAVA_PACKAGE_GPC_PATH = "compile/java/package_gpc.exe";
+    static const QString JAVA_CORE_PATH = COMPILE_DIR+"/java/gjavac-core-1.0.2-dev.jar";
+    static const QString JAVA_COMPILE_PATH = COMPILE_DIR+"/java/gjavac-compiler-1.0.2-dev-jar-with-dependencies.jar";
+    static const QString JAVA_UVM_ASS_PATH = COMPILE_DIR+"/java/uvm_ass.exe";
+    static const QString JAVA_PACKAGE_GPC_PATH = COMPILE_DIR+"/java/package_gpc.exe";
 
-    static const QString CSHARP_COMPILER_EXE_PATH = "compile/csharp/win/Roslyn/csc.exe";//本地csc.exe路径
-    static const QString CSHARP_COMPILE_DIR = "compile/csharp/win/";
-    static const QString CSHARP_JSON_DLL_PATH = "compile/csharp/win/Newtonsoft.Json.dll";
-    static const QString CSHARP_CORE_DLL_PATH = "compile/csharp/win/GluaCoreLib.dll";
-    static const QString CSHARP_COMPILE_PATH = "compile/csharp/win/gsharpccore.exe";
+    static const QString CSHARP_COMPILER_EXE_PATH = COMPILE_DIR+"/csharp/win/Roslyn/csc.exe";//本地csc.exe路径
+    static const QString CSHARP_COMPILE_DIR = COMPILE_DIR+"/csharp/win/";
+    static const QString CSHARP_JSON_DLL_PATH = COMPILE_DIR+"/csharp/win/Newtonsoft.Json.dll";
+    static const QString CSHARP_CORE_DLL_PATH = COMPILE_DIR+"/csharp/win/GluaCoreLib.dll";
+    static const QString CSHARP_COMPILE_PATH = COMPILE_DIR+"/csharp/win/gsharpccore.exe";
 
-    static const QString KOTLIN_COMPILE_PATH = "compile/kotlin/kotlinc/bin/kotlinc-jvm.bat";
+    static const QString KOTLIN_COMPILE_PATH = COMPILE_DIR+"/kotlin/kotlinc/bin/kotlinc-jvm.bat";
 #else
-    static const QString GLUA_COMPILE_PATH = "compile/glua/glua_compiler";
+    static const QString GLUA_COMPILE_PATH = COMPILE_DIR+"/glua/glua_compiler";
 
-    static const QString JAVA_CORE_PATH = "compile/java/gjavac-core-1.0.2-dev.jar";
-    static const QString JAVA_COMPILE_PATH = "compile/java/gjavac-compiler-1.0.2-dev-jar-with-dependencies.jar";
-    static const QString JAVA_UVM_ASS_PATH = "compile/java/uvm_ass";
-    static const QString JAVA_PACKAGE_GPC_PATH = "compile/java/package_gpc";
+    static const QString JAVA_CORE_PATH = COMPILE_DIR+"/java/gjavac-core-1.0.2-dev.jar";
+    static const QString JAVA_COMPILE_PATH = COMPILE_DIR+"/java/gjavac-compiler-1.0.2-dev-jar-with-dependencies.jar";
+    static const QString JAVA_UVM_ASS_PATH = COMPILE_DIR+"/java/uvm_ass";
+    static const QString JAVA_PACKAGE_GPC_PATH = COMPILE_DIR+"/java/package_gpc";
 
-    static const QString CSHARP_COMPILER_EXE_PATH = "/usr/local/share/dotnet/dotnet";//本地csc.exe路径
-    static const QString CSHARP_UVMCORE_LIB_PATH = "compile/csharp/unix/uvmcorelib.dll";
-    static const QString CSHARP_PROJECT_TEMPLATE_PATH = "compile/csharp/unix/build.csproj";
-    static const QString CSHARP_GSHARPCORE_DLL_PATH = "compile/csharp/unix/gsharpccore.dll";
-    static const QString CSHARP_UVMASS_PATH = "compile/csharp/unix/uvm_ass";
-    static const QString CSHARP_PACKAGE_PATH = "compile/csharp/unix/package_gpc";
+    static const QString CSHARP_COMPILER_EXE_PATH = COMPILE_DIR+"/usr/local/share/dotnet/dotnet";//本地csc.exe路径
+    static const QString CSHARP_UVMCORE_LIB_PATH = COMPILE_DIR+"/csharp/unix/uvmcorelib.dll";
+    static const QString CSHARP_PROJECT_TEMPLATE_PATH = COMPILE_DIR+"/csharp/unix/build.csproj";
+    static const QString CSHARP_GSHARPCORE_DLL_PATH = COMPILE_DIR+"/csharp/unix/gsharpccore.dll";
+    static const QString CSHARP_UVMASS_PATH = COMPILE_DIR+"/csharp/unix/uvm_ass";
+    static const QString CSHARP_PACKAGE_PATH = COMPILE_DIR+"/csharp/unix/package_gpc";
 
-    static const QString KOTLIN_COMPILE_PATH = "compile/kotlin/kotlinc/bin/kotlinc-jvm";
+    static const QString KOTLIN_COMPILE_PATH = COMPILE_DIR+"/kotlin/kotlinc/bin/kotlinc-jvm";
 
 #endif
 

@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_MainWindow.h"
 
 #include <functional>
@@ -61,7 +61,7 @@
 #include "IDEUtil.h"
 
 #ifndef WIN32//目前没有mac版本的调试器
-#define DEBUG_FUNC_OFF
+//#define DEBUG_FUNC_OFF
 #endif
 
 class MainWindow::DataPrivate

@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <QProcess>
+#include <thread>
 
 #include "DataDefine.h"
 #include "DebugUtil.h"
@@ -183,6 +184,7 @@ void DebugManager::OnProcessStateChanged()
         break;
     case QProcess::Running:
         //先建立socket链接
+        std::this_thread::sleep_for (std::chrono::seconds(2));
         _p->debuggerTCP->startConnect(DebuggerIp,DebuggerPort);
         if(!_p->debuggerTCP->isConnected()) break;
         //设置调试器状态

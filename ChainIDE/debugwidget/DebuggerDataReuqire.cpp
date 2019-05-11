@@ -59,6 +59,7 @@ void DebuggerDataReuqire::postData(const QString &data)
 void DebuggerDataReuqire::startConnect(const QString &ip,const QString &port)
 {
     _p->socket->connectToHost(QHostAddress(ip), static_cast<quint16>(port.toInt()));
+    qDebug()<<"start connect to :"<<ip<<":"<<port;
     if (!_p->socket->waitForConnected()) {
         qDebug() << "could not connect to debugger: "<< _p->socket->errorString();
         emit connectFailed();

@@ -250,8 +250,8 @@ void IDEUtil::myMessageOutput(QtMsgType type, const QMessageLogContext &context,
 
     // 加锁
     static QMutex mutex;
-    static const QString *LOG_PATH = new QString(QApplication::applicationDirPath()+"/log.txt");
     try {
+        static const QString *LOG_PATH = new QString(QApplication::applicationDirPath()+"/log.txt");
         if(!LOG_PATH) return;
         mutex.lock();
         QString logPath(*LOG_PATH);

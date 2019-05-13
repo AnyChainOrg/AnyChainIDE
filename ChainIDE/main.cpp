@@ -37,7 +37,7 @@ LONG WINAPI TopLevelExceptionFilter(struct _EXCEPTION_POINTERS *pExceptionInfo)
 #define LOG_DEBUG_TO_FILE
 #endif
 #endif
-//#define LOG_DEBUG_TO_FILE
+#define LOG_DEBUG_TO_FILE
 int main(int argc, char *argv[])
 {
     //判断是否是第一次启动

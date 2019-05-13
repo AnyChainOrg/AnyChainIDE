@@ -101,6 +101,7 @@ MainWindow::~MainWindow()
 #ifdef WIN32
     qInstallMessageHandler(nullptr);
 #endif
+    qInstallMessageHandler(nullptr);
     delete _p;
     _p = nullptr;
     delete ui;

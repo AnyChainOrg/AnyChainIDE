@@ -88,7 +88,7 @@ void DebugManager::startDebug(const QString &sourceFilePath,const QString &byteF
 
     //启动单步调试器
     QStringList params;
-#ifdef Win32
+#ifdef WIN32
     params<<"-x"<<"-luvmdebug"<<"-k"<<_p->outFilePath<<api<<param;
 #else
     params<<"-x"<<"-k"<<_p->outFilePath<<api<<param;
@@ -233,7 +233,7 @@ void DebugManager::readyReadStandardErrorSlot()
 void DebugManager::readSocketData(const QString &data)
 {
     QString outPut(data);
-//    qDebug()<<data;
+    qDebug()<<data;
     if(outPut.trimmed().isEmpty())
     {
         return;
@@ -454,7 +454,7 @@ QString DebugManager::getCommandStr(DebugDataStruct::DebuggerState state) const
 
 void DebugManager::postCommandToDebugger(const QString &command)
 {
-//    qDebug()<<"send to debugger:"<<command;
+    qDebug()<<"send to debugger:"<<command;
 //    _p->uvmProcess->write(command.toStdString().c_str());
 //    _p->uvmProcess->waitForBytesWritten();
     //发送给网络端口

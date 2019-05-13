@@ -10,12 +10,14 @@
 #include <QStringList>
 
 //定义release版本日志输出到文件
+#ifndef LOG_DEBUG_TO_FILE
 #ifdef QT_NO_DEBUG
 #ifdef WIN32
 #define LOG_DEBUG_TO_FILE
-#endif
 #else
 #define LOG_DEBUG_TO_FILE
+#endif
+#endif
 #endif
 
 namespace DataDefine

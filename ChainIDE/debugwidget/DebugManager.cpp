@@ -193,8 +193,6 @@ void DebugManager::OnProcessStateChanged()
             }
         }
         if(!_p->debuggerTCP->isConnected()) break;
-        //写日志
-        emit debugOutput(QString("debugger connected, ip:%1, port:%2").arg(DebuggerIp).arg(DebuggerPort));
         //设置调试器状态
         setDebuggerState(DebugDataStruct::StartDebug);
         //获取当前文件所有断点

@@ -1,4 +1,4 @@
-#include "DataRequireManager.h"
+﻿#include "DataRequireManager.h"
 
 #include <mutex>
 #include <QTimer>
@@ -63,7 +63,7 @@ DataRequireManager::DataRequireManager(const QString &ip,const QString & connect
 
 DataRequireManager::~DataRequireManager()
 {
-//    qDebug()<<QString("delete datarequiremanager with ip:%1 port:%2").arg(_p->connectIP).arg(_p->connectPort);
+    qDebug()<<QString("delete datarequiremanager with ip:%1 port:%2").arg(_p->connectIP).arg(_p->connectPort);
     delete _p;
     _p = nullptr;
 }

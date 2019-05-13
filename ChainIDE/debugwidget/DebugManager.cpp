@@ -57,7 +57,7 @@ DebugManager::DebugManager(QObject *parent)
 
 DebugManager::~DebugManager()
 {
-    //qDebug()<<"delete debugMmanager";
+    qDebug()<<"delete debugMmanager";
     delete _p;
     _p = nullptr;
 }
@@ -183,10 +183,18 @@ void DebugManager::OnProcessStateChanged()
     case QProcess::Starting:
         break;
     case QProcess::Running:
-        //先建立socket链接
-        std::this_thread::sleep_for (std::chrono::seconds(2));
-        _p->debuggerTCP->startConnect(DebuggerIp,DebuggerPort);
+        {
+        //先建立socket链接,尝试链接4次，连不上就放弃
+            int connectTime=1;
+            while(connectTime++<=4){
+                std::this_thread::sleep_for (std::chrono::seconds(1));
+                _p->debuggerTCP->startConnect(DebuggerIp,DebuggerPort);
+                if(_p->debuggerTCP->isConnected()) break;
+            }
+        }
         if(!_p->debuggerTCP->isConnected()) break;
+        //写日志
+        emit debugOutput(QString("debugger connected, ip:%1, port:%2").arg(DebuggerIp).arg(DebuggerPort));
         //设置调试器状态
         setDebuggerState(DebugDataStruct::StartDebug);
         //获取当前文件所有断点
@@ -209,35 +217,6 @@ void DebugManager::readyReadStandardOutputSlot()
     {
         return;
     }
-////    qDebug()<<"standard output:"<<outPut<<getDebuggerState();
-//    if(DebugUtil::isPromptFlag(outPut))
-//    {
-//        return;
-//    }
-//    switch(getDebuggerState()){
-//    case DebugDataStruct::QueryInfo:
-//        //获取info栈变量之后，立马获取全局堆变量
-//        if(ParseInfoLocals(outPut))
-//        {
-//            getUpValueVariantInfo();
-//        }
-//        break;
-//    case DebugDataStruct::QueryUpInfo:
-//        //获取全局变量之后，立马获取堆栈回溯状态
-//        if(ParseInfoUpValue(outPut))
-//        {
-//            getBackTraceInfo();
-//        }
-//        break;
-//    case DebugDataStruct::QueryStack:
-//        ParseBackTrace(outPut);
-//        break;
-//    default:
-//        //可能是主动推送，默认情况尝试解析断点停顿，并且输出到前台
-//        ParseBreakPoint(outPut);
-//        emit debugOutput(outPut);
-//        break;
-//    }
     emit debugOutput(outPut);
 //    qDebug()<<"standard output:"<<outPut;
 }

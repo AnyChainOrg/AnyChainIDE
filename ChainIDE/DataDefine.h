@@ -8,6 +8,16 @@
 
 #include <QString>
 #include <QStringList>
+
+//定义release版本日志输出到文件
+#ifdef QT_NO_DEBUG
+#ifdef WIN32
+#define LOG_DEBUG_TO_FILE
+#endif
+#else
+#define LOG_DEBUG_TO_FILE
+#endif
+
 namespace DataDefine
 {
     //主题类型

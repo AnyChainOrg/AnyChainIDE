@@ -1,4 +1,4 @@
-#ifdef WIN32
+﻿#ifdef WIN32
 #ifdef _DEBUG
 #include "VisualLeakDetector/include/vld.h"
 #endif
@@ -6,6 +6,7 @@
 
 #include <QApplication>
 
+#include "DataDefine.h"
 #include "IDEUtil.h"
 #include "LocalPeer.h"
 #include "ChainIDE.h"
@@ -32,12 +33,6 @@ LONG WINAPI TopLevelExceptionFilter(struct _EXCEPTION_POINTERS *pExceptionInfo)
 #endif
 #endif
 
-#ifdef WIN32
-#ifdef QT_NO_DEBUG
-#define LOG_DEBUG_TO_FILE
-#endif
-#endif
-#define LOG_DEBUG_TO_FILE
 int main(int argc, char *argv[])
 {
     //判断是否是第一次启动

@@ -98,10 +98,9 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     qDebug()<<"delete mainwindow";
-#ifdef WIN32
+#ifdef LOG_DEBUG_TO_FILE
     qInstallMessageHandler(nullptr);
 #endif
-    qInstallMessageHandler(nullptr);
     delete _p;
     _p = nullptr;
     delete ui;
@@ -602,7 +601,7 @@ void MainWindow::on_transferAction_triggered()
         dia.exec();
     }
     else if(ChainIDE::getInstance()->getChainClass() == DataDefine::UB)
-    {
+    {//ub目前没有转账到合约
 //        TransferToContractUB dia;
 //        dia.exec();
     }

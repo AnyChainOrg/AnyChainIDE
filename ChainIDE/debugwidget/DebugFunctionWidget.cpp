@@ -1,4 +1,4 @@
-#include "DebugFunctionWidget.h"
+﻿#include "DebugFunctionWidget.h"
 #include "ui_DebugFunctionWidget.h"
 
 #include <vector>
@@ -71,10 +71,12 @@ void DebugFunctionWidget::OnOKClicked()
 #ifndef WIN32
     //mac下的uvm动态库无法加载，rpath路径总是不对，暂时用install_name_tool指定一下本地路径，后期找老费修改调试器的编译方法
     QString UVMDir=QCoreApplication::applicationDirPath()+"/"+DataDefine::DEBUGGER_UVM_DIR;
-    QProcess aa;
-    aa.setWorkingDirectory(UVMDir);
-//    aa.start("./uvm_path.sh");
-    QFile::copy(UVMDir+"/libuvm.dylib","/usr/local/lib/libuvm.dylib");
+    //先看看lib库中有没有uvm的动态库，没有就拷贝过去
+    if (!QFile::exists("/usr/local/lib/libuvm.dylib")){
+        QFile::copy(UVMDir+"/libuvm.dylib","/usr/local/lib/libuvm.dylib");
+    }
+//    QProcess aa;
+//    aa.setWorkingDirectory(UVMDir);
 //    aa.start(QString("install_name_tool -change @rpath/libuvm.dylib ./libuvm.dylib ./uvm_single"));
 #endif
     //判断是否有storage数据，如果没有或者没有对应本文件的内容，则执行init函数

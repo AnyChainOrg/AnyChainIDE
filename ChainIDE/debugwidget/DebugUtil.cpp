@@ -1,6 +1,7 @@
 ﻿#include "DebugUtil.h"
 
 #include <atomic>
+#include <sstream>
 #include <QFile>
 #include <QDebug>
 #include <QJsonDocument>
@@ -192,7 +193,7 @@ void DebugUtil::ParseInfoArrayData(const QJsonArray &arr, BaseItemDataPtr parent
         }
         else if(typeVal.isDouble())
         {
-            data->setVal(QString::number(typeVal.toDouble()));
+            data->setVal(DebugUtil::DoubleToString(typeVal.toDouble()));
         }
         else if(typeVal.isObject())
         {
@@ -208,7 +209,6 @@ void DebugUtil::ParseInfoArrayData(const QJsonArray &arr, BaseItemDataPtr parent
 void DebugUtil::ParseInfoObjectData(const QJsonObject &obj, BaseItemDataPtr parent)
 {
     if(!parent) return;
-    QJsonObject::Iterator it;
     for(auto it=obj.begin();it!=obj.end();it++)
     {
         BaseItemDataPtr data = std::make_shared<BaseItemData>(it.key(),"","");
@@ -221,7 +221,7 @@ void DebugUtil::ParseInfoObjectData(const QJsonObject &obj, BaseItemDataPtr pare
         }
         else if(val.isDouble())
         {
-            data->setVal(QString::number(val.toDouble()));
+            data->setVal(DebugUtil::DoubleToString(val.toDouble()));
             data->setType("double");
         }
         else if(val.isBool())
@@ -240,6 +240,22 @@ void DebugUtil::ParseInfoObjectData(const QJsonObject &obj, BaseItemDataPtr pare
             data->setType("object");
         }
     }
+}
+
+QString DebugUtil::DoubleToString(double data)
+{
+    std::string ss = std::to_string(data);
+    size_t pointPos=ss.find_first_of(".");
+    if(pointPos<0.0) return QString(ss.c_str());
+    for(size_t i=ss.length()-1;i>=pointPos;--i){
+        if(ss[i]=='0'||ss[i]=='.'){
+            ss.pop_back();
+        }
+        else{
+            break;
+        }
+    }
+    return QString(ss.c_str());
 }
 
 void DebugUtil::ParseBreakPointData(const QString &info,std::tuple<QString,int> &result)

@@ -1,4 +1,4 @@
-#ifndef DEBUGUTIL_H
+﻿#ifndef DEBUGUTIL_H
 #define DEBUGUTIL_H
 
 #include <QString>
@@ -30,6 +30,8 @@ private:
 
     static void ParseInfoArrayData(const QJsonArray &arr,BaseItemDataPtr parent);//辅助解析调试器变量查询数组
     static void ParseInfoObjectData(const QJsonObject &obj,BaseItemDataPtr parent);//辅助解析调试器变量查询object
+
+    static QString DoubleToString(double data);
 private:
     DebugUtil();
     ~DebugUtil();

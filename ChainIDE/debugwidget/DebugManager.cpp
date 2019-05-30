@@ -10,6 +10,7 @@
 #include <QTimer>
 #include <QProcess>
 #include <thread>
+#include <deque>
 
 #include "DataDefine.h"
 #include "DebugUtil.h"
@@ -25,7 +26,7 @@ public:
         ,debuggerState(DebugDataStruct::Available)
         ,debuggerTCP(new DebuggerDataReuqire())
         ,infoRootData(std::make_shared<BaseItemData>())
-        ,commandUniqueLock(commandMutex,std::defer_lock)
+        ,isCommandReadySent(true)
     {
 
     }
@@ -47,8 +48,9 @@ public:
 
     BaseItemDataPtr infoRootData;//变量查询数据
 
+    bool isCommandReadySent;
     std::mutex commandMutex; //用于防止多次发送调试器命令的锁
-    std::unique_lock<std::mutex> commandUniqueLock;
+    std::deque<QString> redisCommands;
 };
 
 DebugManager::DebugManager(QObject *parent)
@@ -236,19 +238,22 @@ void DebugManager::readyReadStandardErrorSlot()
 void DebugManager::readSocketData(const QString &data)
 {
     QString outPut(data);
-    qDebug()<<data;
+//    qDebug()<<data;
     if(outPut.trimmed().isEmpty())
     {
         return;
     }
     if(DebugUtil::isPromptFlag(outPut))
     {
-        try{
-            _p->commandUniqueLock.unlock();
-        }catch(std::system_error err){
-            qDebug()<<"unlock error";
-        }
+        setCommandState(true);
+        if(!_p->redisCommands.empty())
+        {
+            QString cmd=_p->redisCommands.front();
+            _p->redisCommands.pop_front();
+            setCommandState(false);
+            _p->debuggerTCP->postData(cmd);
 
+        }
         return;
     }
     switch(getDebuggerState()){
@@ -463,17 +468,26 @@ QString DebugManager::getCommandStr(DebugDataStruct::DebuggerState state) const
 
 void DebugManager::postCommandToDebugger(const QString &command)
 {
-    qDebug()<<"send to debugger:"<<command;
-//    _p->uvmProcess->write(command.toStdString().c_str());
-//    _p->uvmProcess->waitForBytesWritten();
-    //发送给网络端口
-    try{
-        if(_p->commandUniqueLock.try_lock()){
-            _p->debuggerTCP->postData(command);
-        }
-    }catch(std::system_error err){
-        qDebug()<<"try lock error";
+//    qDebug()<<"send to debugger:"<<command;
+
+    if (getCommandState()){
+        setCommandState(false);
+        _p->debuggerTCP->postData(command);
+    }else{
+        _p->redisCommands.push_back(command);
     }
 
+}
+
+void DebugManager::setCommandState(bool free)
+{
+    std::lock_guard<std::mutex> loc(_p->commandMutex);
+    _p->isCommandReadySent=free;
+}
+
+bool DebugManager::getCommandState() const
+{
+    std::lock_guard<std::mutex> loc(_p->commandMutex);
+    return _p->isCommandReadySent;
 
 }

@@ -1,4 +1,4 @@
-#ifndef DEBUGMANAGER_H
+﻿#ifndef DEBUGMANAGER_H
 #define DEBUGMANAGER_H
 
 #include "DebugDataStruct.h"
@@ -77,6 +77,9 @@ private:
     //统一管理发送给调试器的命令
     QString getCommandStr(DebugDataStruct::DebuggerState state)const;//用于获取调试命令模板
     void postCommandToDebugger(const QString &command);//发送调试指令到调试器。所有的指令都由此发送
+
+    void setCommandState(bool free);
+    bool getCommandState()const;
 private:
     class DataPrivate;
     DataPrivate *_p;

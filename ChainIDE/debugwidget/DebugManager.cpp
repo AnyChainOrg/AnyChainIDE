@@ -25,6 +25,7 @@ public:
         ,debuggerState(DebugDataStruct::Available)
         ,debuggerTCP(new DebuggerDataReuqire())
         ,infoRootData(std::make_shared<BaseItemData>())
+        ,commandUniqueLock(commandMutex,std::defer_lock)
     {
 
     }
@@ -46,6 +47,8 @@ public:
 
     BaseItemDataPtr infoRootData;//变量查询数据
 
+    std::mutex commandMutex; //用于防止多次发送调试器命令的锁
+    std::unique_lock<std::mutex> commandUniqueLock;
 };
 
 DebugManager::DebugManager(QObject *parent)
@@ -233,13 +236,19 @@ void DebugManager::readyReadStandardErrorSlot()
 void DebugManager::readSocketData(const QString &data)
 {
     QString outPut(data);
-//    qDebug()<<data;
+    qDebug()<<data;
     if(outPut.trimmed().isEmpty())
     {
         return;
     }
     if(DebugUtil::isPromptFlag(outPut))
     {
+        try{
+            _p->commandUniqueLock.unlock();
+        }catch(std::system_error err){
+            qDebug()<<"unlock error";
+        }
+
         return;
     }
     switch(getDebuggerState()){
@@ -454,9 +463,17 @@ QString DebugManager::getCommandStr(DebugDataStruct::DebuggerState state) const
 
 void DebugManager::postCommandToDebugger(const QString &command)
 {
-//    qDebug()<<"send to debugger:"<<command;
+    qDebug()<<"send to debugger:"<<command;
 //    _p->uvmProcess->write(command.toStdString().c_str());
 //    _p->uvmProcess->waitForBytesWritten();
     //发送给网络端口
-    _p->debuggerTCP->postData(command);
+    try{
+        if(_p->commandUniqueLock.try_lock()){
+            _p->debuggerTCP->postData(command);
+        }
+    }catch(std::system_error err){
+        qDebug()<<"try lock error";
+    }
+
+
 }

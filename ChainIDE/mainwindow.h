@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
@@ -6,7 +6,7 @@
 namespace Ui {
 class MainWindow;
 }
-//程序主窗口，进行一些业务逻辑，功能性代码分到各个模块中执行
+//程序主窗口，仅进行一些业务逻辑，功能性代码分到各个模块中执行，mainwindow只做按钮响应转发等操作
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

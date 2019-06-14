@@ -60,7 +60,7 @@
 #include "ConvenientOp.h"
 #include "IDEUtil.h"
 
-#ifndef WIN32//目前没有mac版本的调试器
+#ifndef WIN32//之前没有mac版本的调试器，现已植入，废弃该宏，不过为了防止不需要调试器，可以重新打开该宏
 //#define DEBUG_FUNC_OFF
 #endif
 
@@ -311,7 +311,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
        (ChainIDE::getInstance()->getBackStageManager()->isBackStageRunning()))
     {
         CommonDialog dia(CommonDialog::NONE);
-        dia.setText(tr("请耐心等待程序自动关闭，不要关闭本窗口!"));
+        dia.setText(tr("Don't close this app, please wait for auto-close!"));
         ui->statusBar->stopStatus();
         connect(ChainIDE::getInstance()->getBackStageManager(),&BackStageManager::closeBackStageFinish,&dia,&CommonDialog::close);
         ChainIDE::getInstance()->getBackStageManager()->closeBackStage();
@@ -320,7 +320,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
     //关闭调试器
     ChainIDE::getInstance()->getDebugManager()->ReadyClose();
-    //判断是否需要更新重启---github无此需求，之前热更新有该需求
+    //判断是否需要更新重启---github更新无此需求，之前热更新有该需求
     if(_p->updateNeeded)
     {//开启copy，
         QString updateExe = QCoreApplication::applicationDirPath()+"/Update";

@@ -1893,9 +1893,14 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">IDE-CTC FORMAL CHAIN</translation>
     </message>
     <message>
+        <source>不要关闭本窗口,等待数据保存,程序将自动关闭!</source>
+        <oldsource>请等待程序自动关闭,不要关闭本窗口!</oldsource>
+        <translation type="obsolete">Please wait for auto-close, don&apos;t close this window!</translation>
+    </message>
+    <message>
         <location filename="MainWindow.cpp" line="314"/>
-        <source>请耐心等待程序自动关闭，不要关闭本窗口!</source>
-        <translation type="unfinished">Please wait for auto-close, don&apos;t close this window!</translation>
+        <source>Don&apos;t close this app, please wait for auto-close!</source>
+        <translation type="unfinished">Don&apos;t close this app, please wait for auto-close!</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="342"/>

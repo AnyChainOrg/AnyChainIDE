@@ -1,4 +1,4 @@
-#include "commondialog.h"
+﻿#include "commondialog.h"
 #include "ui_commondialog.h"
 #include <QDebug>
 

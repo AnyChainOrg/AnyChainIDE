@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
             ChainIDE::getInstance();
             //主窗口
             MainWindow w;
+            //链接localServer，用于监听新启动程序消息，
             QObject::connect(&loc,&LocalPeer::newConnection,&w,&MainWindow::activateWindow);
             return a.exec();
         }

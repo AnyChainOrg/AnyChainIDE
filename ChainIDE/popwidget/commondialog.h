@@ -1,4 +1,4 @@
-#ifndef COMMONDIALOG_H
+﻿#ifndef COMMONDIALOG_H
 #define COMMONDIALOG_H
 
 #include "popwidget/MoveableDialog.h"

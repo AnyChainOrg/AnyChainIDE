@@ -1865,9 +1865,14 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">IDE-CTC正式链</translation>
     </message>
     <message>
+        <source>不要关闭本窗口,等待数据保存,程序将自动关闭!</source>
+        <oldsource>请等待程序自动关闭,不要关闭本窗口!</oldsource>
+        <translation type="obsolete">不要关闭本窗口,等待数据保存,程序将自动关闭!</translation>
+    </message>
+    <message>
         <location filename="MainWindow.cpp" line="314"/>
-        <source>请耐心等待程序自动关闭，不要关闭本窗口!</source>
-        <translation type="unfinished">请耐心等待程序自动关闭，不要关闭本窗口!</translation>
+        <source>Don&apos;t close this app, please wait for auto-close!</source>
+        <translation type="unfinished">Don&apos;t close this app, please wait for auto-close!</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="342"/>

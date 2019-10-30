@@ -6,8 +6,7 @@
 #include <map>
 #include <mutex>
 
-#include <QString>
-#include <QStringList>
+#include <QDebug>
 #include <QJsonDocument>
 
 #include "AES/aesencryptor.h"

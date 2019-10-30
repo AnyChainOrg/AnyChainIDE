@@ -1,6 +1,7 @@
 #include "AccountWidgetHX.h"
 #include "ui_AccountWidgetHX.h"
 
+#include <QDebug>
 #include <math.h>
 #include <QMenu>
 #include <QClipboard>

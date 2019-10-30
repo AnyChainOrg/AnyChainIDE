@@ -35,6 +35,8 @@ LONG WINAPI TopLevelExceptionFilter(struct _EXCEPTION_POINTERS *pExceptionInfo)
 
 int main(int argc, char *argv[])
 {
+    QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);     // 解决qt5.11版本关闭后qtwebengineprocess进程还留存的bug
+
     //判断是否是第一次启动
     {
         QApplication a(argc, argv);
@@ -43,7 +45,7 @@ int main(int argc, char *argv[])
         {
 #ifdef LOG_DEBUG_TO_FILE
             //安装debug导出函数
-            qInstallMessageHandler(IDEUtil::myMessageOutput);
+//            qInstallMessageHandler(IDEUtil::myMessageOutput);
 #endif
 #ifdef DUMP_CORE_FILE
             //安装dumpfile

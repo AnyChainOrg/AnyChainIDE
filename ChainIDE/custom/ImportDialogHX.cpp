@@ -90,7 +90,7 @@ void ImportDialogHX::on_okBtn_clicked()
     //开始导入私钥
     for(auto it = data->info_key.begin();it != data->info_key.end();++it)
     {
-        if((*it).first == "HX")
+        if((*it).first == "HX" || (*it).first == "XWC")
         {
             //导入hx私钥
             ChainIDE::getInstance()->postRPC( "import-import_key",

@@ -99,7 +99,14 @@ void DataManagerHX::initTestChain()
 //    QFile::remove(ChainIDE::getInstance()->getConfigAppDataPath()+"/testhx/config.ini" );
 //    QFile::copy(QCoreApplication::applicationDirPath()+"/"+DataDefine::LINK_TEST_CONFIG_PATH,ChainIDE::getInstance()->getConfigAppDataPath()+"/testhx/config.ini" );
     //导入有钱的私钥
-    ChainIDE::getInstance()->postRPC("init_nathan",IDEUtil::toJsonFormat("import_key",QJsonArray()<<"nathan"<<"5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"));
+    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX)
+    {
+        ChainIDE::getInstance()->postRPC("init_nathan",IDEUtil::toJsonFormat("import_key",QJsonArray()<<"nathan"<<"5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"));
+    }
+    else if(ChainIDE::getInstance()->getChainClass() == DataDefine::XWC)
+    {
+        ChainIDE::getInstance()->postRPC("init_xwc",IDEUtil::toJsonFormat("import_key",QJsonArray()<<"xwc"<<"5K6CL4zmqg2qWTg4sJxDzJt2cYm8SDiZ4yK4XtCycopPXTzMh8h"));
+    }
 //    ConvenientOp::ShowNotifyMessage(tr("auto generate block will take effect after restart!"));
 }
 
@@ -125,6 +132,9 @@ void DataManagerHX::jsonDataUpdated(const QString &id, const QString &data)
                 ChainIDE::getInstance()->postRPC(QString("query-getassetbyaccount_%1").arg(account->getAccountName()),
                                                  IDEUtil::toJsonFormat("get_account_balances",
                                                QJsonArray()<<account->getAccountName()));
+
+                qDebug() << "2222222222 " << IDEUtil::toJsonFormat("get_account_balances",
+                                                                   QJsonArray()<<account->getAccountName());
             });
             ChainIDE::getInstance()->postRPC("query-getaddresses-finish",IDEUtil::toJsonFormat("finishquery",QJsonArray()));
         }
@@ -219,7 +229,7 @@ bool DataManagerHX::parseListAccount(const QString &data)
 
 bool DataManagerHX::parseAddresses(const QString &accountName,const QString &data)
 {
-//    qDebug()<<"query getaddressesbyaccount"<<data << "accountname"<<accountName;
+    qDebug()<<"query getaddressesbyaccount"<<data << "accountname"<<accountName;
     QJsonParseError json_error;
     QJsonDocument parse_doucment = QJsonDocument::fromJson(data.toUtf8(),&json_error);
     if(json_error.error != QJsonParseError::NoError || !parse_doucment.isObject())

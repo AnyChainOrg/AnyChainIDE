@@ -66,7 +66,7 @@ void ConsoleDialog::on_consoleLineEdit_returnPressed()
     if(consoleText.isEmpty()) return;
 
     if(((ChainIDE::getInstance()->getChainClass() == DataDefine::UB && (consoleText.startsWith("stop")) ))||
-        (ChainIDE::getInstance()->getChainClass() == DataDefine::HX && (consoleText.startsWith("witness_node_stop")||consoleText.startsWith("lock")))||
+        ((ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::XWC) && (consoleText.startsWith("witness_node_stop")||consoleText.startsWith("lock")))||
         (ChainIDE::getInstance()->getChainClass() == DataDefine::CTC && (consoleText.startsWith("stop")))
        )
     {
@@ -83,7 +83,7 @@ void ConsoleDialog::on_consoleLineEdit_returnPressed()
     QStringList paramaters = consoleText.split(' ');
     QString command = paramaters.at(0);
     paramaters.removeFirst();    
-
+    qDebug() << " 111111111111 " << paramaters;
     QJsonArray array;
     if(!paramaters.empty())
     {
@@ -93,17 +93,25 @@ void ConsoleDialog::on_consoleLineEdit_returnPressed()
         }
         else
         {
-            QString data = "[";
+//            QString data = "[";
+//            foreach (QString param, paramaters)
+//            {
+//                data.append(param).append(",");
+//            }
+//            data.remove(data.length()-1,1);
+//            data.append("]");
+//            array = QJsonDocument::fromJson(data.toUtf8()).array();
+
             foreach (QString param, paramaters)
             {
-                data.append(param).append(",");
+                array.append(param);
             }
-            data.remove(data.length()-1,1);
-            data.append("]");
-            array = QJsonDocument::fromJson(data.toUtf8()).array();
+
         }
     }
     ChainIDE::getInstance()->postRPC( "console-" + ui->consoleLineEdit->text().simplified(), IDEUtil::toJsonFormat( command, array )/*str*/);
+    qDebug() << " 22222222222 " << IDEUtil::toJsonFormat( command, array );
+
 
     ui->consoleLineEdit->clear();
 }

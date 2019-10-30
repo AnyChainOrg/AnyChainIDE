@@ -200,6 +200,10 @@ DataDefine::BlockChainClass ChainIDE::getChainClassConfig() const
     {
         return  DataDefine::CTC;
     }
+    else if(_p->configFile->value("/settings/chainClass").toString() == "xwc")
+    {
+        return  DataDefine::XWC;
+    }
     return DataDefine::HX;
 }
 
@@ -214,6 +218,9 @@ void ChainIDE::setChainClass(DataDefine::BlockChainClass name)
         break;
     case DataDefine::CTC:
         _p->configFile->setValue("/settings/chainClass","ctc");
+        break;
+    case DataDefine::XWC:
+        _p->configFile->setValue("/settings/chainClass","xwc");
         break;
     default:
         break;
@@ -328,7 +335,8 @@ void ChainIDE::InitConfig()
     //纠正人为错误项
     if("ub" != _p->configFile->value("/settings/chainClass").toString() &&
        "hx" != _p->configFile->value("/settings/chainClass").toString() &&
-       "ctc" != _p->configFile->value("/settings/chainClass").toString())
+       "ctc" != _p->configFile->value("/settings/chainClass").toString() &&
+       "xwc" != _p->configFile->value("/settings/chainClass").toString())
     {
         _p->configFile->setValue("/settings/chainClass","hx");
     }
@@ -368,6 +376,10 @@ void ChainIDE::InitConfig()
     else if(_p->configFile->value("/settings/chainClass").toString() == "ctc")
     {
         _p->chainClass =  DataDefine::CTC;
+    }
+    else if(_p->configFile->value("/settings/chainClass").toString() == "xwc")
+    {
+        _p->chainClass =  DataDefine::XWC;
     }
 
     //启动类型设置

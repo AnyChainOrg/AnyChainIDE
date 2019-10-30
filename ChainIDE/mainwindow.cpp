@@ -257,6 +257,10 @@ void MainWindow::refreshTitle()
         {
             setWindowTitle(tr("IDE-CTC TEST CHAIN"));
         }
+        else if(ChainIDE::getInstance()->getChainClass() == DataDefine::XWC)
+        {
+            setWindowTitle(tr("IDE-XWC TEST CHAIN"));
+        }
     }
     else if(ChainIDE::getInstance()->getCurrentChainType() == DataDefine::FORMAL)
     {
@@ -271,6 +275,10 @@ void MainWindow::refreshTitle()
         else if(ChainIDE::getInstance()->getChainClass() == DataDefine::CTC)
         {
             setWindowTitle(tr("IDE-CTC FORMAL CHAIN"));
+        }
+        else if(ChainIDE::getInstance()->getChainClass() == DataDefine::XWC)
+        {
+            setWindowTitle(tr("IDE-XWC FORMAL CHAIN"));
         }
     }
 
@@ -363,6 +371,11 @@ void MainWindow::exeStartedSlots()
     {
         DataManagerCTC::getInstance()->InitManager();
         DataManagerCTC::getInstance()->dealNewState();
+    }
+    else if(ChainIDE::getInstance()->getChainClass() == DataDefine::XWC)
+    {
+        DataManagerHX::getInstance()->InitManager();
+        DataManagerHX::getInstance()->dealNewState();
     }
 
     //关闭等待窗
@@ -530,9 +543,11 @@ void MainWindow::HideAction()
     ui->BackStageMessageAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE);
     //升级合约、转账到合约，只有HX、CTC链支持，，，，UB这玩意有点复杂，先不支持了
     ui->upgradeAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE &&
-                                  (ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::CTC));
+                                  (ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::CTC
+                                   || ChainIDE::getInstance()->getChainClass() == DataDefine::XWC));
     ui->transferAction->setEnabled(ChainIDE::getInstance()->getStartChainTypes() != DataDefine::NONE &&
-                                  (ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::CTC));
+                                  (ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::CTC
+                                   || ChainIDE::getInstance()->getChainClass() == DataDefine::XWC));
 
 }
 
@@ -576,7 +591,7 @@ void MainWindow::on_exportAction_triggered()
 
 void MainWindow::on_registerAction_triggered()
 {
-    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX)
+    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::XWC)
     {
         RegisterContractDialogHX dia;
         dia.exec();
@@ -595,7 +610,7 @@ void MainWindow::on_registerAction_triggered()
 
 void MainWindow::on_transferAction_triggered()
 {
-    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX)
+    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::XWC)
     {
         TransferToContractHX dia;
         dia.exec();
@@ -614,7 +629,7 @@ void MainWindow::on_transferAction_triggered()
 
 void MainWindow::on_callAction_triggered()
 {//调用合约
-    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX)
+    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::XWC)
     {
         CallContractWidgetHX callWidget;
         callWidget.exec();
@@ -633,7 +648,7 @@ void MainWindow::on_callAction_triggered()
 
 void MainWindow::on_upgradeAction_triggered()
 {
-    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX)
+    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::XWC)
     {
         UpgradeContractDialogHX upgradeContractWidget;
         upgradeContractWidget.exec();
@@ -664,7 +679,7 @@ void MainWindow::on_changeChainAction_triggered()
         dia.setText(tr("Sure to switch to formal chain?"));
         if(dia.pop())
         {
-            if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX)
+            if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::XWC)
             {
                 DataManagerHX::getInstance()->dealNewState();//处理最新情况
             }
@@ -775,7 +790,7 @@ void MainWindow::on_DeleteAllBreakpointAction_triggered()
 
 void MainWindow::on_accountListAction_triggered()
 {
-    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX)
+    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::XWC)
     {
         AccountWidgetHX account;
         account.exec();
@@ -809,7 +824,7 @@ void MainWindow::on_consoleAction_triggered()
 
 void MainWindow::on_transferToAccountAction_triggered()
 {//转账
-    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX)
+    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::XWC)
     {
         TransferWidgetHX transfer;
         transfer.exec();

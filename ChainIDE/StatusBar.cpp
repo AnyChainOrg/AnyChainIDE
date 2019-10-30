@@ -94,7 +94,7 @@ void StatusBar::queryBlock()
     {
         ChainIDE::getInstance()->postRPC( "status-ubinfo", IDEUtil::toJsonFormat( "getblockchaininfo", QJsonArray()));
     }
-    else if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX)
+    else if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::XWC)
     {
         ChainIDE::getInstance()->postRPC( "status-hxinfo", IDEUtil::toJsonFormat( "info", QJsonArray()));
     }

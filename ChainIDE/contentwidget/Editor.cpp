@@ -54,6 +54,7 @@ Editor::Editor(const QString &path,const QString &htmlPath,QWidget *parent)
 
 Editor::~Editor()
 {
+    if(_p->webView) delete _p->webView;
     delete _p;
     delete ui;
 }

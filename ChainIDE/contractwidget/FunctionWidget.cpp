@@ -53,7 +53,7 @@ void FunctionWidget::RefreshContractAddr(const QString &addr)
     ui->tabWidget->setCurrentIndex(0);
 
     DataManagerStruct::ContractInfoPtr info = nullptr;
-    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX)
+    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::XWC)
     {
         info = DataManagerHX::getInstance()->getContract()->getContractInfo(addr);
     }

@@ -55,7 +55,7 @@ ContractWidget::~ContractWidget()
 void ContractWidget::RefreshTree()
 {
     ui->functionWidget->Clear();
-    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX)
+    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::XWC)
     {
         DataManagerHX::getInstance()->queryAccount();
     }
@@ -98,7 +98,8 @@ void ContractWidget::InitWidget()
 
     connect(ui->treeWidget,&QTreeWidget::currentItemChanged,this,&ContractWidget::ContractClicked);
 
-    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX && (ChainIDE::getInstance()->getStartChainTypes() | DataDefine::NONE))
+    if((ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::XWC)
+            && (ChainIDE::getInstance()->getStartChainTypes() | DataDefine::NONE))
     {
         connect(DataManagerHX::getInstance(),&DataManagerHX::queryAccountFinish,DataManagerHX::getInstance(),&DataManagerHX::queryContract);
         connect(DataManagerHX::getInstance(),&DataManagerHX::queryContractFinish,this,&ContractWidget::InitTree);
@@ -119,7 +120,7 @@ void ContractWidget::InitTree()
     ui->treeWidget->clear();
 
     DataManagerStruct::AddressContractDataPtr data = nullptr;
-    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX)
+    if(ChainIDE::getInstance()->getChainClass() == DataDefine::HX || ChainIDE::getInstance()->getChainClass() == DataDefine::XWC)
     {
         data = DataManagerHX::getInstance()->getContract();
     }

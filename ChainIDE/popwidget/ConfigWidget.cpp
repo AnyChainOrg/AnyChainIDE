@@ -89,6 +89,7 @@ void ConfigWidget::InitWidget()
     ui->chainclass->addItem(tr("  HX"),static_cast<int>(DataDefine::HX));
     ui->chainclass->addItem(tr("  UB"),static_cast<int>(DataDefine::UB));
     ui->chainclass->addItem(tr("  CTC"),static_cast<int>(DataDefine::CTC));
+    ui->chainclass->addItem(tr("  XWC"),static_cast<int>(DataDefine::XWC));
     if(ChainIDE::getInstance()->getChainClassConfig() ==DataDefine::HX)
     {
         ui->chainclass->setCurrentIndex(0);
@@ -100,6 +101,10 @@ void ConfigWidget::InitWidget()
     else if(ChainIDE::getInstance()->getChainClassConfig() ==DataDefine::CTC)
     {
         ui->chainclass->setCurrentIndex(2);
+    }
+    else if(ChainIDE::getInstance()->getChainClassConfig() ==DataDefine::XWC)
+    {
+        ui->chainclass->setCurrentIndex(3);
     }
     //初始化启动类型
     ui->starttype->clear();

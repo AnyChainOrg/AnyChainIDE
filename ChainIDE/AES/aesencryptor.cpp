@@ -71,13 +71,15 @@ string AesEncryptor::EncryptString(string strInfor) {
 
 string AesEncryptor::DecryptString(string strMessage) {
     int nLength = strMessage.length() / 2;
-    unsigned char* pBuffer = new unsigned char[nLength];
-    memset(pBuffer, '\0', nLength);
+    int buffSize = (nLength < 100) ? 100 : nLength;
+    unsigned char* pBuffer = new unsigned char[buffSize];
+    memset(pBuffer, '\0', buffSize);
     Hex2Byte(strMessage.c_str(), strMessage.length(), pBuffer);
-
     m_pEncryptor->InvCipher(pBuffer, nLength);
+
     string retValue((char*)pBuffer);
     delete[] pBuffer;
+
     return retValue;
 }
 

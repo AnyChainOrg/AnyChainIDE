@@ -87,6 +87,8 @@ namespace DataDefine
     static const QString XWC_NODE_TEST_EXE = BACKSTAGE_DIR+"/xwc_node_test.exe";
     static const QString XWC_CLIENT_TEST_EXE = BACKSTAGE_DIR+"/xwc_client_test.exe";
     static const QString XWC_TEST_CONFIG_PATH = BACKSTAGE_DIR+"/xwc_test_config.ini";
+    static const QString XWC_NODE_FORMAL_EXE = BACKSTAGE_DIR+"/xwc_node_formal.exe";
+    static const QString XWC_CLIENT_FORMAL_EXE = BACKSTAGE_DIR+"/xwc_client_formal.exe";
 #else
     static const QString UBCD_NODE_EXE = BACKSTAGE_DIR+"/ubcd";
     static const QString UBCD_CLIENT_EXE = BACKSTAGE_DIR+"/ubc-cli";

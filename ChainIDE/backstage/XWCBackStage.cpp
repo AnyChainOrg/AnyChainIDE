@@ -202,7 +202,7 @@ void XWCBackStage::startNodeProc()
     else if(2 == _p->chaintype)
     {//正式链
         qDebug() << "start xwc_node_formal " << strList;
-//        _p->nodeProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_NODE_EXE,strList);
+        _p->nodeProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::XWC_NODE_FORMAL_EXE,strList);
     }
 
 }
@@ -227,7 +227,7 @@ void XWCBackStage::startClientProc()
     else if(2 == _p->chaintype)
     {
         qDebug()<<"start hx_client_formal"<<strList;
-//        _p->clientProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::LINK_CLIENT_EXE,strList);
+        _p->clientProc->start(QCoreApplication::applicationDirPath()+QDir::separator()+DataDefine::XWC_CLIENT_FORMAL_EXE,strList);
     }
 }
 
